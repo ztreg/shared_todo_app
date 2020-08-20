@@ -1,0 +1,23 @@
+const todoModel = require('../models/todoModel');
+
+module.exports = {
+    addTodo: async (req, res) => {
+        let lastId = await todoModel.insertTodo(req.body.title, req.body.done = false);
+        let status = lastId ? 201 : 500;
+        res.status(status).json({last_inserted_id: lastId});
+    },
+    updateTodo: async (req, res) => {
+        let lastId = await todoModel.updateTodo(req.body.title, req.body.done, req.params.todoId)
+        let status = lastId ? 201 : 500;
+        res.status(status).json({last_inserted_id: lastId});
+    },
+    deleteTodo: async (req, res) => {
+        let count = await todoModel.deleteTodo(req.params.todoId)
+        let status = count ? 201 : 500;
+        res.status(status).json({removed_count: count});
+    },
+    getTodos: async (req, res) => {
+        let Todos = await todoModel.getTodos()
+        res.json({Todos})
+    },
+}
