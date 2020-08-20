@@ -4,10 +4,16 @@ module.exports = {
     addTodo: async (req, res) => {
         let lastId = await todoModel.insertTodo(req.body.title, req.body.done = false);
         let status = lastId ? 201 : 500;
-        res.status(status).json({last_inserted_id: lastId});
+        res.status(status).json({lastId});
     },
     updateTodo: async (req, res) => {
         let lastId = await todoModel.updateTodo(req.body.title, req.body.done, req.params.todoId)
+        let status = lastId ? 201 : 500;
+        res.status(status).json({last_inserted_id: lastId});
+    },
+    doneTodo: async (req, res) => {
+        console.log(req.body)
+        let lastId = await todoModel.doneTodo(req.body.done, req.params.todoId)
         let status = lastId ? 201 : 500;
         res.status(status).json({last_inserted_id: lastId});
     },

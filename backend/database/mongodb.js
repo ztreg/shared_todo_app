@@ -7,8 +7,26 @@ if(!mongoose.connection) {
     // throw new MongooseError('Could not connect to database')
 }
 
+var TodoSchema = new mongoose.Schema(
+{
+    title: {
+        type: String
+    },
+    done: {
+        type: Boolean
+    },
+}, 
+    {
+        timestamps: true
+    }
+)
 
+module.exports = mongoose.model("Todo", TodoSchema)
+
+/*
 module.exports = {
+   const Todo : mongoose.model("Todo", TodoSchema)
+  
     Todo: mongoose.model('Todo', {
         title: String,
         done: Boolean,
@@ -16,8 +34,6 @@ module.exports = {
         //    type: mongoose.Schema.Types.ObjectId,
         //    ref: "comment"
         //}]
-    }),
-    //Comment: mongoose.model('comment', {
-    //    text: String,
-    //})
+    })
 }
+*/

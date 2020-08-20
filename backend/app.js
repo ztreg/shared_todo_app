@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const todoRoute = require('./routes/todo');
 const app = express();
-var cors = require('cors')
+const cors = require('cors')
 // const frondEnd = require('./routes/frontend');
 
 const path = require('path')
