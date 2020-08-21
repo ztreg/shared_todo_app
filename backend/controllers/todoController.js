@@ -1,4 +1,5 @@
 const todoModel = require('../models/todoModel');
+const { countDocuments } = require('../database/mongodb');
 
 module.exports = {
     addTodo: async (req, res) => {
@@ -23,7 +24,6 @@ module.exports = {
         res.status(status).json({removed_count: count});
     },
     getTodos: async (req, res) => {
-        let Todos = await todoModel.getTodos()
-        res.json({Todos})
+        res.json(await todoModel.getTodos(req.params.sorted, req.params.direction, req.params.page))   
     },
 }

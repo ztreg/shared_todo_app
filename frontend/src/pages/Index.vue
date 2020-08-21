@@ -1,6 +1,5 @@
 <template>
-  <div class="q-pa-md center bg-grey-1">
-    <h3>Jonas Todo List</h3>
+  <div class="q-pa-md center bg-grey-9 text-white">
     <TodoPage></TodoPage>
   </div>
 </template>

@@ -1,7 +1,7 @@
 const todoRouter = require('express').Router();
 const todoController = require('../controllers/todoController');
 
-todoRouter.get('/', (req, res ) => {
+todoRouter.get('/:sorted/:direction/:page?', (req, res ) => {
     todoController.getTodos(req, res);
 })
 

@@ -8,20 +8,20 @@
           round
           icon="menu"
           aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="closeburger()"
         />
 
         <q-toolbar-title>
           Quasar App
         </q-toolbar-title>
 
-        <div>vilken bra webbtjänst du har gjort till mig</div>
+        <div>vilken bra webbtjänst jag har gjort till mig själv</div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
+      v-if="leftDrawerOpen"
       v-model="leftDrawerOpen"
-      show-if-above
       bordered
       content-class="bg-grey-1"
     >
@@ -65,6 +65,12 @@ export default {
     return {
       leftDrawerOpen: false,
       essentialLinks: linksData
+    }
+  },
+  methods: {
+    closeburger () {
+      this.leftDrawerOpen = !this.leftDrawerOpen
+      console.log(this.leftDrawerOpen)
     }
   }
 }

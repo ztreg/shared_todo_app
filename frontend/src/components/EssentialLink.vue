@@ -4,6 +4,7 @@
     tag="a"
     target="_blank"
     :href="link"
+    @click="leftDrawerOpen = !leftDrawerOpen"
   >
     <q-item-section
       v-if="icon"
