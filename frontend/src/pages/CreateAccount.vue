@@ -1,18 +1,18 @@
 <template>
   <div class="q-pa-md center bg-grey-9 text-white">
-    <LoginPage></LoginPage>
+    <CreateAccount></CreateAccount>
   </div>
 </template>
 
 <script>
-import LoginPage from '../components/LoginPage'
+import CreateAccount from '../components/CreateAccount'
 export default {
   name: 'Login',
   data () {
     return {}
   },
   components: {
-    LoginPage
+    CreateAccount
   }
 }
 

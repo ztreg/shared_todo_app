@@ -1,0 +1,23 @@
+require('dotenv').config();
+const { verifyToken } = require('../models/userModel')
+const jwt = require('jsonwebtoken')
+
+module.exports = {
+    authorization: async (req,res,next) => {
+        if(!req.headers.authorization) return res.sendStatus(403)
+        const token = req.headers.authorization.replace("Bearer ", "")
+        try{
+            req.user = await verifyToken(token)
+            console.log(req.user)
+            next()
+        }catch(error){
+            if(error instanceof jwt.TokenExpiredError){
+                console.log('not logged in')
+                res.status(403).json({msg: "You are not logged in"})
+            } else {
+                console.log('not logged in')
+                res.status(403).json({error: error})
+            }
+        }
+    }
+}

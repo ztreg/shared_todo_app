@@ -3,9 +3,16 @@ const { countDocuments } = require('../database/mongodb');
 
 module.exports = {
     addTodo: async (req, res) => {
-        let lastId = await todoModel.insertTodo(req.body.title, req.body.done = false);
-        let status = lastId ? 201 : 500;
-        res.status(status).json({lastId});
+        console.log('adding todo')
+        const todo = {
+            title: req.body.title,
+            done: false,
+            userid: req.user.userId
+        }
+
+        let added = await todoModel.insertTodo(todo);
+        let status = added ? 201 : 500;
+        res.status(status).json({added});
     },
     updateTodo: async (req, res) => {
         let lastId = await todoModel.updateTodo(req.body.title, req.body.done, req.params.todoId)
@@ -24,6 +31,14 @@ module.exports = {
         res.status(status).json({removed_count: count});
     },
     getTodos: async (req, res) => {
-        res.json(await todoModel.getTodos(req.params.sorted, req.params.direction, req.params.page))   
+        if(req.user.isAdmin()) {
+            console.log('admin here, get me all')
+            res.json(await todoModel.getTodos(req.params.sorted, req.params.direction, req.params.page)) 
+         } else if (req.user.isMember()) {
+            console.log('member here, get me my todos')
+            res.json(await todoModel.getTodos(req.params.sorted, req.params.direction, req.params.page, req.user.userId))
+            // res.json(await postModel.getPosts(req.user.userId))  
+         }
+          
     },
 }

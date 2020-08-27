@@ -1,18 +1,18 @@
 <template>
   <div class="q-pa-md center bg-grey-9 text-white">
-    <LoginPage></LoginPage>
+    <TodoPage></TodoPage>
   </div>
 </template>
 
 <script>
-import LoginPage from '../components/LoginPage'
+import TodoPage from '../components/TodoPage'
 export default {
-  name: 'Login',
+  name: 'Todos',
   data () {
     return {}
   },
   components: {
-    LoginPage
+    TodoPage
   }
 }
 

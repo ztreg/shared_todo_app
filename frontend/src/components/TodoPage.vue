@@ -1,5 +1,6 @@
 <template>
   <div class="q-gutter-sm">
+    <q-btn class="float-right" label="Logout" color="red" @click="logOut()"></q-btn>
     <q-form @submit="addTodo(todoTitle)" class="row" >
     <q-input filled v-model="todoTitle" label="New todo *" class="col-3 bg-white text-h5" />
       <q-btn label="Add Todo" type="submit" color="green" v-model="todoTitle"/>
@@ -46,6 +47,7 @@
     class="q-ma-lg" @click="fetchTodos(undefined, direction, page--)"> </q-avatar>
     <q-avatar clickable v-ripple color="blue" text-color="white" icon="arrow_right"
     class="q-ma-lg" text="next page" @click="fetchTodos(undefined, page++)"/>
+    <div class="text-white">Logged in as: {{ currentUser }}</div>
   </div>
 </template>
 
@@ -63,7 +65,19 @@ export default {
       page: 0,
       direction: 'asc',
       max: Number,
-      maxNmrOfPosts: Number
+      maxNmrOfPosts: Number,
+      currentUser: ''
+    }
+  },
+  created () {
+    if (localStorage.getItem('token')) {
+      this.currentUser = localStorage.getItem('username')
+      this.token = localStorage.getItem('token')
+      process.env.TOKEN = this.token
+      console.log(this.token)
+    } else {
+      console.log('inget i local')
+      this.$router.push({ path: '/' })
     }
   },
   async mounted () {
@@ -71,6 +85,7 @@ export default {
     this.todos = data.data
     // this.maxNmrOfPosts = this.todos.length
     console.log('yey')
+    console.log(data)
     this.max = data.count / 5
   },
   methods: {
@@ -118,6 +133,9 @@ export default {
         data.Todos[i].updatedAt = moment(data.Todos[i].updatedAt).format('MM/DD hh')
       }
       this.todos.push(data.lastId)
+      /**
+      * Fetch the newest
+      */
       this.fetchTodos()
       this.todoTitle = ''
     },
@@ -134,6 +152,10 @@ export default {
      */
     async quickEditTodo (done, id) {
       await todoRequests.quickEditTodo(done, id)
+    },
+    logOut () {
+      localStorage.setItem('token', '')
+      this.$router.push({ path: '/' })
     }
   }
 }

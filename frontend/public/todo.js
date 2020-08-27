@@ -1,14 +1,16 @@
 import moment from 'moment'
-
 class TodoRequests {
   static async fetchTodos (sortFrom = 'created', direction = 'asc', page = 0) {
-    // page = this.page
-    /**
-     * Returns data and count
-     */
+    // const currenttoken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjQ3ODUyNWEwZTQ3ZjMyNjhiNzBmM2QiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1OTg1MjI2ODEsImV4cCI6MTU5ODUyNjI4MX0.atIvCDe3X4tGzuH8aFCAl4vb6TFp4GIfdj_V5VJuWyU'
     if (page <= 0) page = 0
     console.log('sida nmr ' + page)
-    return await fetch('http://localhost:8081/' + sortFrom + '/' + direction + '/' + page)
+    return await fetch('http://localhost:8081/todo/' + sortFrom + '/' + direction + '/' + page,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      })
       .then(response => response.json())
       .then((response) => {
         console.log(response)
@@ -27,49 +29,50 @@ class TodoRequests {
 
   static async editFullTodo (title, done, id) {
     console.log('making full edit request for id ' + id)
-    return await fetch('http://localhost:8081/update/' + id, {
-      method: 'PUT',
+    return await fetch('http://localhost:8081/todo/update/' + id, {
+      method: 'PATCH',
       headers: {
+        Authorization: `Bearer ${process.env.TOKEN}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ title: title, done: done })
-    }).then(res => res.json())
-      .then(res => console.log(res))
+    })
   }
 
   static async addTodo (title) {
     console.log('add todo with title ' + title)
 
-    return await fetch('http://localhost:8081/add', {
+    return await fetch('http://localhost:8081/todo/add', {
       method: 'POST',
       headers: {
+        Authorization: `Bearer ${process.env.TOKEN}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ title: title })
-    }).then(res => res.json())
+    })
   }
 
   static async deleteTodo (id) {
-    return await fetch('http://localhost:8081/delete/' + id, {
+    return await fetch('http://localhost:8081/todo/delete/' + id, {
       method: 'DELETE',
       headers: {
+        Authorization: `Bearer ${process.env.TOKEN}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ id })
-    }).then(res => res.json())
-      .then(res => console.log(res))
+    })
   }
 
   static async quickEditTodo (done, id) {
     console.log('making put request for id ' + id)
-    return await fetch('http://localhost:8081/done/' + id, {
-      method: 'PUT',
+    return await fetch('http://localhost:8081/todo/done/' + id, {
+      method: 'PATCH',
       headers: {
+        Authorization: `Bearer ${process.env.TOKEN}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ done: done })
-    }).then(res => res.json())
-      .then(res => console.log(res))
+    })
   }
 }
 export default TodoRequests

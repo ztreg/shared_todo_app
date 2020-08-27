@@ -1,26 +1,15 @@
 const todoRouter = require('express').Router();
 const todoController = require('../controllers/todoController');
+const { authorization } = require('../middlewares/authorization')
 
-todoRouter.get('/:sorted/:direction/:page?', (req, res ) => {
-    todoController.getTodos(req, res);
-})
+todoRouter.get('/:sorted/:direction/:page?', authorization, todoController.getTodos);
 
-todoRouter.post('/add', (req, res) => {
-    console.log(req.body.title)
-    todoController.addTodo(req, res);
-});
+todoRouter.post('/add', authorization, todoController.addTodo);
 
-todoRouter.put('/update/:todoId', (req, res) => {
-    todoController.updateTodo(req, res);
-});
+todoRouter.delete('/delete/:todoId', authorization, todoController.deleteTodo);
 
-todoRouter.put('/done/:todoId', (req, res) => {
-    console.log(req.body)
-    todoController.doneTodo(req, res);
-});
+todoRouter.patch('/update/:todoId', authorization, todoController.updateTodo);
 
-todoRouter.delete('/delete/:todoId', (req, res) => {
-    todoController.deleteTodo(req, res);
-});
+todoRouter.patch('/done/:todoId', authorization, todoController.doneTodo);
 
 module.exports = todoRouter

@@ -1,0 +1,45 @@
+{
+    "customer": [ 
+        {
+            "id" : "11",
+            "name" : "pelle",
+            "email" : "pelle@pelle.pelle",
+            "books" : [
+                {
+                    "book_id" : 5,
+                    "book_title" : "pelleoftherings"
+                },
+                {
+                    "book_id" : 6,
+                    "book_title" : "pelleoftherings2"
+                }
+            ]
+            
+        }
+    ],
+    "book" : [
+        {
+            "id" : 5,
+            "name" : "pelleoftherings",
+            "kvantitet" : 9,
+            "current_owner" : {
+                "customer_id" : 11
+            }
+        },
+        {
+            "id" : 6,
+            "name" : "pelleoftherings2",
+            "kvantitet" : 4,
+            "current_owner" : {
+                "customer_id" : 11
+            }
+        }
+    ]
+}
+
+let guy = db.findOne({name: req.body.name, email: req.body.email})
+
+let guy = db.findOne({name: req.body.name, email: req.body.email})
+let bookownerinfo = db.findOne({customer_id: guy.id})
+console.log(bookownerinfo.customer_id)
+

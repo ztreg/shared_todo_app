@@ -15,13 +15,33 @@ var TodoSchema = new mongoose.Schema(
     done: {
         type: Boolean
     },
+    userid: {
+        type: String
+    }
 }, 
     {
         timestamps: true
     }
 )
+var UserSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    role: {
+        type: String,
+        required: true
+    }
+})
 
-module.exports = mongoose.model("Todo", TodoSchema)
+const Todo = mongoose.model("Todo", TodoSchema)
+const User = mongoose.model("User", UserSchema)
+
+module.exports = {Todo, User}
 
 /*
 module.exports = {
@@ -36,4 +56,38 @@ module.exports = {
         //}]
     })
 }
+*/
+
+
+/*
+// Post
+{
+    Postid: Number,
+    Postitle: String,
+    Postcontent: String,
+    Postcomments: array commentid
+
+}
+
+// Comment
+{
+    /*
+module.exports = {
+   const Todo : mongoose.model("Todo", TodoSchema)
+  
+    Todo: mongoose.model('Todo', {
+        title: String,
+        done: Boolean,
+        //comments: [{
+        //    type: mongoose.Schema.Types.ObjectId,
+        //    ref: "comment"
+        //}]
+    })
+}
+*/
+/*
+    commentid: Number,
+    Commentcontent: String
+}
+
 */

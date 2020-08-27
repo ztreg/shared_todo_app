@@ -14,8 +14,7 @@
         <q-toolbar-title>
           Quasar App
         </q-toolbar-title>
-
-        <div>vilken bra webbtjänst jag har gjort till mig själv</div>
+        <div> Vilken bra webbtjänst jag har gjort till mig själv</div>
       </q-toolbar>
     </q-header>
 
