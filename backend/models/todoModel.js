@@ -12,8 +12,11 @@ module.exports = {
     deleteTodo: async (todoId) => {
         return await Todo.deleteOne({_id: todoId})
     },
-    getTodos: async(sorted = 'asc', direction = -1, page = 0, userid = null) => {
-        
+    getTodos: async(sortBy = 'createdAt', direction = -1, page = 0, userid = null) => {
+        let sortobject = {}
+        sortobject[sortBy] = direction
+        console.log(sortobject)
+
         let pageLimit = 5
         let returnobject = {};
         /**
@@ -31,15 +34,12 @@ module.exports = {
         }if(direction === 'desc') {
             direction = 1
         }
+
         if(userid === null) {
-            console.log('admin here, get me all!')
-            if(sorted === 'created') {
+            console.log('admin here, get me all!' + sortBy + direction)
+            if(sortBy) {
                 returnobject.count = await Todo.countDocuments({})
-                returnobject.data = await Todo.find({}).sort( { createdAt: direction } ).skip(page * pageLimit).limit(pageLimit)
-                return returnobject
-            } else if(sorted === 'updated') {
-                returnobject.count = await Todo.countDocuments({})
-                returnobject.data = await Todo.find({}).sort( { updatedAt: direction } ).skip(page * pageLimit).limit(pageLimit)
+                returnobject.data = await Todo.find({}).sort( sortobject ).skip(page * pageLimit).limit(pageLimit)
                 return returnobject
             } else {
                 return await Todo.find({}, {}).skip(page * pageLimit).limit(pageLimit)
@@ -47,20 +47,31 @@ module.exports = {
         }
         else if(userid) {
             console.log('member here, get me my todos with userid! ' + userid)
-            if(sorted === 'created') {
-                returnobject.count = await Todo.countDocuments({})
-                returnobject.data = await Todo.find({userid: userid}).sort( { createdAt: direction } ).skip(page * pageLimit).limit(pageLimit)
+            if(sortBy) {
+                returnobject.count = await Todo.countDocuments({userid: userid})
+                returnobject.data = await Todo.find({userid: userid}).sort( sortobject ).skip(page * pageLimit).limit(pageLimit)
+                console.log(returnobject)
                 return returnobject
-            } else if(sorted === 'updated') {
-                returnobject.count = await Todo.countDocuments({})
-                returnobject.data = await Todo.find({userid: userid}).sort( { updatedAt: direction } ).skip(page * pageLimit).limit(pageLimit)
-                return returnobject
-            } else {
+            }  else {
                 return await Todo.find({userid: userid}, {}).skip(page * pageLimit).limit(pageLimit)
             }
         }
     },
     getTodo: async(todoId) => {
         return await Todo.findOne({_id: todoId}, {'title': 1, 'done': 1})
+    },
+    getTodosSearch: async(searchtext = '', userid = null) => {
+        if(userid === null) {
+            if(searchtext == '') {
+               return await Todo.find( {}, {}).sort().skip(1 * 5).limit(5)
+            } else {
+                let test = await Todo.find( {title: new RegExp(searchtext, 'i')}, {})
+                console.log(test)
+                return test
+            }
+        } else {
+            return await Todo.find({userid}, {title: searchtext}, {})
+        }
+        
     }
 }

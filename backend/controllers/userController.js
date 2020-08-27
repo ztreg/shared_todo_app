@@ -14,7 +14,8 @@ module.exports = {
         }
         let addedId = await userModel.addUser(user)
         let status = addedId ? 201 : 500
-        res.status(status).json({addedId})
+        let msg = addedId ? 'success' : 'That username already exists'
+        res.status(status).json({msg})
     },
     updateUser: async (req, res) => {
         let userToEdit = await userModel.getUser(req.params.userId)

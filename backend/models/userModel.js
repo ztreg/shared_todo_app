@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
     addUser: async (user) => {
-        console.log("adding User with username " + user.username)
-        return await User.create(user);
+        const checkIfExists = await User.findOne({username: user.username})
+        if(checkIfExists) return false
+        else return await User.create(user);
     },
     updateUser: async (userToUpdate) => {
         return await User.updateOne({_id: userToUpdate.userId},

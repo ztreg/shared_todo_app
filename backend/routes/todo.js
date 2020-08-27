@@ -4,6 +4,8 @@ const { authorization } = require('../middlewares/authorization')
 
 todoRouter.get('/:sorted/:direction/:page?', authorization, todoController.getTodos);
 
+todoRouter.get('/:searchtext/:userId?', authorization, todoController.getTodosSearch);
+
 todoRouter.post('/add', authorization, todoController.addTodo);
 
 todoRouter.delete('/delete/:todoId', authorization, todoController.deleteTodo);

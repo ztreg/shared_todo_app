@@ -10,13 +10,14 @@
             <q-form class="q-gutter-md">
               <q-input square filled clearable v-model="username" type="username" label="username" />
               <q-input square filled clearable v-model="password" type="password" label="password" />
+              <p class="text-subtitle1 text-red q-pb-sm">{{ this.status }}</p>
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
             <q-btn unelevated color="light-green-7" size="lg" class="full-width" label="Login" @click="login(username, password)"/>
           </q-card-actions>
           <q-card-section class="text-center text-body1">
-            <a href="/signup"><p class="text-grey-6">Not reigistered? Create an Account</p> </a>
+            <q-btn :to="'/signup'" class="text-grey-6">Not reigistered? Create an Account</q-btn>
           </q-card-section>
         </q-card>
       </div>
@@ -32,7 +33,8 @@ export default {
       username: '',
       password: '',
       token: '',
-      currentUser: ''
+      currentUser: '',
+      status: 'Log in to start todoing'
     }
   },
   mounted () {
@@ -51,15 +53,14 @@ export default {
       })
         .then(response => response.json())
         .then((response) => {
+          this.status = response.msg
           this.token = response.token
           this.currentUser = username
-          process.env.USERNAME = this.currentUser
           if (response.token) {
             process.env.TOKEN = this.token
             localStorage.setItem('token', this.token)
             localStorage.setItem('username', this.currentUser)
             localStorage.token = this.token
-            console.log(process.env.TOKEN)
             this.$router.push({ path: 'todos' })
           }
         })

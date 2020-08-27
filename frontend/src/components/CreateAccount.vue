@@ -10,13 +10,14 @@
             <q-form class="q-gutter-md">
               <q-input square filled clearable v-model="username" type="username" label="username" />
               <q-input square filled clearable v-model="password" type="password" label="password" />
+               <p class="text-subtitle1 text-red q-pb-sm">{{ this.status }}</p>
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
             <q-btn unelevated color="light-green-7" size="lg" class="full-width" label="Signup" @click="signup(username, password)"/>
           </q-card-actions>
           <q-card-section class="text-center text-body1">
-            <a href="/"><p class="text-grey-6">Already signed up? Log in here</p></a>
+            <q-btn :to="'/'" class="text-grey-6">Already signed up? Log in here</q-btn>
           </q-card-section>
         </q-card>
       </div>
@@ -30,7 +31,8 @@ export default {
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      status: ''
     }
   },
   methods: {
@@ -45,6 +47,7 @@ export default {
         .then(response => response.json())
         .then((response) => {
           console.log(response)
+          this.status = response.msg
         })
         .catch((error) => {
           console.error('There was a error fetching:', error)

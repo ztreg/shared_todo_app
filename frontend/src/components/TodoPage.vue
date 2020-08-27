@@ -5,9 +5,14 @@
     <q-input filled v-model="todoTitle" label="New todo *" class="col-3 bg-white text-h5" />
       <q-btn label="Add Todo" type="submit" color="green" v-model="todoTitle"/>
     </q-form>
-    <q-list >
-      <q-btn class="q-mr-md text-body1" color="accent" label="Sort by Created at" push @click="directionFunction(sorted = 'created')" > </q-btn>
-      <q-btn class="q-mr-md text-body1" color="cyan" label="Sort by Updated at " push @click="directionFunction(sorted = 'updated')"> </q-btn>
+    <q-list>
+            <q-input v-on:input="fetchTodosSearch(searchtext)" label="Search here..." borderless v-model="searchtext" class="bg-white" style="width:300px">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <q-btn class="q-mr-md text-body1" color="accent" label="Sort by Created at" push @click="directionFunction(sorted = 'createdAt')" > </q-btn>
+      <q-btn class="q-mr-md text-body1" color="cyan" label="Sort by Updated at " push @click="directionFunction(sorted = 'updatedAt')"> </q-btn>
       <q-item class="text-body1 q-pa-md text-center">
         <q-item-section>Created At</q-item-section>
         <q-item-section>Updated At</q-item-section>
@@ -19,6 +24,7 @@
       </q-item>
       <div v-for="(todo, i) in todos" :key="i" class="parr q-pa-md text-body1 text-center">
        <q-item :id="todo._id" class="border">
+         <q-item-section v-if="todo.username">hi</q-item-section>
          <q-item-section>{{ todo.createdAt }}</q-item-section>
          <q-item-section>{{ todo.updatedAt }}</q-item-section>
          <q-avatar clickable v-ripple color="red" text-color="white" icon="delete" class="" @click="deleteTodo(todo._id)"/>
@@ -44,7 +50,7 @@
     </q-list>
     <div>Page: {{ this.page + 1 }} / {{ this.max }}</div>
     <q-avatar clickable v-ripple color="blue" text-color="white" icon="arrow_left"
-    class="q-ma-lg" @click="fetchTodos(undefined, direction, page--)"> </q-avatar>
+    class="q-ma-lg" @click="fetchTodos(undefined, page--)"> </q-avatar>
     <q-avatar clickable v-ripple color="blue" text-color="white" icon="arrow_right"
     class="q-ma-lg" text="next page" @click="fetchTodos(undefined, page++)"/>
     <div class="text-white">Logged in as: {{ currentUser }}</div>
@@ -52,7 +58,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+// import moment from 'moment'
 import todoRequests from '../../public/todo'
 export default {
   name: 'TodoPage',
@@ -61,12 +67,13 @@ export default {
       todos: [],
       todoTitle: null,
       val: null,
-      sorted: 'created',
+      sorted: 'createdAt',
       page: 0,
-      direction: 'asc',
+      direction: 'desc',
       max: Number,
       maxNmrOfPosts: Number,
-      currentUser: ''
+      currentUser: '',
+      searchtext: ''
     }
   },
   created () {
@@ -74,19 +81,14 @@ export default {
       this.currentUser = localStorage.getItem('username')
       this.token = localStorage.getItem('token')
       process.env.TOKEN = this.token
-      console.log(this.token)
     } else {
-      console.log('inget i local')
       this.$router.push({ path: '/' })
     }
   },
   async mounted () {
     const data = await todoRequests.fetchTodos(this.sorted, this.direction, this.page)
     this.todos = data.data
-    // this.maxNmrOfPosts = this.todos.length
-    console.log('yey')
-    console.log(data)
-    this.max = data.count / 5
+    this.max = Math.ceil(data.count / 5)
   },
   methods: {
     /**
@@ -105,9 +107,12 @@ export default {
     /**
     * Get todos
     */
-    async fetchTodos (sortFrom = 'created', page) {
+    async fetchTodos (sortFrom = 'createdAt', page = 0, searchtext = '') {
+      console.log(this.page)
       if (this.max <= this.page) {
         this.page = page
+      } else if (this.page < 0) {
+        this.page = 0
       } else {
         console.log('frontendpage ' + page)
         const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page)
@@ -125,17 +130,10 @@ export default {
      */
     async addTodo (title) {
       const data = await todoRequests.addTodo(title)
-      console.log(data.lastId)
-      for (let i = 0; i < data.length; i++) {
-        data.Todos[i].createdAt = Date.parse(data.Todos[i].createdAt)
-        data.Todos[i].updatedAt = Date.parse(data.Todos[i].updatedAt)
-        data.Todos[i].createdAt = moment(data.Todos[i].updatedAt).format('MM/DD hh')
-        data.Todos[i].updatedAt = moment(data.Todos[i].updatedAt).format('MM/DD hh')
-      }
-      this.todos.push(data.lastId)
       /**
       * Fetch the newest
       */
+      console.log(data)
       this.fetchTodos()
       this.todoTitle = ''
     },
@@ -156,6 +154,25 @@ export default {
     logOut () {
       localStorage.setItem('token', '')
       this.$router.push({ path: '/' })
+    },
+    async fetchTodosSearch (text) {
+      await fetch('http://localhost:8081/todo/' + text, {
+        headers: {
+          Authorization: `Bearer ${process.env.TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then((response) => {
+          this.todos = []
+          for (let i = 0; i < response.length; i++) {
+            this.todos.push(response[i])
+          }
+          console.log(this.todos)
+        })
+        .catch((error) => {
+          console.error('There was a error fetching:' + error)
+        })
     }
   }
 }

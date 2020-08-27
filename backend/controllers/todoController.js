@@ -41,4 +41,12 @@ module.exports = {
          }
           
     },
+    getTodosSearch: async (req, res) => {
+        
+        if(req.user.isAdmin()) {
+            res.json(await todoModel.getTodosSearch(req.params.searchtext)) 
+        } else if (req.user.isMember()) {
+           res.json(await todoModel.getTodosSearch(req.params.searchtext, req.user.userId))
+        }
+    }
 }
