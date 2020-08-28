@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET
 
 function createToken (payload) {
-    return jwt.sign(payload, secret, {expiresIn : '1h'})
+    return jwt.sign(payload, secret, {expiresIn : '30m'})
     
 }
 
@@ -25,7 +25,7 @@ module.exports = {
                 let token = createToken({userId: user._id, role: user.role})
                 console.log(token)
                 console.log('login success')
-                res.status(200).json({token: token, username: user.username })
+                res.status(200).json({token: token, username: user.username, role: user.role })
 
             } else {
                 res.status(401).json({msg: "wrong password"})
@@ -33,5 +33,8 @@ module.exports = {
         } else {
             res.status(401).json({msg: "wrong username"})
         }
+    },
+    checkToken: async(req, res) => {
+        res.sendStatus(200)
     }
 }

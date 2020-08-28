@@ -1,9 +1,7 @@
 <template>
   <q-item
     clickable
-    tag="a"
-    target="_blank"
-    :href="link"
+    :to="to"
     @click="leftDrawerOpen = !leftDrawerOpen"
   >
     <q-item-section
@@ -38,10 +36,14 @@ export default {
 
     link: {
       type: String,
-      default: '#'
+      default: '/'
     },
 
     icon: {
+      type: String,
+      default: ''
+    },
+    to: {
       type: String,
       default: ''
     }

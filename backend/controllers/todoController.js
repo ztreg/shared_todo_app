@@ -46,7 +46,21 @@ module.exports = {
         if(req.user.isAdmin()) {
             res.json(await todoModel.getTodosSearch(req.params.searchtext)) 
         } else if (req.user.isMember()) {
+            console.log('text: ' + req.params.searchtext)
            res.json(await todoModel.getTodosSearch(req.params.searchtext, req.user.userId))
         }
+    },
+    getFinishedTodos: async(req, res) => {
+        console.log('get me finished')
+        if(req.user.isAdmin()) {
+            res.json(await todoModel.getFinishedTodos()) 
+        } else if (req.user.isMember()) {
+           res.json(await todoModel.getFinishedTodos(req.user.userId))
+        }
+    },
+    getCollabTodos: async(req, res) => {
+
+
+        res.json(await todoModel.getCollabTodos())
     }
 }

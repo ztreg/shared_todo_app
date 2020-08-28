@@ -2,11 +2,11 @@
   <div class="q-gutter-sm">
     <q-btn class="float-right" label="Logout" color="red" @click="logOut()"></q-btn>
     <q-form @submit="addTodo(todoTitle)" class="row" >
-    <q-input filled v-model="todoTitle" label="New todo *" class="col-3 bg-white text-h5" />
+    <q-input filled v-model="todoTitle" label="New todo *" class="col-5 bg-white text-h5" />
       <q-btn label="Add Todo" type="submit" color="green" v-model="todoTitle"/>
     </q-form>
     <q-list>
-            <q-input v-on:input="fetchTodosSearch(searchtext)" label="Search here..." borderless v-model="searchtext" class="bg-white" style="width:300px">
+      <q-input v-on:input="fetchTodosSearch(searchtext)" label="Search here..." borderless v-model="searchtext" class="bg-white" style="width:300px">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -14,6 +14,7 @@
       <q-btn class="q-mr-md text-body1" color="accent" label="Sort by Created at" push @click="directionFunction(sorted = 'createdAt')" > </q-btn>
       <q-btn class="q-mr-md text-body1" color="cyan" label="Sort by Updated at " push @click="directionFunction(sorted = 'updatedAt')"> </q-btn>
       <q-item class="text-body1 q-pa-md text-center">
+         <q-item-section v-if="(showUsernames == true)">Todo Owner</q-item-section>
         <q-item-section>Created At</q-item-section>
         <q-item-section>Updated At</q-item-section>
         <q-item-section>Delete Todo</q-item-section>
@@ -24,7 +25,7 @@
       </q-item>
       <div v-for="(todo, i) in todos" :key="i" class="parr q-pa-md text-body1 text-center">
        <q-item :id="todo._id" class="border">
-         <q-item-section v-if="todo.username">hi</q-item-section>
+         <q-item-section v-if="showUsernames" class="text-body2 text-weight-thin">{{ todo.userid }}</q-item-section>
          <q-item-section>{{ todo.createdAt }}</q-item-section>
          <q-item-section>{{ todo.updatedAt }}</q-item-section>
          <q-avatar clickable v-ripple color="red" text-color="white" icon="delete" class="" @click="deleteTodo(todo._id)"/>
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-// import moment from 'moment'
+import moment from 'moment'
 import todoRequests from '../../public/todo'
 export default {
   name: 'TodoPage',
@@ -73,27 +74,52 @@ export default {
       max: Number,
       maxNmrOfPosts: Number,
       currentUser: '',
-      searchtext: ''
+      searchtext: '',
+      showUsernames: false
     }
   },
-  created () {
-    if (localStorage.getItem('token')) {
-      this.currentUser = localStorage.getItem('username')
-      this.token = localStorage.getItem('token')
-      process.env.TOKEN = this.token
+  async created () {
+    /**
+     * Check if frontendtoken still is valid, if so -> proceed. Else go to login
+     */
+    const status = await this.checkToken(localStorage.getItem('token'))
+    if (status.ok === false) {
+      this.logOut()
     } else {
-      this.$router.push({ path: '/' })
+      if (localStorage.getItem('token')) {
+        this.currentUser = localStorage.getItem('username')
+        this.token = localStorage.getItem('token')
+        process.env.TOKEN = this.token
+        if (process.env.showUsers === true) {
+          this.showUsernames = true
+        } else {
+          console.log('u aint admin son')
+        }
+      } else {
+        this.$router.push({ path: '/' })
+      }
     }
-  },
-  async mounted () {
-    const data = await todoRequests.fetchTodos(this.sorted, this.direction, this.page)
-    this.todos = data.data
-    this.max = Math.ceil(data.count / 5)
+    if (status.ok === true) {
+      console.log('valid token')
+      const data = await todoRequests.fetchTodos(this.sorted, this.direction, this.page)
+      this.todos = data.data
+      this.max = Math.ceil(data.count / 5)
+    }
   },
   methods: {
     /**
      * Adjust direction if same button is pressed twice, then make a fetch with new direction
      */
+    async checkToken (token) {
+      console.log(token)
+      return await fetch('http://localhost:8081/login/authentication/checkToken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      })
+    },
     async directionFunction (sortFrom) {
       if (this.direction === 'asc') {
         this.direction = 'desc'
@@ -114,8 +140,8 @@ export default {
       } else if (this.page < 0) {
         this.page = 0
       } else {
-        console.log('frontendpage ' + page)
         const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page)
+        this.sortFrom = sortFrom
         this.todos = data.data
       }
     },
@@ -129,12 +155,11 @@ export default {
      * Add todo, send to class method and format date response
      */
     async addTodo (title) {
-      const data = await todoRequests.addTodo(title)
-      /**
-      * Fetch the newest
-      */
-      console.log(data)
-      this.fetchTodos()
+      await todoRequests.addTodo(title)
+      this.direction = 'asc'
+      const sortFrom = 'createdAt'
+      const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page)
+      this.todos = data.data
       this.todoTitle = ''
     },
     /**
@@ -152,10 +177,14 @@ export default {
       await todoRequests.quickEditTodo(done, id)
     },
     logOut () {
-      localStorage.setItem('token', '')
+      localStorage.removeItem('token')
+      localStorage.removeItem('showUsers')
       this.$router.push({ path: '/' })
     },
     async fetchTodosSearch (text) {
+      /**
+       * Hämta -> flitrera datum -> fyll this.todos
+       */
       await fetch('http://localhost:8081/todo/' + text, {
         headers: {
           Authorization: `Bearer ${process.env.TOKEN}`,
@@ -164,6 +193,13 @@ export default {
       })
         .then(response => response.json())
         .then((response) => {
+          for (let i = 0; i < response.length; i++) {
+            console.log('i lop')
+            response[i].createdAt = Date.parse(response[i].createdAt)
+            response[i].updatedAt = Date.parse(response[i].updatedAt)
+            response[i].createdAt = moment(response[i].updatedAt).format('MM/DD HH:mm')
+            response[i].updatedAt = moment(response[i].updatedAt).format('MM/DD HH:mm')
+          }
           this.todos = []
           for (let i = 0; i < response.length; i++) {
             this.todos.push(response[i])

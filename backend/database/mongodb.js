@@ -7,22 +7,6 @@ if(!mongoose.connection) {
     // throw new MongooseError('Could not connect to database')
 }
 
-var TodoSchema = new mongoose.Schema(
-{
-    title: {
-        type: String
-    },
-    done: {
-        type: Boolean
-    },
-    userid: {
-        type: String
-    }
-}, 
-    {
-        timestamps: true
-    }
-)
 var UserSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -38,56 +22,44 @@ var UserSchema = new mongoose.Schema({
     }
 })
 
+var TodoSchema = new mongoose.Schema(
+    {
+        title: {
+            type: String
+        },
+        done: {
+            type: Boolean
+        },
+        userid: {
+            type: String
+        },
+        listIds: {
+            type: String
+        }
+    }, 
+        {
+            timestamps: true
+        }
+    )
+
+const ListSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    creator: {
+        type: String
+    },
+    userIds: { // list of user _id (plural)
+        type: Array,
+        required: true
+    }
+  },
+  { timestamps: true }
+)
+
+const TodoList = mongoose.model("TodoList", ListSchema)
 const Todo = mongoose.model("Todo", TodoSchema)
 const User = mongoose.model("User", UserSchema)
 
-module.exports = {Todo, User}
-
-/*
-module.exports = {
-   const Todo : mongoose.model("Todo", TodoSchema)
-  
-    Todo: mongoose.model('Todo', {
-        title: String,
-        done: Boolean,
-        //comments: [{
-        //    type: mongoose.Schema.Types.ObjectId,
-        //    ref: "comment"
-        //}]
-    })
-}
-*/
-
-
-/*
-// Post
-{
-    Postid: Number,
-    Postitle: String,
-    Postcontent: String,
-    Postcomments: array commentid
-
-}
-
-// Comment
-{
-    /*
-module.exports = {
-   const Todo : mongoose.model("Todo", TodoSchema)
-  
-    Todo: mongoose.model('Todo', {
-        title: String,
-        done: Boolean,
-        //comments: [{
-        //    type: mongoose.Schema.Types.ObjectId,
-        //    ref: "comment"
-        //}]
-    })
-}
-*/
-/*
-    commentid: Number,
-    Commentcontent: String
-}
-
-*/
+module.exports = {Todo, User, TodoList}

@@ -34,7 +34,8 @@ export default {
       password: '',
       token: '',
       currentUser: '',
-      status: 'Log in to start todoing'
+      status: 'Log in to start todoing',
+      role: ''
     }
   },
   mounted () {
@@ -56,11 +57,15 @@ export default {
           this.status = response.msg
           this.token = response.token
           this.currentUser = username
+          this.role = response.role
           if (response.token) {
             process.env.TOKEN = this.token
             localStorage.setItem('token', this.token)
             localStorage.setItem('username', this.currentUser)
             localStorage.token = this.token
+            if (this.role === 'admin') {
+              process.env.showUsers = true
+            }
             this.$router.push({ path: 'todos' })
           }
         })

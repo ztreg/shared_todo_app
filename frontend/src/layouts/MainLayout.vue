@@ -31,11 +31,17 @@
         >
           Essential Links
         </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
+
+        <q-item v-for="link in linksData"
           :key="link.title"
           v-bind="link"
-        />
+          :caption="linksData.caption"
+          :to="link.to">
+          <q-item-section avatar>
+            <q-icon :name="link.icon"/>
+          </q-item-section>
+          <q-item-section>{{ link.title }}</q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -46,24 +52,39 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
-
-const linksData = [
-  {
-    title: 'Github',
-    caption: 'github.com/ztreg',
-    icon: 'code',
-    link: 'https://github.com/ztreg'
-  }
-]
+// import EssentialLink from 'components/EssentialLink.vue'
 
 export default {
   name: 'MainLayout',
-  components: { EssentialLink },
   data () {
     return {
       leftDrawerOpen: false,
-      essentialLinks: linksData
+      linksData: [
+        {
+          title: 'Login',
+          caption: 'Login',
+          icon: 'login',
+          to: '/'
+        },
+        {
+          title: 'Todos',
+          caption: 'Your todos',
+          icon: 'list',
+          to: '/todos'
+        },
+        {
+          title: 'Archive',
+          caption: 'Finished Todos',
+          icon: 'archive',
+          to: '/archive'
+        },
+        {
+          title: 'Todolist',
+          caption: 'Todolist',
+          icon: 'list',
+          to: '/todolist'
+        }
+      ]
     }
   },
   methods: {
@@ -72,5 +93,6 @@ export default {
       console.log(this.leftDrawerOpen)
     }
   }
+
 }
 </script>
