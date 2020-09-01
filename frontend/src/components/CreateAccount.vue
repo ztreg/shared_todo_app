@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     async signup (username, password) {
-      await fetch('http://localhost:8081/users/add', {
+      await fetch('http://localhost:8081/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

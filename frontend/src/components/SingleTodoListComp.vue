@@ -1,7 +1,8 @@
 <template>
   <div class="q-gutter-sm">
-    <div class="text-h5 text-center">Listname: </div>
+    <div class="text-h5 text-center">Listname: {{ listname }} </div>
     <q-btn class="float-right" label="Logout" color="red" @click="logOut()"></q-btn>
+    <InviteUserComp></InviteUserComp>
     <q-form @submit="addTodo(todoTitle)" class="row" >
     <q-input filled v-model="todoTitle" label="New todo *" class="col-5 bg-white text-h5" />
       <q-btn label="Add Todo" type="submit" color="green" v-model="todoTitle"/>
@@ -62,6 +63,7 @@
 import moment from 'moment'
 import todoRequests from '../../public/todo'
 import {mapGetters} from 'vuex'
+import InviteUserComp from './InviteUserComp'
 export default {
   name: 'SingleTodoListComp',
   data () {
@@ -79,11 +81,14 @@ export default {
       listname: ''
     }
   },
+  components: {
+    InviteUserComp
+  },
   async created () {
     this.token = localStorage.getItem('token')
     process.env.TOKEN = this.token
     const dataListName = await todoRequests.fetchListName(this.$route.params.id)
-    console.log(dataListName)
+    this.listname = dataListName.todoLists[0].title
     const data = await todoRequests.fetchTodos(this.sorted, this.direction, this.page, this.$route.params.id)
     this.todos = data.data
     this.max = Math.ceil(data.count / 5)

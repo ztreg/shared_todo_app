@@ -3,7 +3,7 @@ const todoListController = require('../controllers/todoListController');
 const { authorization } = require('../middlewares/authorization')
 
 
-todoListRouter.get('/:todoListId?', authorization, todoListController.getTodoLists);
+todoListRouter.get('/', authorization, todoListController.getTodoLists);
 // 
 // todoRouter.get('/:sorted/:direction/:page?', authorization, todoController.getTodos);
 // 

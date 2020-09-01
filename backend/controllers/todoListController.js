@@ -13,10 +13,10 @@ module.exports = {
     },
     getTodoLists: async(req, res) => {
         const userID = req.user.userId
-        console.log(req.params.todoListId + 'wat')
+        console.log(req.query.todoListId + 'wat')
         let todoLists = {}
-        if(req.params.todoListId) {
-            todoLists = await todoListModel.getTodoList(req.params.id)
+        if(req.query.todoListId) {
+            todoLists = await todoListModel.getTodoList(req.query.todoListId)
         }
         else {
             todoLists = await todoListModel.getTodoLists(userID)
@@ -26,11 +26,10 @@ module.exports = {
     },
     updateTodoList: async (req, res) => {
         const list = {
-            title: req.body.title,
-            listId: req.params.todoListId
+            listId : req.params.todoListId
         }
-
-        if(req.body.userId) list.userIds = req.body.userId
+        if(req.body.title) list.title = req.body.title
+        if(req.query.userToAdd) list.userId = req.query.userToAdd
 
         let updatedId = await todoListModel.updateTodoList(list)
         let status = updatedId ? 201 : 500;

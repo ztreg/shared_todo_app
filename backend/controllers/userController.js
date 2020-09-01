@@ -59,6 +59,9 @@ module.exports = {
         res.status(status).json({response: response});
     },
     getUsers: async (req, res) => {
+        if(req.query.searchUserText) {
+            res.json(await userModel.getUsers(req.query.searchUserText))  
+        }
         res.json(await userModel.getUsers())   
     },
     getUser: async (req, res) => {

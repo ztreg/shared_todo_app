@@ -27,9 +27,10 @@ module.exports = {
             return error
         }
     },
-    getUsers: async() => {
+    getUsers: async(text = '') => {
+        console.log('fetch users for ' + text)
         try {
-            return await User.find({}, {})
+            return await User.find({username: new RegExp(text, 'i')}, {})
         } catch (error) {
             return error
         }

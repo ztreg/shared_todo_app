@@ -6,9 +6,9 @@ userRouter.get('/', userController.getUsers);
 
 userRouter.get('/:userId', authorization, userController.getUser);
 
-userRouter.post('/add', userController.addUser);
+userRouter.post('/', userController.addUser);
 
-userRouter.delete('/delete/:userId', authorization, userController.deleteUser);
+userRouter.delete('/:userId', authorization, userController.deleteUser);
 
 userRouter.get('/:userId/todos', authorization, userController.getUserTodos)
 

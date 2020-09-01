@@ -63,8 +63,7 @@ class TodoRequests {
   }
 
   static async fetchListName(listId) {
-    console.log('get me that listname ffs' + process.env.TOKEN)
-    return await fetch(`http://localhost:8081/todolist/${listId}`, {
+    return await fetch(`http://localhost:8081/todolist?listId=${listId}`, {
       headers: {
         Authorization: `Bearer ${process.env.TOKEN}`,
         'Content-Type': 'application/json'
