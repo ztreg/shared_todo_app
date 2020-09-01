@@ -89,6 +89,7 @@ export default {
     process.env.TOKEN = this.token
     const dataListName = await todoRequests.fetchListName(this.$route.params.id)
     this.listname = dataListName.todoLists[0].title
+    console.log(dataListName.todoLists)
     const data = await todoRequests.fetchTodos(this.sorted, this.direction, this.page, this.$route.params.id)
     this.todos = data.data
     this.max = Math.ceil(data.count / 5)

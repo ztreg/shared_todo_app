@@ -1,4 +1,4 @@
-const {Todo, User} = require('../database/mongodb');
+const {Todo, User, TodoList} = require('../database/mongodb');
 module.exports = {
     insertTodo: async (todo) => {
         try {
@@ -29,7 +29,6 @@ module.exports = {
         } 
     },
     getTodos: async(sortBy = 'createdAt', direction = -1, page = 0, userid = null, listId) => {
-        console.log('get me' + listId)
         if(direction === 'asc') {
             direction = -1
         }if(direction === 'desc') {
@@ -62,10 +61,18 @@ module.exports = {
                 }
             }
             else if(userid) {
-                console.log('member here, get me my todos with userid! ' + userid)
                 if(sortBy) {
+                    console.log('member here, get me my and my groups todos with userid! ' + userid)
                     returnobject.count = await Todo.countDocuments({userid: userid, listId: listId})
-                    returnobject.data = await Todo.find({userid: userid, listId: listId}).sort( sortobject ).skip(page * pageLimit).limit(pageLimit)
+                    let members = await TodoList.find( {_id: listId}, {userIds: 1});
+                    console.log(members[0].userIds.length)
+                    if(members[0].userIds.length > 1) {
+                        // Get all todos for this list
+                        returnobject.data = await Todo.find({listId}).sort( sortobject ).skip(page * pageLimit).limit(pageLimit)
+                    } else {
+                        // Get only the todos for the specific user on that list
+                        returnobject.data = await Todo.find({userid: userid, listId: listId}).sort( sortobject ).skip(page * pageLimit).limit(pageLimit)
+                    }
                     return returnobject
                 }  else {
                     return await Todo.find({userid: userid, listId: listId}, {}).skip(page * pageLimit).limit(pageLimit)

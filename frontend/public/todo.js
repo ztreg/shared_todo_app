@@ -1,7 +1,6 @@
 import moment from 'moment'
 class TodoRequests {
   static async fetchTodos (sortFrom = 'createdAt', direction = 'asc', page = 0, listId) {
-    // const currenttoken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjQ3ODUyNWEwZTQ3ZjMyNjhiNzBmM2QiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1OTg1MjI2ODEsImV4cCI6MTU5ODUyNjI4MX0.atIvCDe3X4tGzuH8aFCAl4vb6TFp4GIfdj_V5VJuWyU'
     if (page <= 0) page = 0
 
     return await fetch(`http://localhost:8081/todo?sortFrom=${sortFrom}&direction=${direction}&page=${page}&listId=${listId}`,
