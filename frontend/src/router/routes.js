@@ -1,14 +1,50 @@
+// import TodoPage from '../components/TodoPage'
+import checkMember from './middlewares/member'
+import checkAdmin from './middlewares/admin'
+import checkGuest from './middlewares/guest'
 
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/', component: () => import('pages/Index.vue') },
-      { path: '/todos', component: () => import('pages/Todos.vue') },
-      { path: '/signup', component: () => import('pages/CreateAccount.vue') },
-      { path: '/archive', component: () => import('pages/TodoArchive.vue') },
-      { path: '/todolist', component: () => import('pages/TodoList.vue') }
+      {
+        path: '/',
+        component: () => import('pages/Index.vue'),
+        meta: {
+          middleware: [checkGuest]
+        }
+      },
+      { 
+        path: '/todos', component: () => import('pages/Todos.vue'),
+        meta: {
+          middleware: [checkMember]
+        }
+      },
+      { 
+        path: '/signup', component: () => import('pages/CreateAccount.vue'),
+        meta: {
+          middleware: [checkGuest]
+        } 
+      },
+      { 
+        path: '/archive', component: () => import('pages/TodoArchive.vue'),
+        meta: {
+          middleware: [checkAdmin]
+        } 
+      },
+      { 
+        path: '/todolist', component: () => import('pages/TodoList.vue'),
+        meta: {
+          middleware: [checkMember]
+        }
+      },
+      { 
+        path: '/todolist/:id', component: () => import('pages/SingleTodoList.vue'),
+        meta: {
+          middleware: [checkMember]
+        }
+      }
     ]
   },
 

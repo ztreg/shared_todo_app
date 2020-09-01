@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 // const url2 = "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false"
-const uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`;
-mongoose.connect(uri,  {useNewUrlParser: true, useUnifiedTopology: true});
+// const uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
+const uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
+console.log(uri)
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 if(!mongoose.connection) {
     console.log("error bro")
     // throw new MongooseError('Could not connect to database')
@@ -25,21 +27,25 @@ var UserSchema = new mongoose.Schema({
 var TodoSchema = new mongoose.Schema(
     {
         title: {
-            type: String
+            type: String,
+            required: true
         },
         done: {
-            type: Boolean
+            type: Boolean,
+            default: false
         },
         userid: {
-            type: String
+            type: String,
+            required: true
         },
-        listIds: {
+        listId: {
             type: String
         }
     }, 
         {
-            timestamps: true
-        }
+            timestamps: true,
+            strict: 'throw'
+        },
     )
 
 const ListSchema = new mongoose.Schema({
@@ -51,8 +57,7 @@ const ListSchema = new mongoose.Schema({
         type: String
     },
     userIds: { // list of user _id (plural)
-        type: Array,
-        required: true
+        type: Array
     }
   },
   { timestamps: true }

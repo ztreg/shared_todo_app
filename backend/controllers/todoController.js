@@ -6,8 +6,8 @@ module.exports = {
         console.log('adding todo')
         const todo = {
             title: req.body.title,
-            done: false,
-            userid: req.user.userId
+            userid: req.user.userId,
+            listId: req.query.listId
         }
 
         let added = await todoModel.insertTodo(todo);
@@ -31,36 +31,27 @@ module.exports = {
         res.status(status).json({removed_count: count});
     },
     getTodos: async (req, res) => {
+      if(req.query.finished) { // IF we just want JUST the archive page
         if(req.user.isAdmin()) {
-            console.log('admin here, get me all')
-            res.json(await todoModel.getTodos(req.params.sorted, req.params.direction, req.params.page)) 
+            res.json(await todoModel.getFinishedTodos()) 
+        } else if (req.user.isMember()) {
+           res.json(await todoModel.getFinishedTodos(req.user.userId))
+          }
+      }
+      else { // Not arhive page
+        if(req.user.isAdmin()) {
+            res.json(await todoModel.getTodos(req.query.sortFrom, req.query.direction, req.query.page, null, req.query.listId)) 
          } else if (req.user.isMember()) {
-            console.log('member here, get me my todos')
-            res.json(await todoModel.getTodos(req.params.sorted, req.params.direction, req.params.page, req.user.userId))
-            // res.json(await postModel.getPosts(req.user.userId))  
+            res.json(await todoModel.getTodos(req.query.sortFrom, req.query.direction, req.query.page, req.user.userId, req.query.listId))
          }
-          
+      }   
     },
-    getTodosSearch: async (req, res) => {
-        
+    getTodosSearch: async (req, res) => { 
         if(req.user.isAdmin()) {
             res.json(await todoModel.getTodosSearch(req.params.searchtext)) 
         } else if (req.user.isMember()) {
             console.log('text: ' + req.params.searchtext)
            res.json(await todoModel.getTodosSearch(req.params.searchtext, req.user.userId))
         }
-    },
-    getFinishedTodos: async(req, res) => {
-        console.log('get me finished')
-        if(req.user.isAdmin()) {
-            res.json(await todoModel.getFinishedTodos()) 
-        } else if (req.user.isMember()) {
-           res.json(await todoModel.getFinishedTodos(req.user.userId))
-        }
-    },
-    getCollabTodos: async(req, res) => {
-
-
-        res.json(await todoModel.getCollabTodos())
     }
 }

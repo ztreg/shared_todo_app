@@ -3,17 +3,17 @@ const todoListController = require('../controllers/todoListController');
 const { authorization } = require('../middlewares/authorization')
 
 
-todoListRouter.get('/', authorization, todoListController.getTodoLists);
+todoListRouter.get('/:todoListId?', authorization, todoListController.getTodoLists);
 // 
 // todoRouter.get('/:sorted/:direction/:page?', authorization, todoController.getTodos);
 // 
 // todoRouter.get('/:searchtext?', authorization, todoController.getTodosSearch);
 // 
-todoListRouter.post('/add', authorization, todoListController.addTodoList);
+todoListRouter.post('/', authorization, todoListController.addTodoList);
 
-// todoRouter.delete('/delete/:todoId', authorization, todoController.deleteTodo);
+todoListRouter.delete('/:todoListId', authorization, todoListController.deleteTodoList);
 // 
-// todoRouter.patch('/update/:todoId', authorization, todoController.updateTodo);
+todoListRouter.patch('/:todoListId', authorization, todoListController.updateTodoList);
 // 
 // todoRouter.patch('/done/:todoId', authorization, todoController.doneTodo);
 

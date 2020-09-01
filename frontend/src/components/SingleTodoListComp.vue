@@ -1,5 +1,6 @@
 <template>
   <div class="q-gutter-sm">
+    <div class="text-h5 text-center">Listname: </div>
     <q-btn class="float-right" label="Logout" color="red" @click="logOut()"></q-btn>
     <q-form @submit="addTodo(todoTitle)" class="row" >
     <q-input filled v-model="todoTitle" label="New todo *" class="col-5 bg-white text-h5" />
@@ -62,7 +63,7 @@ import moment from 'moment'
 import todoRequests from '../../public/todo'
 import {mapGetters} from 'vuex'
 export default {
-  name: 'TodoPage',
+  name: 'SingleTodoListComp',
   data () {
     return {
       todos: [],
@@ -74,13 +75,16 @@ export default {
       max: Number,
       maxNmrOfPosts: Number,
       currentUser: '',
-      searchtext: ''
+      searchtext: '',
+      listname: ''
     }
   },
   async created () {
     this.token = localStorage.getItem('token')
     process.env.TOKEN = this.token
-    const data = await todoRequests.fetchTodos(this.sorted, this.direction, this.page)
+    const dataListName = await todoRequests.fetchListName(this.$route.params.id)
+    console.log(dataListName)
+    const data = await todoRequests.fetchTodos(this.sorted, this.direction, this.page, this.$route.params.id)
     this.todos = data.data
     this.max = Math.ceil(data.count / 5)
   },
@@ -88,17 +92,7 @@ export default {
     ...mapGetters(['auth'])
   },
   methods: {
-    // async checkToken (token) {
-    //   console.log(token)
-    //   return await fetch('http://localhost:8081/login/authentication/checkToken', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: `Bearer ${token}`
-    //     }
-    //   })
-    // },
-      /**
+     /**
      * Adjust direction if same button is pressed twice, then make a fetch with new direction
      */
     async directionFunction (sortFrom) {
@@ -121,7 +115,7 @@ export default {
       } else if (this.page < 0) {
         this.page = 0
       } else {
-        const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page)
+        const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page, this.$route.params.id)
         this.sortFrom = sortFrom
         this.todos = data.data
       }
@@ -136,11 +130,12 @@ export default {
      * Add todo, send to class method and format date response
      */
     async addTodo (title) {
-      console.log(this.auth)
-      await todoRequests.addTodo(title)
+      // console.log(this.auth)
+      // console.log(this.$route.params.id)
+      await todoRequests.addTodo(title, this.$route.params.id)
       this.direction = 'asc'
       const sortFrom = 'createdAt'
-      const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page)
+      const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page, this.$route.params.id)
       this.todos = data.data
       this.todoTitle = ''
     },

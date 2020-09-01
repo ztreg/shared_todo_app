@@ -5,8 +5,7 @@ const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET
 
 function createToken (payload) {
-    return jwt.sign(payload, secret, {expiresIn : '30m'})
-    
+    return jwt.sign(payload, secret, {expiresIn : '1h'})
 }
 
 module.exports = {
@@ -22,7 +21,7 @@ module.exports = {
 
             // If we get a match on the password -> return a token to the client
             if(checkedPassword) {
-                let token = createToken({userId: user._id, role: user.role})
+                let token = createToken({userId: user._id, role: user.role, username: user.username})
                 console.log(token)
                 console.log('login success')
                 res.status(200).json({token: token, username: user.username, role: user.role })
@@ -35,6 +34,13 @@ module.exports = {
         }
     },
     checkToken: async(req, res) => {
-        res.sendStatus(200)
+        console.log(req.user.username)
+        const response = {
+            isLoggedIn : true,
+            userid: req.user.id,
+            role: req.user.role,
+            username: req.user.username
+        }
+        res.status(200).json(response)
     }
 }

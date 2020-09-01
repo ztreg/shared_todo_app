@@ -3,26 +3,50 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
     addUser: async (user) => {
-        const checkIfExists = await User.findOne({username: user.username})
-        if(checkIfExists) return false
-        else return await User.create(user);
+        try {
+            const checkIfExists = await User.findOne({username: user.username})
+            if(checkIfExists) return false
+            else return await User.create(user);
+        } catch (error) {
+            return error
+        }
     },
     updateUser: async (userToUpdate) => {
-        return await User.updateOne({_id: userToUpdate.userId},
-            { $set: userToUpdate}, 
-            {useFindAndModify: false, versionKey: false});
+        try {
+            return await User.updateOne({_id: userToUpdate.userId},
+                { $set: userToUpdate}, 
+                {useFindAndModify: false, versionKey: false});
+        } catch (error) {
+            return error
+        }
     },
     deleteUser: async (deleteId) => {
+        try {
             return await User.deleteOne({_id: deleteId})
+        } catch (error) {
+            return error
+        }
     },
     getUsers: async() => {
+        try {
             return await User.find({}, {})
+        } catch (error) {
+            return error
+        }
     },
     getUser: async(Userinfo) => {
-        return await User.findOne(Userinfo)
+        try {
+            return await User.findOne(Userinfo)
+        } catch (error) {
+            return error
+        }      
     },
     getUserTodos: async (userid) => {
-        return await Todo.find({userid: userid})
+        try {
+            return await Todo.find({userid: userid})
+        } catch (error) {
+            return error
+        }
     },
     verifyToken: async (token) => {
         const payload = jwt.verify(token, process.env.SECRET)
@@ -41,7 +65,7 @@ module.exports = {
                 return this.role === 'member'
             },
         }
-        
+   
     }
 }
 

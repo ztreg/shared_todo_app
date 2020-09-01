@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: 'LoginPage',
   data () {
@@ -43,6 +44,9 @@ export default {
       this.token = localStorage.token
     }
   },
+  computed: {
+    ...mapGetters(['auth'])
+  },
   methods: {
     async login (username, password) {
       await fetch('http://localhost:8081/login/authentication', {
@@ -54,19 +58,13 @@ export default {
       })
         .then(response => response.json())
         .then((response) => {
+          
           this.status = response.msg
           this.token = response.token
-          this.currentUser = username
-          this.role = response.role
           if (response.token) {
             process.env.TOKEN = this.token
-            localStorage.setItem('token', this.token)
-            localStorage.setItem('username', this.currentUser)
             localStorage.token = this.token
-            if (this.role === 'admin') {
-              process.env.showUsers = true
-            }
-            this.$router.push({ path: 'todos' })
+            this.$router.push({ path: 'todolist' })
           }
         })
         .catch((error) => {

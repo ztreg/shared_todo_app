@@ -11,9 +11,10 @@
           @click="closeburger()"
         />
 
-        <q-toolbar-title>
-          Quasar App
+        <q-toolbar-title class="text-center">
+          Logged in as {{ auth.username }}
         </q-toolbar-title>
+        
         <div> Vilken bra webbtjänst jag har gjort till mig själv</div>
       </q-toolbar>
     </q-header>
@@ -53,7 +54,7 @@
 
 <script>
 // import EssentialLink from 'components/EssentialLink.vue'
-
+import {mapGetters} from 'vuex'
 export default {
   name: 'MainLayout',
   data () {
@@ -92,7 +93,9 @@ export default {
       this.leftDrawerOpen = !this.leftDrawerOpen
       console.log(this.leftDrawerOpen)
     }
+  },
+  computed:{
+    ...mapGetters(['auth'])
   }
-
 }
 </script>
