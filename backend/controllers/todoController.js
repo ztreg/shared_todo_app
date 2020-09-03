@@ -30,16 +30,17 @@ module.exports = {
         let status = count ? 201 : 500;
         res.status(status).json({removed_count: count});
     },
-    getTodos: async (req, res) => {
-      if(req.query.finished) { // IF we just want JUST the archive page
+    getTodos: async (req, res) => { // IF we just want JUST the archive page
+      if(req.query.finished) {
         if(req.user.isAdmin()) {
             res.json(await todoModel.getFinishedTodos()) 
         } else if (req.user.isMember()) {
            res.json(await todoModel.getFinishedTodos(req.user.userId))
           }
-      }
-      else { // Not arhive page
+      }// Not arhive page
+      else { 
         if(req.user.isAdmin()) {
+            console.log('admin here, get me ALL todos for listid: ' + req.query.listId)
             res.json(await todoModel.getTodos(req.query.sortFrom, req.query.direction, req.query.page, null, req.query.listId)) 
          } else if (req.user.isMember()) {
             res.json(await todoModel.getTodos(req.query.sortFrom, req.query.direction, req.query.page, req.user.userId, req.query.listId))
@@ -47,11 +48,12 @@ module.exports = {
       }   
     },
     getTodosSearch: async (req, res) => { 
+        console.log('getting your search')
         if(req.user.isAdmin()) {
-            res.json(await todoModel.getTodosSearch(req.params.searchtext)) 
+            res.json(await todoModel.getTodosSearch(req.query.searchText)) 
         } else if (req.user.isMember()) {
             console.log('text: ' + req.params.searchtext)
-           res.json(await todoModel.getTodosSearch(req.params.searchtext, req.user.userId))
+           res.json(await todoModel.getTodosSearch(req.query.searchText, req.user.userId))
         }
     }
 }

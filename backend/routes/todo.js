@@ -4,7 +4,7 @@ const { authorization } = require('../middlewares/authorization')
 
 todoRouter.get('/', authorization, todoController.getTodos);
 
-todoRouter.get('/:searchtext?', authorization, todoController.getTodosSearch);
+todoRouter.get('/search', authorization, todoController.getTodosSearch);
 
 todoRouter.post('/', authorization, todoController.addTodo);
 

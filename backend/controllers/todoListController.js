@@ -13,12 +13,18 @@ module.exports = {
     },
     getTodoLists: async(req, res) => {
         const userID = req.user.userId
-        console.log(req.query.todoListId + 'wat')
         let todoLists = {}
+        // get specific
         if(req.query.todoListId) {
             todoLists = await todoListModel.getTodoList(req.query.todoListId)
         }
+        // get all
+        else if(req.user.isAdmin()){
+            todoLists = await todoListModel.getTodoLists()
+        }
+        // get one or many
         else {
+            console.log('get this lad his lists')
             todoLists = await todoListModel.getTodoLists(userID)
         }
         let status = todoLists ? 200 : 500;
@@ -41,9 +47,4 @@ module.exports = {
         let status = count ? 201 : 500;
         res.status(status).json({removed_count: count});
     }
-    // getTodosForList: async (req, res) => {
-    //     let rez = await todoListModel.getTodosForList(req.user.todoListId, req.user.userId)
-    //     let status = rez ? 200 : 500;
-    //     res.status(status).json({rez});
-    // }
 }

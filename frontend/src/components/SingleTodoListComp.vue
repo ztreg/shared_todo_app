@@ -1,7 +1,7 @@
 <template>
-  <div class="q-gutter-sm">
+  <div class="q-gutter-sm window-height">
     <div class="text-h5 text-center">Listname: {{ listname }} </div>
-    <q-btn class="float-right" label="Logout" color="red" @click="logOut()"></q-btn>
+    <LogoutComponent></LogoutComponent>
     <InviteUserComp></InviteUserComp>
     <q-form @submit="addTodo(todoTitle)" class="row" >
     <q-input filled v-model="todoTitle" label="New todo *" class="col-5 bg-white text-h5" />
@@ -15,7 +15,7 @@
       </q-input>
       <q-btn class="q-mr-md text-body1" color="accent" label="Sort by Created at" push @click="directionFunction(sorted = 'createdAt')" > </q-btn>
       <q-btn class="q-mr-md text-body1" color="cyan" label="Sort by Updated at " push @click="directionFunction(sorted = 'updatedAt')"> </q-btn>
-      <q-item class="text-body1 q-pa-md text-center">
+      <q-item class="text-body1 q-pa-md text-center bg-grey-7">
          <q-item-section v-if="(auth.role === 'admin')">Todo Owner</q-item-section>
         <q-item-section>Created At</q-item-section>
         <q-item-section>Updated At</q-item-section>
@@ -64,6 +64,7 @@ import moment from 'moment'
 import todoRequests from '../../public/todo'
 import {mapGetters} from 'vuex'
 import InviteUserComp from './InviteUserComp'
+import LogoutComponent from './LogoutCompontent'
 export default {
   name: 'SingleTodoListComp',
   data () {
@@ -82,7 +83,8 @@ export default {
     }
   },
   components: {
-    InviteUserComp
+    InviteUserComp,
+    LogoutComponent
   },
   async created () {
     this.token = localStorage.getItem('token')
@@ -163,7 +165,8 @@ export default {
       /**
        * Hämta -> flitrera datum -> fyll this.todos
        */
-      await fetch('http://localhost:8081/todo/' + text, {
+      console.log(text)
+      await fetch(`http://localhost:8081/todo/search?searchText=${text}`, {
         headers: {
           Authorization: `Bearer ${process.env.TOKEN}`,
           'Content-Type': 'application/json'

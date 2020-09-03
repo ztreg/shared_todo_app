@@ -1,13 +1,15 @@
 const {User, Todo} = require('../database/mongodb')
 const jwt = require('jsonwebtoken')
-
+require('dotenv').config()
 module.exports = {
     addUser: async (user) => {
         try {
             const checkIfExists = await User.findOne({username: user.username})
+            
             if(checkIfExists) return false
             else return await User.create(user);
         } catch (error) {
+            console.log('error bro')
             return error
         }
     },
@@ -27,10 +29,13 @@ module.exports = {
             return error
         }
     },
+    clearAllUsers: async () => {
+        return await User.deleteMany({})
+    },
     getUsers: async(text = '') => {
         console.log('fetch users for ' + text)
         try {
-            return await User.find({username: new RegExp(text, 'i')}, {})
+            return await User.find({username: new RegExp(text, 'i')})
         } catch (error) {
             return error
         }
@@ -50,6 +55,7 @@ module.exports = {
         }
     },
     verifyToken: async (token) => {
+        console.log('verifierar token')
         const payload = jwt.verify(token, process.env.SECRET)
         return { 
             ...payload,

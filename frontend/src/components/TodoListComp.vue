@@ -1,24 +1,25 @@
 <template>
-  <div class="q-pa-md row items-start q-gutter-md">
+  <div class="bg-grey-10 ">
+        <LogoutComponent></LogoutComponent>
     <q-form @submit="addTodoList(todoListTitle)" class="row" >
     <q-input filled v-model="todoListTitle" label="New List of todos *" class="col-5 bg-white text-h5" />
       <q-btn label="Add TodoList" type="submit" color="green" v-model="todoListTitle"/>
     </q-form>
-
-    <q-card class="my-card bg-primary text-white" v-for="(list, i) in this.allLists" :key="i">
-      <q-card-section>
+    <div class="window-height row justify-center items-center">
+    <q-card class="my-card bg-grey-9 text-white q-ma-lg" v-for="(list, i) in this.allLists" :key="i">
+      <q-card-section class="bg-grey-8">
         <div class="text-h6">Title: {{ list.title }}</div>
         <div class="text-subtitle2">Creator: {{ list.creator}}</div>
       </q-card-section>
 
-      <q-card-section>
+      <q-card-section class="bg-grey-6" clickable>
         <q-btn flat :to="/todolist/+list._id"> click list to view todolist</q-btn>
       </q-card-section>
 
       <q-separator dark />
 
-      <q-card-actions>
-          <q-btn-dropdown class="glossy" color="green" icon="edit" label="Edit">
+      <q-card-actions class="card-btns justify-evenly">
+          <q-btn-dropdown class="glossy q-ma-sm" color="green" icon="edit" label="Edit List">
           <div class="row no-wrap q-pa-md">
             <q-input v-model="list.title" label="new title *" autofocus />
             <q-separator vertical inset class="q-mx-lg" />
@@ -27,15 +28,17 @@
             </div>
           </div>
         </q-btn-dropdown>
-        <q-avatar clickable v-ripple color="red" text-color="white" icon="delete" class="" @click="deleteTodoList(list._id)"/>
+        <q-avatar clickable v-ripple color="red" text-color="white" icon="delete" class="q-ma-sm" @click="deleteTodoList(list._id)"/>
       </q-card-actions>
     </q-card>
+    </div>
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
 import todoListRequests from '../../public/todoListMethods'
+import LogoutComponent from './LogoutCompontent'
 export default {
   name: 'TodoListComp',
   data () {
@@ -45,6 +48,9 @@ export default {
       creator: '',
       allLists: []
     }
+  },
+  components: {
+    LogoutComponent
   },
   computed: {
     ...mapGetters(['auth'])
@@ -78,6 +84,17 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.my-card {
+  height: 400px;
+  transition: transform .1s; /* Animation */
+}
+.my-card:hover{
+  transform: scale(1.1);
+}
+.card-btns {
+  position: absolute;
+  bottom: 1%;
+  margin: 3%;
+}
 </style>

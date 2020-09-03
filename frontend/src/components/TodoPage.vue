@@ -1,6 +1,5 @@
 <template>
-  <div class="q-gutter-sm">
-    <q-btn class="float-right" label="Logout" color="red" @click="logOut()"></q-btn>
+  <div class="q-gutter-sm ">
     <q-form @submit="addTodo(todoTitle)" class="row" >
     <q-input filled v-model="todoTitle" label="New todo *" class="col-5 bg-white text-h5" />
       <q-btn label="Add Todo" type="submit" color="green" v-model="todoTitle"/>
@@ -61,6 +60,7 @@
 import moment from 'moment'
 import todoRequests from '../../public/todo'
 import {mapGetters} from 'vuex'
+import LogoutComponent from './LogoutCompontent'
 export default {
   name: 'TodoPage',
   data () {
@@ -76,6 +76,9 @@ export default {
       currentUser: '',
       searchtext: ''
     }
+  },
+  components: {
+    LogoutComponent
   },
   async created () {
     this.token = localStorage.getItem('token')
@@ -151,12 +154,6 @@ export default {
       await todoRequests.deleteTodo(id)
       const div = document.getElementById(id)
       div.parentNode.removeChild(div)
-    },
-    logOut () {
-      localStorage.removeItem('token')
-      localStorage.removeItem('showUsers')
-      localStorage.removeItem('role')
-      this.$router.go( '/' )
     },
     async fetchTodosSearch (text) {
       /**

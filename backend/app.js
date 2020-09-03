@@ -30,6 +30,5 @@ app.use('/users', userRoute)
 app.use('/login', loginRoute)
 app.use('/todolist', todoListRoute)
 
-app.listen(port, () => {
-    console.log(`Listen on ${port}`);
-})
+
+module.exports = app

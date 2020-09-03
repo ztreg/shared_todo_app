@@ -10,19 +10,27 @@ module.exports = {
     },
     getTodoLists: async (userId) => {
         console.log('eyyyyyyyyyyyyy')
-        try {
-            return await TodoList.find({
-                userIds: {
-                    $in: [userId]
-                }}, {})
-        } catch (error) {
-            return error
+        if(userId) {
+            // Either 1 or many lists
+            try {
+                return await TodoList.find({
+                    userIds: {
+                        $in: [userId]
+                    }}, {})
+            } catch (error) {
+                return error
+            }
+        } else {
+            // Admin
+            return await TodoList.find({})
         }
+        
     },
-    getTodoList: async (listId) => {
-        console.log('ey, listid: ' + listId)
+    getTodoList: async (listfilter) => {
+        console.log('ey listid')
+        console.log(listfilter)
         try {
-            return await TodoList.find({_id: listId})
+            return await TodoList.find(listfilter)
         } catch (error) {
             return error
         }
@@ -47,6 +55,14 @@ module.exports = {
         try {
             return await TodoList.deleteOne({_id: listId})
         } catch (error) {
+            return error
+        }
+    },
+    clearAllTodoLists: async () => {
+        try {
+            return await TodoList.deleteMany({})
+        } catch (error) {
+            console.log(error)
             return error
         }
     }

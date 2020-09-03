@@ -28,6 +28,14 @@ module.exports = {
             return error
         } 
     },
+    clearAllTodos: async () => {
+        try {
+            return await Todo.deleteMany({})
+        } catch (error) {
+            console.log(error)
+            return error
+        }
+    },
     getTodos: async(sortBy = 'createdAt', direction = -1, page = 0, userid = null, listId) => {
         if(direction === 'asc') {
             direction = -1
@@ -50,7 +58,7 @@ module.exports = {
          */
         try {
             if(userid === null) {
-                console.log('admin here, get me all!' + sortBy + direction + ' in list' + listId)
+                console.log('admin here, get me all!' + sortBy + direction + ' in list ' + listId)
                 if(sortBy) {
                     returnobject.count = await Todo.countDocuments({listId: listId})
                     returnobject.data = await Todo.find({listId}).sort( sortobject ).skip(page * pageLimit).limit(pageLimit)
@@ -90,10 +98,11 @@ module.exports = {
         }
     },
     getTodosSearch: async(searchtext = '', userid = null) => {
-        console.log(userid + ' searches for ' + searchtext)
+        console.log(userid + ' searches for ' + searchtext + ' model')
         try {
             if(userid === null) {
                 if(searchtext == '') {
+                    console.log('hold')
                    return await Todo.find( {}, {}).sort().skip(1 * 5).limit(5)
                 } else {
                     return await Todo.find( {title: new RegExp(searchtext, 'i')}, {})

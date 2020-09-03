@@ -1,5 +1,5 @@
 <template>
-<q-page class="bg-info window-height window-width row justify-center items-center">
+<q-page class="bg-gray-6 window-height row justify-center items-center">
     <div class="column">
       <div class="row">
         <h5 class="text-h5 text-white q-my-md">Todo Signup</h5>
