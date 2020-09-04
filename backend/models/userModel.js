@@ -32,13 +32,23 @@ module.exports = {
     clearAllUsers: async () => {
         return await User.deleteMany({})
     },
-    getUsers: async(text = '') => {
-        console.log('fetch users for ' + text)
-        try {
-            return await User.find({username: new RegExp(text, 'i')})
-        } catch (error) {
-            return error
+    getUsers: async(text) => {
+        // console.log(typeof(text))
+        if(text == typeof(string)) {
+            // console.log('fetch users for ' + text)
+            try {
+                return await User.find({username: new RegExp(text, 'i')})
+            } catch (error) {
+                return error
+            }
+        } else {
+            try {
+                return await User.find({})
+            } catch (error) {
+                return error
+            }
         }
+
     },
     getUser: async(Userinfo) => {
         try {
@@ -55,7 +65,7 @@ module.exports = {
         }
     },
     verifyToken: async (token) => {
-        console.log('verifierar token')
+        // console.log('verifierar token')
         const payload = jwt.verify(token, process.env.SECRET)
         return { 
             ...payload,
@@ -71,6 +81,9 @@ module.exports = {
             isMember() {
                 return this.role === 'member'
             },
+            isListCollaborator(document) {
+                return document.includes(this.userId)
+            }
         }
    
     }

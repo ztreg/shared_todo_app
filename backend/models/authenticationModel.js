@@ -21,7 +21,7 @@ module.exports = {
             const checkedPassword = bcrypt.compareSync(loginObject.password, user.password)
             // If we get a match on the password -> return a token to the client
             if(checkedPassword) {
-                console.log('login sucessed, signing token')
+                // console.log('login sucessed, signing token')
                 let token = createToken({userId: user._id, role: user.role, username: user.username})
                 return loginSucess = {token: token, username: user.username, role: user.role}
             } else {

@@ -7,12 +7,11 @@ const usermodel = require('../models/userModel')
 const todoListModel = require('../models/todoListModel')
 const {disconnect} = require('../database/mongodb')
 
-describe('find all todos by a user', function ()  {
-    it('should return all todos', async () => {
+describe('Test for todos', function ()  {
+    it('add todo for a user in a list', async () => {
         //Arrange
         const user = await usermodel.getUser({username: 'membername'})
         const todoList = await todoListModel.getTodoList({creator: 'membername'})
-        //console.log(todoList._id)
         const todo = {
             title: 'testTodo',
             done: false,
@@ -23,5 +22,32 @@ describe('find all todos by a user', function ()  {
         result.should.be.deep.an('object')
         expect(todoList._id).to.be.equal(todo.listId)
         expect(todo.title).to.be.equal(result.title)
+    })
+    it('should edit a todo', async function() {
+        //Get a todo to update
+        const existingTodo = await todomodel.getTodo({title: 'testTodo'})
+        const todoList = await todoListModel.getTodoList({creator: 'membername'})
+        const todoToUpdate = {
+            title: 'testTodoUpdated',
+            done: true,
+            todoId: existingTodo._id,
+            listId: todoList._id
+        }
+        await todomodel.updateTodo(todoToUpdate)
+        const updatedTodo = await todomodel.getTodo({title: 'testTodoUpdated'})
+        expect(updatedTodo.title).to.be.deep.equal(todoToUpdate.title)
+    })
+    it('should delete a todo', async function() {
+        
+        const todoToDelete = await todomodel.getTodo({title: 'testTodoUpdated'})
+        
+        const todoList = await todoListModel.getTodoList({creator: 'membername'})
+
+        const allTodos = await todomodel.getTodos(sortBy = 'createdAt', direction = -1, page = 0, userid = null, listId = todoToDelete.listId)
+        const result = await todomodel.deleteTodo(todoToDelete._id)
+        const allTodos2 = await todomodel.getTodos(sortBy = 'createdAt', direction = -1, page = 0, userid = null, listId = todoToDelete.listId)
+        
+        expect(result).to.be.deep.an('object')
+        expect(allTodos.count).to.be.greaterThan(allTodos2.count)
     })
 })

@@ -13,7 +13,7 @@ module.exports = {
         }
         const response = await authenticationModel.login(loginObject)
         if(response) {
-            console.log(response)
+            // console.log(response)
             res.status(200).json({response})
         } else {
             res.status(401).json({msg: response.msg})
@@ -21,7 +21,7 @@ module.exports = {
   
     },
     checkToken: async(req, res) => {
-        console.log(req.user.username)
+        // console.log(req.user.username)
         const response = {
             isLoggedIn : true,
             userid: req.user.id,

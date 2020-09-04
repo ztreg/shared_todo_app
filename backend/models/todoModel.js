@@ -14,9 +14,11 @@ module.exports = {
             return error
         }
     },
-    updateTodo: async (title, done, todoId) => {
+    updateTodo: async (todoFilter) => {
         try {
-            return await Todo.findByIdAndUpdate(todoId, { "title": title, "done": done}, {useFindAndModify: false, versionKey: false})
+            return await Todo.updateOne({_id: todoFilter.todoId},
+                { $set: todoFilter}, 
+                {useFindAndModify: false, versionKey: false});
         } catch (error) {
             return error
         }
@@ -58,11 +60,11 @@ module.exports = {
          */
         try {
             if(userid === null) {
-                console.log('admin here, get me all!' + sortBy + direction + ' in list ' + listId)
+                
                 if(sortBy) {
+                    // console.log('admin here, get me all!' + sortBy + direction + ' in list ' + listId)
                     returnobject.count = await Todo.countDocuments({listId: listId})
                     returnobject.data = await Todo.find({listId}).sort( sortobject ).skip(page * pageLimit).limit(pageLimit)
-                    console.log(returnobject)
                     return returnobject
                 } else {
                     return await Todo.find({listId}, {}).skip(page * pageLimit).limit(pageLimit)
@@ -70,10 +72,10 @@ module.exports = {
             }
             else if(userid) {
                 if(sortBy) {
-                    console.log('member here, get me my and my groups todos with userid! ' + userid)
+                    // console.log('member here, get me my and/ or my groups todos with userid! ' + userid)
                     returnobject.count = await Todo.countDocuments({userid: userid, listId: listId})
                     let members = await TodoList.find( {_id: listId}, {userIds: 1});
-                    console.log(members[0].userIds.length)
+                    // console.log(members[0].userIds.length)
                     if(members[0].userIds.length > 1) {
                         // Get all todos for this list
                         returnobject.data = await Todo.find({listId}).sort( sortobject ).skip(page * pageLimit).limit(pageLimit)
@@ -90,24 +92,24 @@ module.exports = {
             return error
         }
     },
-    getTodo: async(todoId) => {
+    getTodo: async(todoFilter) => {
         try {
-            return await Todo.findOne({_id: todoId}, {'title': 1, 'done': 1, 'userid': 1})
+            return await Todo.findOne(todoFilter)
         } catch (error) {
             return error
         }
     },
     getTodosSearch: async(searchtext = '', userid = null) => {
-        console.log(userid + ' searches for ' + searchtext + ' model')
+        // console.log(userid + ' searches for ' + searchtext + ' model')
         try {
             if(userid === null) {
                 if(searchtext == '') {
-                    console.log('hold')
                    return await Todo.find( {}, {}).sort().skip(1 * 5).limit(5)
                 } else {
                     return await Todo.find( {title: new RegExp(searchtext, 'i')}, {})
                 }
             } else {
+                // console.log('hold')
                 if(searchtext == '') {
                     return await Todo.find ({userid: userid} ).sort().skip(1 * 5).limit(5)
                  } else {
@@ -119,7 +121,7 @@ module.exports = {
         }
     },
     getFinishedTodos: async(userid = null) => {
-        console.log('gettin dat finished')
+        // console.log('gettin dat finished')
         try {
             if(userid === null) {
                 return await Todo.find( {done: true}, {}).sort()

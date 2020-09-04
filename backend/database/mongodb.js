@@ -1,10 +1,19 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 // const url2 = "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false"
-const uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
-// const uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
-console.log(uri)
+let uri;
+if(process.env.ENVIRONMENT === 'test'){
+    uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
+} else if(process.env.ENVIRONMENT === 'development') {
+    uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
+}
+
+// 
+
+console.log('connecting to ' + uri)
+
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+
 if(!mongoose.connection) {
     console.log("error bro")
     throw new MongooseError('Could not connect to database')
@@ -53,7 +62,6 @@ var TodoSchema = new mongoose.Schema(
     }, 
         {
             timestamps: true,
-            strict: 'throw'
         },
     )
 

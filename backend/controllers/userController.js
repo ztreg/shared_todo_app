@@ -14,7 +14,7 @@ module.exports = {
         }
         let addedId = await userModel.addUser(user)
         let status = addedId ? 201 : 500
-        let msg = addedId ? 'success' : 'That username already exists'
+        let msg = addedId ? 'New account created' : 'That username already exists'
         res.status(status).json({msg})
     },
     updateUser: async (req, res) => {
@@ -22,7 +22,7 @@ module.exports = {
 
         if(userToEdit) {
             if(!req.user.isOwner(userToEdit) ) {
-                console.log('incorrect user is making the request')
+                // console.log('incorrect user is making the request')
                 return res.json({msg: 'incorrect user is trying to edit this user'})
             }
             const userToUpdate = {
@@ -34,7 +34,7 @@ module.exports = {
             if(req.body.username) userToUpdate.username = req.body.username
             if(req.body.password) userToUpdate.password = hashPW(req.body.password)
 
-            console.log(userToUpdate)
+           // console.log(userToUpdate)
 
             let lastId = await userModel.updateUser(userToUpdate)
             let status = lastId ? 201 : 500;
@@ -44,7 +44,7 @@ module.exports = {
     },
     deleteUser: async (req, res) => {
         let userToDelete = await userModel.getUser(req.params.userId)
-        console.log(userToDelete)
+        // console.log(userToDelete)
         if(userToDelete) {
             if(!req.user.isOwner(userToDelete) ) {
                 console.log('incorrect user is making the request')

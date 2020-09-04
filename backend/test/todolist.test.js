@@ -13,8 +13,8 @@ const {disconnect} = require('../database/mongodb')
 describe('Tests for todolist', () => {
 
     beforeEach(async function () {
-        await usermodel.clearAllUsers()
-        await todolistmodel.clearAllTodoLists()
+        // await usermodel.clearAllUsers()
+        // await todolistmodel.clearAllTodoLists()
         // await todomodel.clearAllTodos()
     })
     it('Should create a list and compare result to be a list', async function () {
@@ -29,11 +29,11 @@ describe('Tests for todolist', () => {
             role: "member"
         }
         const aOwner = await usermodel.addUser(member)
-        console.log(aOwner._id)
+        // console.log(aOwner._id)
         const firstTodoList = {
             title : 'Users first todolist! woh',
             creator : aOwner.username,
-            userIds : [aOwner._id]
+            userIds : [aOwner._id.toString()]
         }
         // Act, submit a list with arranged data
         const newTodoList = await todolistmodel.insertTodoList(firstTodoList)
@@ -42,6 +42,6 @@ describe('Tests for todolist', () => {
         //console.log(newTodoList)
         expect(aOwner.username).to.be.equal(member.username)
         expect(newTodoList.userIds).to.be.an('array')
-        expect(newTodoList.userIds[0]).to.be.equal(aOwner._id)
+        expect(newTodoList.userIds[0]).to.be.equal(aOwner._id.toString())
     })
 })

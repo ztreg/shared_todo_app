@@ -9,7 +9,7 @@ module.exports = {
         }
     },
     getTodoLists: async (userId) => {
-        console.log('eyyyyyyyyyyyyy')
+        // console.log('eyyyyyyyyyyyyy')
         if(userId) {
             // Either 1 or many lists
             try {
@@ -27,10 +27,10 @@ module.exports = {
         
     },
     getTodoList: async (listfilter) => {
-        console.log('ey listid')
-        console.log(listfilter)
+        // console.log('ey listid')
+        // console.log(listfilter)
         try {
-            return await TodoList.find(listfilter)
+            return await TodoList.findOne(listfilter)
         } catch (error) {
             return error
         }

@@ -7,10 +7,10 @@ module.exports = {
         if(!req.headers.authorization) return res.status(403).json({msg:"failed the auth"})
         const token = req.headers.authorization.replace("Bearer ", "")
         try{
-            console.log('inne i auth')
+            // console.log('inne i auth')
             req.user = await verifyToken(token)
 
-            console.log(req.user)
+            //console.log(req.user)
             next()
         }catch(error){
             if(error instanceof jwt.TokenExpiredError){
