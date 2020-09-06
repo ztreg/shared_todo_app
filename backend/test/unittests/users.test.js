@@ -1,13 +1,13 @@
 const chai = require('chai')
 chai.should()
 const bcrypt = require('bcryptjs')
-const { addUser, clearAllUsers, getUsers} = require('../models/userModel')
-const {disconnect} = require('../database/mongodb')
-const userModel = require('../models/userModel')
+const { addUser, clearAllUsers, getUsers} = require('../../models/userModel')
+const {disconnect} = require('../../database/mongodb')
+const userModel = require('../../models/userModel')
 const { expect } = require('chai')
-const { use } = require('../app')
+const { use } = require('../../app')
 
-describe('test for user', () => {
+describe('Unit Tests for user', () => {
     
     it('should add a user', async function () {
         //Arrange
@@ -51,7 +51,7 @@ describe('test for user', () => {
     })
 })
 
-describe('Searching for users', () => {
+describe('Unit Test for -> Searching for users', () => {
 
     it('Should find all the users with a "j"', async function () {
 

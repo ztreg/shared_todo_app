@@ -2,12 +2,12 @@ require('dotenv').config('../')
 const chai = require('chai')
 chai.should()
 const { expect } = require('chai')
-const todomodel = require('../models/todoModel')
-const usermodel = require('../models/userModel')
-const todoListModel = require('../models/todoListModel')
-const {disconnect} = require('../database/mongodb')
+const todomodel = require('../../models/todoModel')
+const usermodel = require('../../models/userModel')
+const todoListModel = require('../../models/todoListModel')
+const {disconnect} = require('../../database/mongodb')
 
-describe('Test for todos', function ()  {
+describe('Unit Tests for todos', function ()  {
     it('add todo for a user in a list', async () => {
         //Arrange
         const user = await usermodel.getUser({username: 'membername'})
@@ -43,9 +43,9 @@ describe('Test for todos', function ()  {
         
         const todoList = await todoListModel.getTodoList({creator: 'membername'})
 
-        const allTodos = await todomodel.getTodos(sortBy = 'createdAt', direction = -1, page = 0, userid = null, listId = todoToDelete.listId)
+        const allTodos = await todomodel.getTodos('createdAt', -1, 0, null, todoToDelete.listId)
         const result = await todomodel.deleteTodo(todoToDelete._id)
-        const allTodos2 = await todomodel.getTodos(sortBy = 'createdAt', direction = -1, page = 0, userid = null, listId = todoToDelete.listId)
+        const allTodos2 = await todomodel.getTodos('createdAt', -1, 0,  null, todoToDelete.listId)
         
         expect(result).to.be.deep.an('object')
         expect(allTodos.count).to.be.greaterThan(allTodos2.count)

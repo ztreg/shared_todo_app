@@ -4,13 +4,13 @@ const chai = require('chai')
 chai.should()
 const { expect } = require('chai')
 const bcrypt = require('bcryptjs')
-const todomodel = require('../models/todoModel')
-const usermodel = require('../models/userModel')
-const todolistmodel = require('../models/todoListModel')
-const {disconnect} = require('../database/mongodb')
+const todomodel = require('../../models/todoModel')
+const usermodel = require('../../models/userModel')
+const todolistmodel = require('../../models/todoListModel')
+const {disconnect} = require('../../database/mongodb')
 
 
-describe('Tests for todolist', () => {
+describe('Unit Tests for todolist', () => {
 
     beforeEach(async function () {
         // await usermodel.clearAllUsers()

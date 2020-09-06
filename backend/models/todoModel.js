@@ -16,9 +16,7 @@ module.exports = {
     },
     updateTodo: async (todoFilter) => {
         try {
-            return await Todo.updateOne({_id: todoFilter.todoId},
-                { $set: todoFilter}, 
-                {useFindAndModify: false, versionKey: false});
+            return await Todo.updateOne({_id: todoFilter.todoId},{ $set: todoFilter})
         } catch (error) {
             return error
         }
@@ -99,21 +97,19 @@ module.exports = {
             return error
         }
     },
-    getTodosSearch: async(searchtext = '', userid = null) => {
-        // console.log(userid + ' searches for ' + searchtext + ' model')
+    getTodosSearch: async(searchtext = '', userid = null, listId = null) => {
         try {
             if(userid === null) {
                 if(searchtext == '') {
                    return await Todo.find( {}, {}).sort().skip(1 * 5).limit(5)
                 } else {
-                    return await Todo.find( {title: new RegExp(searchtext, 'i')}, {})
+                    return await Todo.find({listId: listId, title: new RegExp(searchtext, 'i')}, {})
                 }
             } else {
-                // console.log('hold')
                 if(searchtext == '') {
-                    return await Todo.find ({userid: userid} ).sort().skip(1 * 5).limit(5)
+                    return await Todo.find ({listId: listId, userid: userid} ).sort().skip(1 * 5).limit(5)
                  } else {
-                    return await Todo.find({userid: userid, title: new RegExp(searchtext, 'i')}, {})
+                    return await Todo.find({listId: listId, userid: userid, title: new RegExp(searchtext, 'i')}, {})
                  }
             }
         } catch (error) {

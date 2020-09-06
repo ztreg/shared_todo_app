@@ -2,6 +2,10 @@ const todoListModel = require('../models/todoListModel');
 
 module.exports = {
     addTodoList: async (req, res) => {
+        if(!req.user.isMember() && !req.user.isAdmin()) {
+            console.log('incorrect user is making the request')
+             return res.status(401).json({errormsg: 'incorrect user is trying to get this user'})
+         }
         const todoList = {
             title: req.body.title,
             creator: req.user.username,
@@ -14,9 +18,16 @@ module.exports = {
     getTodoLists: async(req, res) => {
         const userID = req.user.userId
         let todoLists = {}
+
         // get specific
-        
+        const theList = await todoListModel.getTodoList({_id: req.query.todoListId})
+        // Check if the user is not a collaborator or a admin, if so. Return error
+        if(!req.user.isListCollaborator(theList.userIds) && !req.user.isAdmin()) {
+           console.log('incorrect user is trying to get this list')
+            return res.status(401).json({errormsg: 'incorrect user is trying to get this list'})
+        }
         if(req.query.todoListId) {
+            console.log('get me this list');
             todoLists = await todoListModel.getTodoList(req.query.todoListId)
         }
         // get all
@@ -38,7 +49,8 @@ module.exports = {
             listId : req.params.todoListId
         }
 
-        if(!req.user.isListCollaborator(listOwner.userIds)) {
+         // Check if the user is not a collaborator or a admin, if so. Return error
+        if(!req.user.isListCollaborator(listOwner.userIds) && !req.user.isAdmin()) {
             // console.log('incorrect user is making the request')
             return res.status(401).json({errormsg: 'incorrect user is trying to edit this user'})
         }
@@ -54,7 +66,9 @@ module.exports = {
     deleteTodoList: async (req, res) => {
         // console.log('time to delete bro' + req.params.todoListId )
         const listOwner = await todoListModel.getTodoList({_id: req.params.todoListId})
-        if(!req.user.isListCollaborator(listOwner.userIds)) {
+
+         // Check if the user is not a collaborator or a admin, if so. Return error
+        if(!req.user.isListCollaborator(listOwner.userIds) && !req.user.isAdmin()) {
             // console.log('incorrect user is making the request')
             return res.status(401).json({errormsg: 'incorrect user is trying to edit this user'})
         }

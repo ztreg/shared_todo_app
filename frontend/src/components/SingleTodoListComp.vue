@@ -166,9 +166,9 @@ export default {
        * Hämta -> flitrera datum -> fyll this.todos
        */
       console.log(text)
-      await fetch(`http://localhost:8081/todo/search?searchText=${text}`, {
+      await fetch(`http://localhost:8081/todo/search?searchText=${text}&listId=${this.$route.params.id}`, {
         headers: {
-          Authorization: `Bearer ${process.env.TOKEN}`,
+          Authorization: `Bearer ${this.token}`,
           'Content-Type': 'application/json'
         }
       })

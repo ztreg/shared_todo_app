@@ -2,9 +2,13 @@ const todoRouter = require('express').Router();
 const todoController = require('../controllers/todoController');
 const { authorization } = require('../middlewares/authorization')
 
+todoRouter.get('/search', authorization, todoController.getTodosSearch);
+
 todoRouter.get('/', authorization, todoController.getTodos);
 
-todoRouter.get('/search', authorization, todoController.getTodosSearch);
+todoRouter.get('/:todoId', authorization, todoController.getTodo);
+
+
 
 todoRouter.post('/', authorization, todoController.addTodo);
 
