@@ -8,23 +8,22 @@ class TodoListRequests {
         }
       }).then((response) => response.json())
         .then((response) => {
-          console.log(response.todoLists)
           return response
         })
   }
 
-  static async fetchLists (token) {
-    return await fetch('http://localhost:8081/todolist', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        }
-      }).then((response) => response.json())
-        .then((response) => {
-          console.log(response.todoLists)
-          return response
-        })
-  }
+  // static async fetchLists (token) {
+  //   return await fetch('http://localhost:8081/todolist', {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     }).then((response) => response.json())
+  //       .then((response) => {
+  //         console.log(response.todoLists)
+  //         return response
+  //       })
+  // }
 
   static async editTodoList (title, id, token) {
     console.log('making full edit request for id ' + id)

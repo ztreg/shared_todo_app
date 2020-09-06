@@ -46,7 +46,8 @@ module.exports = {
                     return res.status(401).json({errormsg: 'incorrect user is trying to get the lists'})
                 }
             }
-        }
+        }   
+        
         let status = todoLists ? 200 : 500;
         res.status(status).json({todoLists});
     },

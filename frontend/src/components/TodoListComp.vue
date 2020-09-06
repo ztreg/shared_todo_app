@@ -6,6 +6,9 @@
       <q-btn label="Add TodoList" type="submit" color="green" v-model="todoListTitle"/>
     </q-form>
     <div class="window-height row justify-center items-center">
+      <q-banner class="bg-grey-9 text-white q-pa-lg" v-if="nolist">
+      <div class="text-h4">You don't have a list, to start. Create one!</div>
+    </q-banner>
     <q-card class="my-card bg-grey-9 text-white q-ma-lg" v-for="(list, i) in this.allLists" :key="i">
       <q-card-section class="bg-grey-8">
         <div class="text-h6">Title: {{ list.title }}</div>
@@ -46,7 +49,8 @@ export default {
       todoListTitle: '',
       token: '',
       creator: '',
-      allLists: []
+      allLists: [],
+      nolist: false
     }
   },
   components: {
@@ -67,6 +71,8 @@ export default {
     async fetchList () {
       const data = await todoListRequests.fetchList(this.token)
       this.allLists = data.todoLists
+      if(this.allLists <= 0) this.nolist = true
+      else this.nolist = false
     },
     async addTodoList (todoListTitle) {
       await todoListRequests.addTodoList(todoListTitle, this.token)
