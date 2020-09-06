@@ -27,8 +27,8 @@ module.exports = {
             return res.status(401).json({errormsg: 'incorrect user is trying to get this list'})
         }
         if(req.query.todoListId) {
-            console.log('get me this list');
-            todoLists = await todoListModel.getTodoList(req.query.todoListId)
+
+            todoLists = await todoListModel.getTodoList({_id: req.query.todoListId})
         }
         // get all
         else if(req.user.isAdmin()){

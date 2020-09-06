@@ -14,10 +14,10 @@ module.exports = {
             next()
         }catch(error){
             if(error instanceof jwt.TokenExpiredError){
-                console.log('not logged in')
+                console.log('not logged in jwt' )
                 res.status(403).json({msg: "You are not logged in"})
             } else {
-                console.log('not logged in')
+                console.log('not logged in wat')
                 res.status(403).json({error: error})
             }
         }

@@ -98,9 +98,9 @@ describe('Integration tests for todolist', () => {
     .get(`/todolist?todoListId=${listToGet._id}`)
     .set('Authorization', `Bearer ${this.test.admin.token}`)
     .end((err, res) => {
-      console.log(res.body)
       res.should.have.status(200)
       res.body.should.be.a('object')
+      res.body.should.have.property('todoLists')
     })
   })
   it('Should add a list', async function() {
