@@ -15,17 +15,19 @@ module.exports = {
         let status = added ? 201 : 500;
         res.status(status).json({added});
     },
+    getTodoList: async (req, res) => {
+        const theList = await todoListModel.getTodoList({_id: req.query.todoListId})
+        if(!req.user.isOwner(theList.userIds) && !req.user.isAdmin() ) {
+            console.log('incorrect user is trying to get this list')
+            return res.status(401).json({errormsg: 'incorrect user is trying to get this list'})
+        }
+        const todoList = await todoListModel.getTodoList({_id: req.query.todoListId})
+        let status = todoList ? 200 : 500;
+        res.status(status).json({todoList});
+    },
     getTodoLists: async(req, res) => {
         const userID = req.user.userId
         let todoLists = {}
-
-        // get specific
-        const theList = await todoListModel.getTodoList({_id: req.query.todoListId})
-        // Check if the user is not a collaborator or a admin, if so. Return error
-        if(!req.user.isListCollaborator(theList.userIds) && !req.user.isAdmin()) {
-           console.log('incorrect user is trying to get this list')
-            return res.status(401).json({errormsg: 'incorrect user is trying to get this list'})
-        }
         if(req.query.todoListId) {
 
             todoLists = await todoListModel.getTodoList({_id: req.query.todoListId})
@@ -36,8 +38,14 @@ module.exports = {
         }
         // get one or many
         else {
-            // console.log('get this lad his lists')
+            // Check if the user owns all the lists he makes request for
             todoLists = await todoListModel.getTodoLists(userID)
+            for(let i = 0; i < todoLists.length; i++ ) {
+                if(!req.user.isListCollaborator(todoLists[i].userIds)) {
+                    console.log('incorrect user is trying to get the lists')
+                    return res.status(401).json({errormsg: 'incorrect user is trying to get the lists'})
+                }
+            }
         }
         let status = todoLists ? 200 : 500;
         res.status(status).json({todoLists});

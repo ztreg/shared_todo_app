@@ -91,7 +91,6 @@ export default {
     process.env.TOKEN = this.token
     const dataListName = await todoRequests.fetchListName(this.$route.params.id)
     this.listname = dataListName.todoLists[0].title
-    console.log(dataListName.todoLists)
     const data = await todoRequests.fetchTodos(this.sorted, this.direction, this.page, this.$route.params.id)
     this.todos = data.data
     this.max = Math.ceil(data.count / 5)
@@ -110,7 +109,7 @@ export default {
         this.direction = 'asc'
       }
       console.log(sortFrom)
-      const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page)
+      const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page, this.$route.params.id)
       this.todos = data.data
     },
     /**
@@ -174,6 +173,8 @@ export default {
       })
         .then(response => response.json())
         .then((response) => {
+          console.log('k');
+          console.log(response);
           for (let i = 0; i < response.length; i++) {
             console.log('i lop')
             response[i].createdAt = Date.parse(response[i].createdAt)

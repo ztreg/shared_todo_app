@@ -36,7 +36,7 @@ module.exports = {
             return error
         }
     },
-    getTodos: async(sortBy = 'createdAt', direction = -1, page = 0, userid = null, listId) => {
+    getTodos: async(sortBy = 'createdAt', direction = -1, page = 0, userid = null, listId = null) => {
         if(direction === 'asc') {
             direction = -1
         }if(direction === 'desc') {

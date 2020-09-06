@@ -139,7 +139,7 @@ describe('Integration tests for todolist', () => {
   it('Should fail to delete a list and succeed as the correct user', async function() {
     //Delete anothers list
     request(app)
-    .patch(`/todolist/${this.test.todoListId}`)
+    .delete(`/todolist/${this.test.todoListId}`)
     .set('Authorization', `Bearer ${this.test.token.token}`)
     .end((err, res) => {
       res.should.have.status(401)

@@ -2,7 +2,8 @@ import moment from 'moment'
 class TodoRequests {
   static async fetchTodos (sortFrom = 'createdAt', direction = 'asc', page = 0, listId) {
     if (page <= 0) page = 0
-
+    console.log('lllllllll')
+    console.log(`${sortFrom} | ${direction} | ${page} | ${listId}`)
     return await fetch(`http://localhost:8081/todo?sortFrom=${sortFrom}&direction=${direction}&page=${page}&listId=${listId}`,
       {
         headers: {
@@ -12,7 +13,7 @@ class TodoRequests {
       })
       .then(response => response.json())
       .then((response) => {
-        console.log(response)
+
         for (let i = 0; i < response.data.length; i++) {
           response.data[i].createdAt = Date.parse(response.data[i].createdAt)
           response.data[i].updatedAt = Date.parse(response.data[i].updatedAt)

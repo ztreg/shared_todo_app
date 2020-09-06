@@ -59,6 +59,7 @@ module.exports = {
         res.status(200).json(todoToGet)
     },
     getTodos: async (req, res) => { 
+    console.log('ye');
       if(req.query.finished) { // IF we just want JUST the archive page
         if(req.user.isAdmin()) {
             res.json(await todoModel.getFinishedTodos()) 
