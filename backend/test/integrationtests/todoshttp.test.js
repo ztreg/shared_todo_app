@@ -17,6 +17,7 @@ describe('Integration tests for todos', () => {
   before(async function() {
     await user.clearAllUsers()
     await todo.clearAllTodos()
+    await todoModel.clearAllTodos()
   })
     beforeEach(async function()  {
         // console.log(listTwo)
@@ -69,7 +70,6 @@ describe('Integration tests for todos', () => {
       .get(`/todo/search/${existingTodo.listId}?searchText=e`)
       .set('Authorization', `Bearer ${this.test.admin.token}`)
         .end((err, res) => {
-        console.log('searched a todo')
         expect(res).to.have.status(200)
         expect(res).to.be.json
         expect(res).to.be.deep.an('object')
@@ -100,4 +100,9 @@ describe('Integration tests for todos', () => {
         res.body.should.be.a('object')
         })
      })
+    after(async () => {
+      await user.clearAllUsers()
+      await todo.clearAllTodos()
+      await todoModel.clearAllTodos()
+    })
 })

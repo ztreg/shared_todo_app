@@ -9,6 +9,9 @@ chai.should()
 require('dotenv').config()
 const authenticationModel = require('../../models/authenticationModel')
 const userModel = require('../../models/userModel')
+const todomodel = require('../../models/todoModel')
+const todoListModel = require('../../models/todoListModel')
+
 
 describe('Integration tests for Users', function () {
     let currentTestuserid
@@ -28,6 +31,8 @@ describe('Integration tests for Users', function () {
     })
     beforeEach(async function() {
         await userModel.clearAllUsers()
+        await todoListModel.clearAllTodoLists()
+        await todomodel.clearAllTodos()
     })
 
     it('Should add a user', async function() {
@@ -93,5 +98,10 @@ describe('Integration tests for Users', function () {
               expect(res).to.be.json
               expect(res).to.be.status(401)
           })
+      })
+      after(async ()=>{
+        await userModel.clearAllUsers()
+        await todoListModel.clearAllTodoLists()
+        await todomodel.clearAllTodos()
       })
 })

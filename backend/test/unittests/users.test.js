@@ -4,12 +4,16 @@ const bcrypt = require('bcryptjs')
 const { addUser, clearAllUsers, getUsers} = require('../../models/userModel')
 const {disconnect} = require('../../database/mongodb')
 const userModel = require('../../models/userModel')
+const todomodel = require('../../models/todoModel')
+const todoListModel = require('../../models/todoListModel')
 const { expect } = require('chai')
 const { use } = require('../../app')
 
 describe('Unit Tests for user', () => {
     before(async function () {
         await userModel.clearAllUsers()
+        await todomodel.clearAllTodos()
+        await todoListModel.clearAllTodoLists()
     })
     
     it('should add a user', async function () {
@@ -70,7 +74,10 @@ describe('Unit Test for -> Searching for users', () => {
             // user.should.satisfy(() => { return regex.test(user.username) })
         }
     })
-    after(() => {
+    after(async () => {
+        await userModel.clearAllUsers()
+        await todomodel.clearAllTodos()
+        await todoListModel.clearAllTodoLists()
         disconnect()
     })
 })

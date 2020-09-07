@@ -20,6 +20,8 @@ describe('Unit Tests for todos', function ()  {
 
     before(async function() {
       await usermodel.clearAllUsers()
+      await todomodel.clearAllTodos()
+      await todoListModel.clearAllTodoLists()
       user = await usermodel.addUser({username: 'membername', password: '123', role: 'member'})
       todolist2add = {
         title : 'Users first todolist! woh',
@@ -71,5 +73,10 @@ describe('Unit Tests for todos', function ()  {
       expect(result.deletedCount).to.be.equal(1)
       expect(result).to.be.deep.an('object')
       expect(allTodos.count).to.be.greaterThan(allTodos2.count)
+    })
+    after(async function(){
+      await usermodel.clearAllUsers()
+      await todomodel.clearAllTodos()
+      await todoListModel.clearAllTodoLists()
     })
 })

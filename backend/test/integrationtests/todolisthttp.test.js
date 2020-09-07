@@ -158,4 +158,9 @@ describe('Integration tests for todolist', () => {
       res.body.should.be.a('object')
     })
   })
+  after(async() => {
+    await user.clearAllUsers()
+    await todo.clearAllTodos()
+    await todolist.clearAllTodoLists()
+  })
 })

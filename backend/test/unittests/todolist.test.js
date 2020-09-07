@@ -14,6 +14,7 @@ describe('Unit Tests for todolist', () => {
     before(async function(){
         await todolistmodel.clearAllTodoLists()
         await usermodel.clearAllUsers()
+        await todomodel.clearAllTodos()
     })
     beforeEach(async function () {
 
@@ -57,8 +58,16 @@ describe('Unit Tests for todolist', () => {
         const result = await todolistmodel.updateTodoList(todoListData)
         expect(result).to.be.an('object')
     })
+    it('Should delete a list', async function() {
+        const aList = await todolistmodel.getTodoList({title: 'edited todolist'})
+
+        const result = await todolistmodel.deleteTodoList(aList._id)
+        expect(result).to.be.an('object')
+        expect(result.deletedCount).to.be.equal(1)
+    })
     after(async () => {
         await todolistmodel.clearAllTodoLists()
         await usermodel.clearAllUsers()
+        await todomodel.clearAllTodos()
     })
 })
