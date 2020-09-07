@@ -109,6 +109,7 @@ module.exports = {
                 if(searchtext == '') {
                     return await Todo.find ({listId: listId, userid: userid} ).sort().skip(1 * 5).limit(5)
                  } else {
+                     console.log(searchtext + userid + listId);
                     return await Todo.find({listId: listId, userid: userid, title: new RegExp(searchtext, 'i')}, {})
                  }
             }

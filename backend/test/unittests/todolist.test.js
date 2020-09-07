@@ -13,9 +13,8 @@ const {disconnect} = require('../../database/mongodb')
 describe('Unit Tests for todolist', () => {
 
     beforeEach(async function () {
-        // await usermodel.clearAllUsers()
-        // await todolistmodel.clearAllTodoLists()
-        // await todomodel.clearAllTodos()
+        await todolistmodel.clearAllTodoLists()
+        await usermodel.clearAllUsers()
     })
     it('Should create a list and compare result to be a list', async function () {
         function hashPW (password) {
@@ -29,7 +28,7 @@ describe('Unit Tests for todolist', () => {
             role: "member"
         }
         const aOwner = await usermodel.addUser(member)
-        // console.log(aOwner._id)
+        // console.log(aOwner)
         const firstTodoList = {
             title : 'Users first todolist! woh',
             creator : aOwner.username,
@@ -40,8 +39,10 @@ describe('Unit Tests for todolist', () => {
 
         // Assert that the arranged owner is the owner of the list
         //console.log(newTodoList)
+        
         expect(aOwner.username).to.be.equal(member.username)
         expect(newTodoList.userIds).to.be.an('array')
         expect(newTodoList.userIds[0]).to.be.equal(aOwner._id.toString())
+        // (newTodoList.doc).should.be.eql(firstTodoList)
     })
 })

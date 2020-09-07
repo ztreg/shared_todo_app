@@ -15,7 +15,7 @@ console.log('connecting to ' + uri)
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 
 if(!mongoose.connection) {
-    console.log("error bro")
+    console.log("error connecting bro")
     throw new MongooseError('Could not connect to database')
 } else {
     console.log('making a connection')
@@ -71,8 +71,7 @@ const ListSchema = new mongoose.Schema({
         required: true
     },
     creator: {
-        type: String,
-        required: true
+        type: String
     },
     userIds: { // list of user _id (plural)
         type: Array

@@ -53,9 +53,9 @@
     </q-list>
     <div>Page: {{ this.page + 1 }} / {{ this.max }}</div>
     <q-avatar clickable v-ripple color="blue" text-color="white" icon="arrow_left"
-    class="q-ma-lg" @click="fetchTodos(undefined, page--)"> </q-avatar>
+      class="q-ma-lg" @click="fetchTodos(undefined, page--)"> </q-avatar>
     <q-avatar clickable v-ripple color="blue" text-color="white" icon="arrow_right"
-    class="q-ma-lg" text="next page" @click="fetchTodos(undefined, page++)"/>
+      class="q-ma-lg" text="next page" @click="fetchTodos(undefined, page++)"/>
   </div>
 </template>
 
@@ -151,8 +151,11 @@ export default {
      */
     async deleteTodo (id) {
       await todoRequests.deleteTodo(id)
-      const div = document.getElementById(id)
-      div.parentNode.removeChild(div)
+      //const div = document.getElementById(id)
+      this.direction = 'desc'
+      const sortFrom = 'createdAt'
+      const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page, this.$route.params.id)
+      this.todos = data.data
     },
     logOut () {
       localStorage.removeItem('token')
@@ -165,7 +168,8 @@ export default {
        * Hämta -> flitrera datum -> fyll this.todos
        */
       console.log(text)
-      await fetch(`http://localhost:8081/todo/search?searchText=${text}&listId=${this.$route.params.id}`, {
+      const listId = this.$route.params.id
+      await fetch(`http://localhost:8081/todo/search/${listId}?searchText=${text}`, {
         headers: {
           Authorization: `Bearer ${this.token}`,
           'Content-Type': 'application/json'
@@ -182,6 +186,7 @@ export default {
             response[i].createdAt = moment(response[i].updatedAt).format('MM/DD HH:mm')
             response[i].updatedAt = moment(response[i].updatedAt).format('MM/DD HH:mm')
           }
+          //
           this.todos = []
           for (let i = 0; i < response.length; i++) {
             this.todos.push(response[i])

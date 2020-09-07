@@ -9,22 +9,29 @@ chai.should()
 require('dotenv').config()
 const authenticationModel = require('../../models/authenticationModel')
 const userModel = require('../../models/userModel')
-const todo = require('../../models/todoModel')
-const todolist = require('../../models/todoListModel')
 
 describe('Integration tests for Users', function () {
-    beforeEach(async function() {
-        await userModel.clearAllUsers()
+    let currentTestuserid
+    let currentTestuserid2
+    let currentTestmember1
+    let currentTestmember2
+    before(async function(){
         async function hashPassword(password) {
 			return bcrypt.hashSync(password, 10)
         }
         const newUser = await userModel.addUser({username: 'httpuser23', password: await hashPassword('123'), role: 'member'})
-        this.currentTest.userid = newUser._id
-        this.currentTest.member1 = await authenticationModel.login({username: newUser.username, password: '123'})
+        const newUser2 = await userModel.addUser({username: 'httpuser234', password: await hashPassword('123'), role: 'member'})
+        currentTestuserid = newUser._id.toString()
+        currentTestuserid2 = newUser2._id.toString()
+        currentTestmember1 = await authenticationModel.login({username: newUser.username, password: '123'})
+        currentTestmember2 = await authenticationModel.login({username: newUser2.username, password: '123'})
+    })
+    beforeEach(async function() {
+        await userModel.clearAllUsers()
     })
 
     it('Should add a user', async function() {
-        const fields = { username: "httpuser", password: "123" }
+        const fields = { username: "httpuser13333", password: "123" }
         request(app)
         .post('/users')
         .send(fields)
@@ -35,33 +42,56 @@ describe('Integration tests for Users', function () {
             res.body.should.have.property('msg')
         })
     })
-    it('Should edit a user', async function() {
+    it('Should edit a user (myself)', async function() {
         const fields = { username : "httpuser23edited" }
         request(app)
-        .patch(`/users/${this.test.userid}`)
+        .patch(`/users/${currentTestuserid}`)
         .send(fields)
-        .set('Authorization', `Bearer ${this.test.member1.token}`)
+        .set('Authorization', `Bearer ${currentTestmember1.token}`)
         .end((err, res) => {
             expect(res).to.be.json
+            expect(res).to.be.status(201)
             res.body.should.have.property('updated_count')
         })
     })
-    it('Should get a user', async function() {
+     it('Should fail edit another user', async function() {
+         const fields = { username : "httpuser23edited" }
+         request(app)
+         .patch(`/users/${currentTestuserid}`)
+         .send(fields)
+         .set('Authorization', `Bearer ${currentTestmember2.token}`)
+         .end((err, res) => {
+             expect(res).to.be.json
+             expect(res).to.be.status(401)
+            //res.body.should.have.property('updated_count')
+         })
+     })
+    it('Should get a user (myself)', async function() {
         request(app)
-        .get(`/users/${this.test.userid}`)
-        .set('Authorization', `Bearer ${this.test.member1.token}`)
+        .get(`/users/${currentTestuserid}`)
+        .set('Authorization', `Bearer ${currentTestmember1.token}`)
         .end((err, res) => {
             console.log(res.body)
             expect(res).to.be.deep.an('object')
         })
     })
-    it('Should delete a user', async function() {
+    it('Should delete a user (myself)', async function() {
         request(app)
-        .delete(`/users/${this.test.userid}`)
-        .set('Authorization', `Bearer ${this.test.member1.token}`)
+        .delete(`/users/${currentTestuserid}`)
+        .set('Authorization', `Bearer ${currentTestmember1.token}`)
         .end((err, res) => {
             expect(res).to.be.json
+            expect(res).to.be.status(201)
             res.body.should.have.property('response')
         })
     })
+      it('Should fail to delete another user', async function() {
+          request(app)
+          .delete(`/users/${currentTestuserid}`)
+          .set('Authorization', `Bearer ${currentTestmember2.token}`)
+          .end((err, res) => {
+              expect(res).to.be.json
+              expect(res).to.be.status(401)
+          })
+      })
 })

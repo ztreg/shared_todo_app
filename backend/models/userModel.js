@@ -72,6 +72,9 @@ module.exports = {
             owns(document) {
                 return document.userid === this.userId
             },
+            isme(id) {
+                return id === this.userId
+            },
             isOwner(document){
                 return document._id == this.userId
             },

@@ -10,7 +10,7 @@ module.exports = {
         const todo = {
             title: req.body.title,
             userid: req.user.userId,
-            listId: req.query.listId
+            listId: req.params.listId
         }
 
         let added = await todoModel.insertTodo(todo);
@@ -18,11 +18,18 @@ module.exports = {
         res.status(status).json({added});
     },
     updateTodo: async (req, res) => {
-       
+        let todoToEdit = await todoModel.getTodo({_id: req.params.todoId})
+        if(todoToEdit) {
+            if(!req.user.owns(todoToEdit) && !req.user.isAdmin()) {
+                console.log('incorrect user is trying to edit this todo')
+                return res.status(401).json({msg: 'incorrect user is trying to edit this todo'})
+            }
+        }
         const todo = {
             todoId: req.params.todoId,
             title: req.body.title, 
-            done: req.body.done
+            done: req.body.done,
+            listId: todoToEdit.listId
         }
        
         let lastId = await todoModel.updateTodo(todo)
@@ -36,7 +43,7 @@ module.exports = {
         res.status(status).json({last_inserted_id: lastId});
     },
     deleteTodo: async (req, res) => {
-        let todoToDelete = await todoModel.getTodo(req.params.todoId)
+        let todoToDelete = await todoModel.getTodo({_id: req.params.todoId})
         if(todoToDelete) {
             if(!req.user.isOwner(todoToDelete) ) {
                 console.log('incorrect user is trying to edit this todo')
@@ -77,11 +84,10 @@ module.exports = {
       }   
     },
     getTodosSearch: async (req, res) => { 
-        // console.log('getting your search')
         if(req.user.isAdmin()) {
-            res.json(await todoModel.getTodosSearch(req.query.searchText, null, req.query.listId)) 
+            res.json(await todoModel.getTodosSearch(req.query.searchText, null, req.params.listId)) 
         } else if (req.user.isMember()) {
-           res.json(await todoModel.getTodosSearch(req.query.searchText, req.user.userId, req.query.listId))
+           res.json(await todoModel.getTodosSearch(req.query.searchText, req.user.userId, req.params.listId))
         }
     }
 }

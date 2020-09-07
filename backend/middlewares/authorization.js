@@ -17,7 +17,7 @@ module.exports = {
                 console.log('not logged in jwt' )
                 res.status(403).json({msg: "You are not logged in"})
             } else {
-                console.log('not logged in wat')
+                // console.log('not logged in wat')
                 res.status(403).json({error: error})
             }
         }

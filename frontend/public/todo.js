@@ -42,7 +42,7 @@ class TodoRequests {
   static async addTodo (title, listId) {
     console.log('add todo with title ' + title  + 'and listId ' + listId)
 
-    return await fetch(`http://localhost:8081/todo?listId=${listId}`, {
+    return await fetch(`http://localhost:8081/todo/${listId}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.TOKEN}`,

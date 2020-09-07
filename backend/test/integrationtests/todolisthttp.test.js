@@ -15,6 +15,7 @@ const { insertTodo } = require('../../models/todoModel')
 
 describe('Integration tests for todolist', () => {
 	beforeEach(async function () {
+    // Clear all data id DB
     await todo.clearAllTodos()
     await todolist.clearAllTodoLists()
     await user.clearAllUsers()
@@ -22,6 +23,7 @@ describe('Integration tests for todolist', () => {
 			return bcrypt.hashSync(password, 10)
     }
     
+    // Get data from file or function
     //Arrange users
     let newUser =	{
       username: "jonas1",
@@ -70,13 +72,11 @@ describe('Integration tests for todolist', () => {
     newTodo.listId = listtwo._id
     const secondTodo = await todo.insertTodo(newTodo)
   
-    // console.log(listone._id)
-    // console.log(firstTodo.listId)
     //Assert that list owners has the same name as users creater etc
     expect(userone.username).to.be.deep.equal(listone.creator)
     expect(firstTodo.listId).to.be.deep.equal(listone._id.toString())
 
-    
+    // Add info to current test
     this.currentTest.token = await authenticationModel.login({username: usertwo.username, password: '123' })
     this.currentTest.token2 = await authenticationModel.login({username: userone.username, password: '123' })
     this.currentTest.admin = await authenticationModel.login({username: useradmin.username, password: '123' })
@@ -89,11 +89,10 @@ describe('Integration tests for todolist', () => {
       creator : userone.username
     }
     
-    this.currentTest.todoListToAdd = todoListToAdd
-    //this.currentTest.user2ID = 
+    this.currentTest.todoListToAdd = todoListToAdd 
   })
-    it('Should get A specific list', async function() {
-    const listToGet = await todolist.getTodoList({title: 'Users first todolist! woh'})
+  it('Should get A specific list', async function() {
+  const listToGet = await todolist.getTodoList({title: 'Users first todolist! woh'})
     request(app)
     .get(`/todolist?todoListId=${listToGet._id}`)
     .set('Authorization', `Bearer ${this.test.admin.token}`)
@@ -126,7 +125,9 @@ describe('Integration tests for todolist', () => {
      res.body.should.be.a('object')
      res.body.should.have.property('errormsg')
    })
-   // Edit your own list
+  })
+  it('Edit your own list', async function () {
+       // Edit your own list
    request(app)
    .patch(`/todolist/${this.test.todoListId}`)
    .set('Authorization', `Bearer ${this.test.token2.token}`)
@@ -136,7 +137,7 @@ describe('Integration tests for todolist', () => {
      res.body.should.be.a('object')
    })
   })
-  it('Should fail to delete a list and succeed as the correct user', async function() {
+  it('Should fail to delete a list ', async function() {
     //Delete anothers list
     request(app)
     .delete(`/todolist/${this.test.todoListId}`)
@@ -146,6 +147,8 @@ describe('Integration tests for todolist', () => {
       res.body.should.be.a('object')
       res.body.should.have.property('errormsg')
     })
+  })
+  it('and succeed as the correct user', async function() {
     //Delete your own list
     request(app)
     .delete(`/todolist/${this.test.todoListId}`)

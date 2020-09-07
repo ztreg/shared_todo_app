@@ -12,21 +12,31 @@ module.exports = {
             password: hashPW(req.body.password),
             role: "member"
         }
-        let addedId = await userModel.addUser(user)
-        let status = addedId ? 201 : 500
-        let msg = addedId ? 'New account created' : 'That username already exists'
-        res.status(status).json({msg})
+        if(user.role != 'admin') {
+            let addedId = await userModel.addUser(user)
+            let status = addedId ? 201 : 400
+            let msg = addedId ? 'New account created' : 'That username already exists'
+            res.status(status).json({msg})
+        }
+        else {
+            res.status(401).json({msg: 'Cannot add a admin'})
+        }
+       
     },
     updateUser: async (req, res) => {
-        let userToEdit = await userModel.getUser({_id: req.params.userId})
-        console.log('hm');
+        let userToEdit = req.params.userId;
+        //let userToEdit = await userModel.getUser({_id: req.params.userId})
+        // console.log('personen som ska editas');
+        // console.log(userToEdit);
+        // console.log('personen som gör requestet');
+        // console.log(req.user);
         if(userToEdit) {
-            if(!req.user.isOwner(userToEdit) ) {
+            if(!req.user.isme(userToEdit) ) {
                 console.log('incorrect user is trying to edit this user')
-                return res.json({msg: 'incorrect user is trying to edit this user'})
+                return res.status(401).json({msg: 'incorrect user is trying to edit this user'})
             }
             const userToUpdate = {
-                userId: req.params.userId,
+                userId: userToEdit,
             }
     
             if(req.body.username) userToUpdate.username = req.body.username
@@ -41,20 +51,21 @@ module.exports = {
 
     },
     deleteUser: async (req, res) => {
-        let userToDelete = await userModel.getUser({_id: req.params.userId})
-        // console.log(userToDelete)
-        if(userToDelete) {
-            if(!req.user.isOwner(userToDelete) && !req.user.isAdmin()) {
+        let userId = req.params.userId
+        if(userId) {
+            if(!req.user.isme(userId)) {
                 console.log('incorrect user is trying to delete this user')
-                return res.json({msg: 'incorrect user is trying to delete this user'})
+                return res.status(401).json({msg: 'incorrect user is trying to delete this user'})
                
             }
+            let response = await userModel.deleteUser(userId)
+            let status = response ? 201 : 500;
+            return res.status(status).json({response: response});
         }
-        const deleteId = req.params.userId;
-
-        let response = await userModel.deleteUser(deleteId)
-        let status = response ? 201 : 500;
-        res.status(status).json({response: response});
+        else {
+            return res.status(500).json({msg: 'no userID given'})
+        }
+        
     },
     getUsers: async (req, res) => {
         if(req.query.searchUserText) {
