@@ -9,7 +9,11 @@ const {disconnect} = require('../../database/mongodb')
 
 describe('Unit Tests for todos', function ()  {
     // before mockdata här jonas!!!!!!
-    let aTodo, auser, todolist, todo, result
+    let updatedtodo = {}
+    let auser = {}
+    let todolist = {}
+    let todo = {}
+    let result = {}
 
     before(async function() {
       user = await usermodel.getUser({username: 'membername'})
@@ -20,9 +24,8 @@ describe('Unit Tests for todos', function ()  {
          userid: user._id,
          listId: todoList._id
       }
-    
     })
-    
+
     it('add todo for a user in a list', async () => {
         result = await todomodel.insertTodo(todo)
         result.should.be.deep.an('object')
@@ -31,24 +34,21 @@ describe('Unit Tests for todos', function ()  {
     })
     it('should edit a todo', async function() {
         //Get a todo to update
-        const existingTodo = await todomodel.getTodo({title: 'testTodo'})
         const todoList = await todoListModel.getTodoList({creator: 'membername'})
-        const todoToUpdate = {
+        updatedtodo = {
             title: 'testTodoUpdated',
             done: true,
-            todoId: existingTodo._id,
+            todoId: result._id,
             listId: todoList._id
         }
-        await todomodel.updateTodo(todoToUpdate)
+        await todomodel.updateTodo(updatedtodo)
         const updatedTodo = await todomodel.getTodo({title: 'testTodoUpdated'})
-        expect(updatedTodo.title).to.be.deep.equal(todoToUpdate.title)
+        expect(updatedTodo.title).to.be.deep.equal(updatedtodo.title)
     })
     it('should delete a todo', async function() {
         
         const todoToDelete = await todomodel.getTodo({title: 'testTodoUpdated'})
-        
         const todoList = await todoListModel.getTodoList({creator: 'membername'})
-
         const allTodos = await todomodel.getTodos('createdAt', -1, 0, null, todoToDelete.listId)
         const result = await todomodel.deleteTodo(todoToDelete._id)
         const allTodos2 = await todomodel.getTodos('createdAt', -1, 0,  null, todoToDelete.listId)
