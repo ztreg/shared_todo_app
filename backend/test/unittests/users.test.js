@@ -8,6 +8,9 @@ const { expect } = require('chai')
 const { use } = require('../../app')
 
 describe('Unit Tests for user', () => {
+    before(async function () {
+        await userModel.clearAllUsers()
+    })
     
     it('should add a user', async function () {
         //Arrange
@@ -19,18 +22,14 @@ describe('Unit Tests for user', () => {
             password: hashPW("Amanda"),
             role: "member"
         }
-        
         //Act, add new users
         const amandaResult = await userModel.addUser(amanda)
-      
         //Assert
         amandaResult.should.be.deep.an('object')
         expect(amandaResult.username).to.be.equal(amanda.username)
-    
     })
     it('shold edit a user', async function() {
         const member = await userModel.getUser({username: 'Amanda'})
-
        const userToUpdate = {
           userId: member._id.toString(),
           username: 'Amanda2',
@@ -54,17 +53,15 @@ describe('Unit Tests for user', () => {
 describe('Unit Test for -> Searching for users', () => {
 
     it('Should find all the users with a "j"', async function () {
-
         //Arrange
         const searchText = 'j'
         const regex = new RegExp(searchText, 'i')
 
         //Act
         const users = await getUsers(searchText)
-        // console.log(users)
+
         //Assert
         users.should.be.an('array')
-
         for (const user of users) {
             user.should.have.property('username')
             user.should.have.property('password')
@@ -72,7 +69,6 @@ describe('Unit Test for -> Searching for users', () => {
             // funkar inte, lös?
             // user.should.satisfy(() => { return regex.test(user.username) })
         }
-        
     })
     after(() => {
         disconnect()

@@ -114,7 +114,7 @@ describe('Integration tests for todolist', () => {
    })
   })
 
-  it('Should fail to edit a list and succeed as the correct user', async function()  {
+  it('Should fail to edit a list', async function()  {
     // Edit anothers list
    request(app)
    .patch(`/todolist/${this.test.todoListId}`)
@@ -126,7 +126,7 @@ describe('Integration tests for todolist', () => {
      res.body.should.have.property('errormsg')
    })
   })
-  it('Edit your own list', async function () {
+  it('Should success to edit your own list', async function () {
        // Edit your own list
    request(app)
    .patch(`/todolist/${this.test.todoListId}`)

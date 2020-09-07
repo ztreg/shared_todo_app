@@ -68,12 +68,6 @@ export default {
           to: '/'
         },
         {
-          title: 'Todos',
-          caption: 'Your todos',
-          icon: 'list',
-          to: '/todos'
-        },
-        {
           title: 'Archive',
           caption: 'Finished Todos',
           icon: 'archive',

@@ -11,16 +11,17 @@ const {disconnect} = require('../../database/mongodb')
 
 
 describe('Unit Tests for todolist', () => {
-
-    beforeEach(async function () {
+    before(async function(){
         await todolistmodel.clearAllTodoLists()
         await usermodel.clearAllUsers()
+    })
+    beforeEach(async function () {
+
     })
     it('Should create a list and compare result to be a list', async function () {
         function hashPW (password) {
             return bcrypt.hashSync(password, 10)
         }
-        
         //Arrange owner and Arrange List
         const member = {
             username: "membername",
@@ -38,11 +39,26 @@ describe('Unit Tests for todolist', () => {
         const newTodoList = await todolistmodel.insertTodoList(firstTodoList)
 
         // Assert that the arranged owner is the owner of the list
-        //console.log(newTodoList)
-        
         expect(aOwner.username).to.be.equal(member.username)
         expect(newTodoList.userIds).to.be.an('array')
         expect(newTodoList.userIds[0]).to.be.equal(aOwner._id.toString())
         // (newTodoList.doc).should.be.eql(firstTodoList)
+    })
+    it('Should edit a list', async function() {
+
+        // Act, edit a list with arranged data
+        const currentTodoList = await todolistmodel.getTodoList({title: 'Users first todolist! woh'})
+
+        const todoListData = {
+            title : 'edited todolist',
+            listId: currentTodoList._id
+        }
+
+        const result = await todolistmodel.updateTodoList(todoListData)
+        expect(result).to.be.an('object')
+    })
+    after(async () => {
+        await todolistmodel.clearAllTodoLists()
+        await usermodel.clearAllUsers()
     })
 })

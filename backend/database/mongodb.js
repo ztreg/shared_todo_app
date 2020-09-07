@@ -57,7 +57,8 @@ var TodoSchema = new mongoose.Schema(
             required: true
         },
         listId: {
-            type: String
+            type: String,
+            required: true
         }
     }, 
         {
@@ -71,7 +72,8 @@ const ListSchema = new mongoose.Schema({
         required: true
     },
     creator: {
-        type: String
+        type: String,
+        required: true
     },
     userIds: { // list of user _id (plural)
         type: Array

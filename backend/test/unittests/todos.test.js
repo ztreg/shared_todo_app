@@ -9,52 +9,67 @@ const {disconnect} = require('../../database/mongodb')
 
 describe('Unit Tests for todos', function ()  {
     // before mockdata här jonas!!!!!!
-    let updatedtodo = {}
+    let todotoedit = {}
+    var editedtodo = {}
     let auser = {}
-    let todolist = {}
+    let todolist2add = {}
     let todo = {}
     let result = {}
+    let user = {}
+    let todolist = {}
 
     before(async function() {
-      user = await usermodel.getUser({username: 'membername'})
-      todoList = await todoListModel.getTodoList({creator: 'membername'})
+      await usermodel.clearAllUsers()
+      user = await usermodel.addUser({username: 'membername', password: '123', role: 'member'})
+      todolist2add = {
+        title : 'Users first todolist! woh',
+        creator : user.username,
+        userIds : [user._id.toString()]
+      } 
+      todolist = await todoListModel.insertTodoList(todolist2add)
       todo = {
          title: 'testTodo',
          done: false,
          userid: user._id,
-         listId: todoList._id
+         listId: todolist._id
       }
+    })
+
+    beforeEach(async function () {
+
     })
 
     it('add todo for a user in a list', async () => {
         result = await todomodel.insertTodo(todo)
+        // console.log(result);
         result.should.be.deep.an('object')
-        expect(todoList._id).to.be.equal(todo.listId)
+        expect(todolist._id).to.be.equal(todo.listId)
         expect(todo.title).to.be.equal(result.title)
     })
     it('should edit a todo', async function() {
         //Get a todo to update
         const todoList = await todoListModel.getTodoList({creator: 'membername'})
-        updatedtodo = {
+        todotoedit = {
             title: 'testTodoUpdated',
             done: true,
             todoId: result._id,
             listId: todoList._id
         }
-        await todomodel.updateTodo(updatedtodo)
+        await todomodel.updateTodo(todotoedit)
         const updatedTodo = await todomodel.getTodo({title: 'testTodoUpdated'})
-        expect(updatedTodo.title).to.be.deep.equal(updatedtodo.title)
+        editedtodo = updatedTodo
+        expect(updatedTodo.title).to.be.deep.equal(todotoedit.title)
     })
     it('should delete a todo', async function() {
         
-        const todoToDelete = await todomodel.getTodo({title: 'testTodoUpdated'})
-        const todoList = await todoListModel.getTodoList({creator: 'membername'})
-        const allTodos = await todomodel.getTodos('createdAt', -1, 0, null, todoToDelete.listId)
-        const result = await todomodel.deleteTodo(todoToDelete._id)
-        const allTodos2 = await todomodel.getTodos('createdAt', -1, 0,  null, todoToDelete.listId)
-        
-        expect(result).to.be.deep.an('object')
-        // true false
-        expect(allTodos.count).to.be.greaterThan(allTodos2.count)
+      // const todoList = await todoListModel.getTodoList({creator: 'membername'})
+      const allTodos = await todomodel.getTodos('createdAt', -1, 0, null, editedtodo.listId)
+      const result = await todomodel.deleteTodo(editedtodo._id)
+      const allTodos2 = await todomodel.getTodos('createdAt', -1, 0,  null, editedtodo.listId)
+      
+      
+      expect(result.deletedCount).to.be.equal(1)
+      expect(result).to.be.deep.an('object')
+      expect(allTodos.count).to.be.greaterThan(allTodos2.count)
     })
 })
