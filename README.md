@@ -1,11 +1,13 @@
 # nackademin-todo-app
 
-# Packages:
-# express, path, dotenv, cors, mongoose, nodemon
+Packages:
+express, dotenv, mongoose, nodemon, chai, vue, quasar
 
-# Quasar is based on vue
+cd backend ->npm install (port 8081)
+ start: nodemon start.js
+ run tests: npm test
+ 
+cd frontend -> npm install (port 8080)
+  start: quasar dev
 
-# cd backend -> nodemon app.js (port 8081)
-# cd frontend -> quasar dev (port 8080)
-
-# Jonas Gertz
+Av Jonas Gertz
