@@ -13,7 +13,6 @@ module.exports = {
             userid: req.user.userId,
             listId: req.params.listId
         }
-
         let added = await todoModel.insertTodo(todo);
         let status = added ? 201 : 500;
         res.status(status).json({added});

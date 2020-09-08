@@ -124,7 +124,6 @@ export default {
     async editFullTodo (title, done, _id) {
       todoRequests.editFullTodo(title, done, _id, this.$route.params.id)
     },
-    /**
     async addTodo (title) {
       // console.log(this.auth)
       // console.log(this.$route.params.id)
@@ -135,7 +134,6 @@ export default {
       this.todos = data.data
       this.todoTitle = ''
     },
-     */
     async deleteTodo (id) {
       await todoRequests.deleteTodo(id, this.$route.params.id)
       //const div = document.getElementById(id)

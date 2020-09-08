@@ -16,7 +16,7 @@ module.exports = {
     // },
     updateTodo: async (todoFilter) => {
         try {
-            //console.log(todoFilter);
+            console.log(todoFilter);
             return await Todo.updateOne({_id: todoFilter.todoId},{ $set: todoFilter})
             //console.log(status);
         } catch (error) {
@@ -31,9 +31,9 @@ module.exports = {
             return error
         } 
     },
-    clearAllTodos: async () => {
+    clearAllTodos: async (listfilter) => {
         try {
-            return await Todo.deleteMany({})
+            return await Todo.deleteMany(listfilter)
         } catch (error) {
             console.log(error)
             return error
@@ -120,6 +120,7 @@ module.exports = {
             return error
         }
     },
+    // Archive page
     getFinishedTodos: async(userid = null) => {
         // console.log('gettin dat finished')
         try {

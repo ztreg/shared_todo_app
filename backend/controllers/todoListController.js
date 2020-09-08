@@ -1,4 +1,6 @@
 const todoListModel = require('../models/todoListModel');
+const todoController = require('./todoController');
+const todoModel = require('../models/todoModel')
 
 module.exports = {
     addTodoList: async (req, res) => {
@@ -81,6 +83,7 @@ module.exports = {
             // console.log('incorrect user is making the request')
             return res.status(401).json({errormsg: 'incorrect user is trying to edit this user'})
         }
+        const deleteTodos = await todoModel.clearAllTodos({listId: req.params.todoListId})
         let count = await todoListModel.deleteTodoList(req.params.todoListId)
         let status = count ? 201 : 500;
         res.status(status).json({removed_count: count});
