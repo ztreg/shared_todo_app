@@ -16,7 +16,6 @@ module.exports = {
         //console.log('loggin in with username ' + loginObject.username + ' pw: ' + loginObject.password)
         const user = await userModel.getUser({username: loginObject.username})
         if(user) {
-            
             // If we get a match on the username -> check hashed pw
             const checkedPassword = bcrypt.compareSync(loginObject.password, user.password)
             // If we get a match on the password -> return a token to the client

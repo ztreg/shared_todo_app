@@ -18,12 +18,9 @@ describe('Unit Tests for user', () => {
     
     it('should add a user', async function () {
         //Arrange
-        function hashPW (password) {
-            return bcrypt.hashSync(password, 10)
-        }
         const amanda = {
             username: "Amanda",
-            password: hashPW("Amanda"),
+            password: "Amanda",
             role: "member"
         }
         //Act, add new users

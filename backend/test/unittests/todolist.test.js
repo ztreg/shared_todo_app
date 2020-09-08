@@ -26,7 +26,7 @@ describe('Unit Tests for todolist', () => {
         //Arrange owner and Arrange List
         const member = {
             username: "membername",
-            password: hashPW("password123"),
+            password: "password123",
             role: "member"
         }
         const aOwner = await usermodel.addUser(member)

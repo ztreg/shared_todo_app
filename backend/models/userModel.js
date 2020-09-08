@@ -1,15 +1,24 @@
 const {User, Todo} = require('../database/mongodb')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const bcrypt = require('bcryptjs')
+async function hashPW (password) {
+    return bcrypt.hashSync(password, 10)
+}
 module.exports = {
     addUser: async (user) => {
         try {
             const checkIfExists = await User.findOne({username: user.username})
             
-            if(checkIfExists) return false
-            else return await User.create(user);
+            if(checkIfExists){
+                return false
+            } 
+            else {
+                user.password = await hashPW(user.password)
+                return await User.create(user);
+            }
         } catch (error) {
-            console.log('error bro')
+            console.log(error)
             return error
         }
     },
@@ -19,6 +28,7 @@ module.exports = {
                 { $set: userToUpdate}, 
                 {useFindAndModify: false, versionKey: false});
         } catch (error) {
+            console.log(error);
             return error
         }
     },

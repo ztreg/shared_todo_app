@@ -9,7 +9,7 @@ module.exports = {
     addUser: async (req, res) => {
         const user = {
             username: req.body.username,
-            password: hashPW(req.body.password),
+            password: req.body.password,
             role: "member"
         }
         if(user.role != 'admin') {

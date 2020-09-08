@@ -99,9 +99,6 @@ export default {
     ...mapGetters(['auth'])
   },
   methods: {
-     /**
-     * Adjust direction if same button is pressed twice, then make a fetch with new direction
-     */
     async directionFunction (sortFrom) {
       if (this.direction === 'asc') {
         this.direction = 'desc'
@@ -112,9 +109,6 @@ export default {
       const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page, this.$route.params.id)
       this.todos = data.data
     },
-    /**
-    * Get todos
-    */
     async fetchTodos (sortFrom = 'createdAt', page = 0) {
       console.log(this.page)
       if (this.max <= this.page) {
@@ -127,15 +121,10 @@ export default {
         this.todos = data.data
       }
     },
-    /**
-     * Edit the todos, full edit
-     */
     async editFullTodo (title, done, _id) {
-      todoRequests.editFullTodo(title, done, _id)
+      todoRequests.editFullTodo(title, done, _id, this.$route.params.id)
     },
     /**
-     * Add todo, send to class method and format date response
-     */
     async addTodo (title) {
       // console.log(this.auth)
       // console.log(this.$route.params.id)
@@ -146,11 +135,9 @@ export default {
       this.todos = data.data
       this.todoTitle = ''
     },
-    /**
-     * Delete todo
      */
     async deleteTodo (id) {
-      await todoRequests.deleteTodo(id)
+      await todoRequests.deleteTodo(id, this.$route.params.id)
       //const div = document.getElementById(id)
       this.direction = 'desc'
       const sortFrom = 'createdAt'
@@ -164,9 +151,6 @@ export default {
       this.$router.go( '/' )
     },
     async fetchTodosSearch (text) {
-      /**
-       * Hämta -> flitrera datum -> fyll this.todos
-       */
       console.log(text)
       const listId = this.$route.params.id
       await fetch(`http://localhost:8081/todo/search/${listId}?searchText=${text}`, {

@@ -1,5 +1,6 @@
 const todoModel = require('../models/todoModel');
 const { countDocuments } = require('../database/mongodb');
+const todoListModel = require('../models/todoListModel');
 
 module.exports = {
     addTodo: async (req, res) => {
@@ -18,9 +19,10 @@ module.exports = {
         res.status(status).json({added});
     },
     updateTodo: async (req, res) => {
+        let listOfTodo = await todoListModel.getTodoList({_id: req.query.listId})
         let todoToEdit = await todoModel.getTodo({_id: req.params.todoId})
         if(todoToEdit) {
-            if(!req.user.owns(todoToEdit) && !req.user.isAdmin()) {
+            if(!req.user.owns(todoToEdit) && !req.user.isListCollaborator(listOfTodo.userIds) && !req.user.isAdmin()) {
                 console.log('incorrect user is trying to edit this todo')
                 return res.status(401).json({msg: 'incorrect user is trying to edit this todo'})
             }
@@ -31,21 +33,22 @@ module.exports = {
             done: req.body.done,
             listId: todoToEdit.listId
         }
-       
-        let lastId = await todoModel.updateTodo(todo)
-        let status = lastId ? 201 : 500;
-        res.status(status).json({last_inserted_id: lastId});
+        //console.log(todo);
+        let updateinfo = await todoModel.updateTodo(todo)
+        let status = updateinfo ? 201 : 500;
+        res.status(status).json({updated_count: updateinfo});
     },
-    doneTodo: async (req, res) => {
-        // console.log(req.body)
-        let lastId = await todoModel.doneTodo(req.body.done, req.params.todoId)
-        let status = lastId ? 201 : 500;
-        res.status(status).json({last_inserted_id: lastId});
-    },
+    // doneTodo: async (req, res) => {
+    //     // console.log(req.body)
+    //     let lastId = await todoModel.doneTodo(req.body.done, req.params.todoId)
+    //     let status = lastId ? 201 : 500;
+    //     res.status(status).json({last_inserted_id: lastId});
+    // },
     deleteTodo: async (req, res) => {
+        let listOfTodo = await todoListModel.getTodoList({_id: req.query.listId})
         let todoToDelete = await todoModel.getTodo({_id: req.params.todoId})
         if(todoToDelete) {
-            if(!req.user.isOwner(todoToDelete) ) {
+            if(!req.user.owns(todoToDelete) && !req.user.isListCollaborator(listOfTodo.userIds) && !req.user.isAdmin()) {
                 console.log('incorrect user is trying to edit this todo')
                 return res.status(401).json({msg: 'incorrect user is trying to edit this todo'})
             }
@@ -66,8 +69,7 @@ module.exports = {
         res.status(200).json(todoToGet)
     },
     getTodos: async (req, res) => { 
-    console.log('ye');
-      if(req.query.finished) { // IF we just want JUST the archive page
+      if(req.query.finished) { // IF we want JUST the archive page
         if(req.user.isAdmin()) {
             res.json(await todoModel.getFinishedTodos()) 
         } else if (req.user.isMember()) {

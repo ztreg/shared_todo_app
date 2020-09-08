@@ -27,21 +27,21 @@ describe('Integration tests for todos', () => {
           return bcrypt.hashSync(password, 10)
         }
         //listTwo = await todolist.getTodoList({creator: userTwo.username})
-        let userOne = await user.addUser({username: 'jonastodohttpnono', password: await hashPassword('12345'), role: 'member'})
-        let userTwo = await user.addUser({username: 'jonastodohttp', password: await hashPassword('1234'), role: 'member'})
-        let userAdmin = await user.addUser({username: 'jonasadmin', password: await hashPassword('123'), role: 'admin'})
+        let userOne = await user.addUser({username: 'jonastodohttpnono', password: '12345', role: 'member'})
+        let userTwo = await user.addUser({username: 'jonastodohttp', password: '1234', role: 'member'})
+        let userAdmin = await user.addUser({username: 'jonasadmin', password: '123', role: 'admin'})
 
         let listTwo = await todolist.insertTodoList({
           title : 'Users first todolist! woh',
           creator : userTwo.username,
-          userIds : [userTwo._id]
+          userIds : [userTwo._id.toString()]
         })
 
         let todoToDelete = {
           title: 'yup',
           done: false,
-          userid: userTwo._id,
-          listId: listTwo._id
+          userid: userTwo._id.toString(),
+          listId: listTwo._id.toString()
         }
         this.currentTest.todo2 = await todoModel.insertTodo(todoToDelete)
         this.currentTest.token = await authenticationModel.login({username: userTwo.username, password: '1234' })
@@ -49,7 +49,6 @@ describe('Integration tests for todos', () => {
         this.currentTest.admin = await authenticationModel.login({username: userAdmin.username, password: '123' })
         this.currentTest.user = userTwo
         this.currentTest.list = listTwo
-        this.currentTest.todoId = 0;
       })
 
      it('Should add a todo ', async function() {
@@ -78,12 +77,16 @@ describe('Integration tests for todos', () => {
     })
     it('Should be allowed edit a existing todo', async function() {
       const existingTodo = await todo.getTodo({title: 'yup'})
-      const fields = { title: "edited todo from httptest", done: true }
+      const fields = { title: "editedyaez", done: true }
+      // console.log(existingTodo._id);
+      // console.log(this.test.list._id);
       request(app)
-      .patch(`/todo/${existingTodo._id.toString()}`)
-      .set('Authorization', `Bearer ${this.test.admin.token}`)
+      .patch(`/todo/${existingTodo._id}?listId=${existingTodo.listId}`)
+      .set('Authorization', `Bearer ${this.test.token.token}`)
+      .set("Content-Type", "application/json")
       .send(fields)
       .end((err, res) => {
+      // console.log(res.body);
        res.should.have.status(201)
        res.body.should.be.a('object')
        })
@@ -92,7 +95,7 @@ describe('Integration tests for todos', () => {
       const existingTodo = await todo.getTodo({title: 'yup'})
       const fields = { title: "edited todo from httptest", done: true }
       request(app)
-      .delete(`/todo/${existingTodo._id.toString()}`)
+      .delete(`/todo/${existingTodo._id}?listId=${existingTodo.listId}`)
       .set('Authorization', `Bearer ${this.test.token2.token}`)
       .send(fields)
       .end((err, res) => {

@@ -22,8 +22,8 @@ describe('Integration tests for Users', function () {
         async function hashPassword(password) {
 			return bcrypt.hashSync(password, 10)
         }
-        const newUser = await userModel.addUser({username: 'httpuser23', password: await hashPassword('123'), role: 'member'})
-        const newUser2 = await userModel.addUser({username: 'httpuser234', password: await hashPassword('123'), role: 'member'})
+        const newUser = await userModel.addUser({username: 'httpuser23', password: '123', role: 'member'})
+        const newUser2 = await userModel.addUser({username: 'httpuser234', password: '123', role: 'member'})
         currentTestuserid = newUser._id.toString()
         currentTestuserid2 = newUser2._id.toString()
         currentTestmember1 = await authenticationModel.login({username: newUser.username, password: '123'})

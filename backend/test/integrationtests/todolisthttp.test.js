@@ -19,26 +19,31 @@ describe('Integration tests for todolist', () => {
     await todo.clearAllTodos()
     await todolist.clearAllTodoLists()
     await user.clearAllUsers()
-		function hashPassword(password) {
-			return bcrypt.hashSync(password, 10)
-    }
     
     // Get data from file or function
-    //Arrange users
+    //Arrange 3 users
     let newUser =	{
       username: "jonas1",
-      password: hashPassword("123"),
+      password: "123",
       role: "member"
     }
     await user.addUser(newUser)
-    newUser.username = 'jonas2'
-    await user.addUser(newUser)
-    newUser.username = 'jonasadmin'
-    newUser.role = 'admin'
-    await user.addUser(newUser)
+    let newUser2 = {
+      username: "jonas2",
+      password: "1234",
+      role: "member"
+    }
+    await user.addUser(newUser2)
+    let userAdmin = {
+      username: "jonasadmin",
+      password: "12345",
+      role: "admin"
+    }
+    await user.addUser(userAdmin)
     const userone = await user.getUser({username: 'jonas1'})
     let useroneId = userone._id.toString()
     const usertwo = await user.getUser({username: 'jonas2'})
+    // console.log(usertwo);
     const useradmin = await user.getUser({username: 'jonasadmin'})
     let usertwoId = usertwo._id.toString()
     
@@ -77,9 +82,10 @@ describe('Integration tests for todolist', () => {
     expect(firstTodo.listId).to.be.deep.equal(listone._id.toString())
 
     // Add info to current test
-    this.currentTest.token = await authenticationModel.login({username: usertwo.username, password: '123' })
+
     this.currentTest.token2 = await authenticationModel.login({username: userone.username, password: '123' })
-    this.currentTest.admin = await authenticationModel.login({username: useradmin.username, password: '123' })
+    this.currentTest.token = await authenticationModel.login({username: usertwo.username, password: '1234' })
+    this.currentTest.admin = await authenticationModel.login({username: useradmin.username, password: '12345' })
     this.currentTest.userID = newUser.id
     this.currentTest.todoListId = listone._id.toString()
     this.currentTest.user2ID = usertwoId.toString()
@@ -116,6 +122,9 @@ describe('Integration tests for todolist', () => {
 
   it('Should fail to edit a list', async function()  {
     // Edit anothers list
+    console.log('wat');
+    // console.log(this.test.token.token);
+    // console.log(this.test.todoListId);
    request(app)
    .patch(`/todolist/${this.test.todoListId}`)
    .set('Authorization', `Bearer ${this.test.token.token}`)

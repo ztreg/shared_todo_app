@@ -7,17 +7,20 @@ module.exports = {
             return error
         }
     },
-    doneTodo: async (done, todoId) => {
-        try {
-            return await Todo.findByIdAndUpdate(todoId, {"done": done}, {useFindAndModify: false, versionKey: false})
-        } catch(error) {
-            return error
-        }
-    },
+    // doneTodo: async (done, todoId) => {
+    //     try {
+    //         return await Todo.findByIdAndUpdate(todoId, {"done": done}, {useFindAndModify: false, versionKey: false})
+    //     } catch(error) {
+    //         return error
+    //     }
+    // },
     updateTodo: async (todoFilter) => {
         try {
+            //console.log(todoFilter);
             return await Todo.updateOne({_id: todoFilter.todoId},{ $set: todoFilter})
+            //console.log(status);
         } catch (error) {
+            console.log(error);
             return error
         }
     },

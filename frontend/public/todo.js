@@ -27,9 +27,9 @@ class TodoRequests {
       })
   }
 
-  static async editFullTodo (title, done, id) {
+  static async editFullTodo (title, done, id, listId) {
     console.log('making full edit request for id ' + id)
-    return await fetch('http://localhost:8081/todo/' + id, {
+    return await fetch(`http://localhost:8081/todo/${id}?listId=${listId}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${process.env.TOKEN}`,
@@ -52,8 +52,8 @@ class TodoRequests {
     })
   }
 
-  static async deleteTodo (id) {
-    return await fetch('http://localhost:8081/todo/' + id, {
+  static async deleteTodo (id, listId) {
+    return await fetch(`http://localhost:8081/todo/${id}?listId=${listId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${process.env.TOKEN}`,
