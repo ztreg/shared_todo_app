@@ -19,7 +19,7 @@ describe('Integration tests for todolist', () => {
     await todo.clearAllTodos()
     await todolist.clearAllTodoLists()
     await user.clearAllUsers()
-    
+
     // Get data from file or function
     //Arrange 3 users
     let newUser =	{
@@ -69,7 +69,8 @@ describe('Integration tests for todolist', () => {
       title: "testar lite",
       done: false,
       userid: useroneId,
-      listId: listone._id
+      listId: listone._id,
+      urgent: true
     }
     const firstTodo = await todo.insertTodo(newTodo)
     newTodo.title = 'ey testar lite 2'

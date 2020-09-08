@@ -59,6 +59,10 @@ var TodoSchema = new mongoose.Schema(
         listId: {
             type: String,
             required: true
+        },
+        urgent: {
+            type: Boolean,
+            default: false
         }
     }, 
         {

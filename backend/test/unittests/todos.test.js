@@ -33,7 +33,8 @@ describe('Unit Tests for todos', function ()  {
          title: 'testTodo',
          done: false,
          userid: user._id,
-         listId: todolist._id
+         listId: todolist._id,
+         urgent: true
       }
     })
 

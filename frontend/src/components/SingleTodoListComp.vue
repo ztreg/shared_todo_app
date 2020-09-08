@@ -3,7 +3,10 @@
     <div class="text-h5 text-center">Listname: {{ listname }} </div>
     <LogoutComponent></LogoutComponent>
     <InviteUserComp></InviteUserComp>
-    <q-form @submit="addTodo(todoTitle)" class="row" >
+    <q-form @submit="addTodo(todoTitle, todoUrgent)" class="row" >
+        <div class="bg-red">
+          <q-checkbox class="text-body1 q-pa-lg" v-model="todoUrgent" @click="todoUrgent = !todoUrgent"> <div >Urgent todo?</div></q-checkbox>
+      </div>
     <q-input filled v-model="todoTitle" label="New todo *" class="col-5 bg-white text-h5" />
       <q-btn label="Add Todo" type="submit" color="green" v-model="todoTitle"/>
     </q-form>
@@ -25,8 +28,9 @@
         <q-item-section>Todo quickDone</q-item-section>
         <q-item-section>Todo Edit</q-item-section>
       </q-item>
-      <div v-for="(todo, i) in todos" :key="i" class="parr q-pa-md text-body1 text-center">
-       <q-item :id="todo._id" class="border">
+      <div v-for="(todo, i) in todos" :key="i"  class="parr q-pa-md text-body1 text-center">
+       <q-item :id="todo._id" class="border" >
+         <div class="border rounded-borders q-pa-sm bg-red" v-if="(todo.urgent === true)">!</div>
          <q-item-section v-if="(auth.role === 'admin')" class="text-body2 text-weight-thin">{{ todo.userid }}</q-item-section>
          <q-item-section>{{ todo.createdAt }}</q-item-section>
          <q-item-section>{{ todo.updatedAt }}</q-item-section>
@@ -49,6 +53,7 @@
           </div>
         </q-btn-dropdown>
         </q-item>
+        
       </div>
     </q-list>
     <div>Page: {{ this.page + 1 }} / {{ this.max }}</div>
@@ -79,7 +84,8 @@ export default {
       maxNmrOfPosts: Number,
       currentUser: '',
       searchtext: '',
-      listname: ''
+      listname: '',
+      todoUrgent: false
     }
   },
   components: {
@@ -124,10 +130,13 @@ export default {
     async editFullTodo (title, done, _id) {
       todoRequests.editFullTodo(title, done, _id, this.$route.params.id)
     },
-    async addTodo (title) {
+    async addTodo (title, urgent) {
+      console.log(urgent);
+      console.log(this.todoUrgent);
       // console.log(this.auth)
       // console.log(this.$route.params.id)
-      await todoRequests.addTodo(title, this.$route.params.id)
+      await todoRequests.addTodo(title, this.$route.params.id, urgent)
+      this.todoUrgent = false
       this.direction = 'asc'
       const sortFrom = 'createdAt'
       const data = await todoRequests.fetchTodos(sortFrom, this.direction, this.page, this.$route.params.id)

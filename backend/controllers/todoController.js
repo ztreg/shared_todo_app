@@ -11,8 +11,10 @@ module.exports = {
         const todo = {
             title: req.body.title,
             userid: req.user.userId,
-            listId: req.params.listId
+            listId: req.params.listId,
+            urgent: req.body.urgent
         }
+        console.log(todo);
         let added = await todoModel.insertTodo(todo);
         let status = added ? 201 : 500;
         res.status(status).json({added});
@@ -37,12 +39,6 @@ module.exports = {
         let status = updateinfo ? 201 : 500;
         res.status(status).json({updated_count: updateinfo});
     },
-    // doneTodo: async (req, res) => {
-    //     // console.log(req.body)
-    //     let lastId = await todoModel.doneTodo(req.body.done, req.params.todoId)
-    //     let status = lastId ? 201 : 500;
-    //     res.status(status).json({last_inserted_id: lastId});
-    // },
     deleteTodo: async (req, res) => {
         let listOfTodo = await todoListModel.getTodoList({_id: req.query.listId})
         let todoToDelete = await todoModel.getTodo({_id: req.params.todoId})

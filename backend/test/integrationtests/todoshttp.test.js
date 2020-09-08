@@ -41,7 +41,8 @@ describe('Integration tests for todos', () => {
           title: 'yup',
           done: false,
           userid: userTwo._id.toString(),
-          listId: listTwo._id.toString()
+          listId: listTwo._id.toString(),
+          urgent: false
         }
         this.currentTest.todo2 = await todoModel.insertTodo(todoToDelete)
         this.currentTest.token = await authenticationModel.login({username: userTwo.username, password: '1234' })
@@ -52,7 +53,7 @@ describe('Integration tests for todos', () => {
       })
 
      it('Should add a todo ', async function() {
-      const fields = { title: "todo from httptest", done: false }
+      const fields = { title: "todo from httptest", done: false, urgent: false }
        request(app)
        .post(`/todo/${this.test.list._id}`)
        .set('Authorization', `Bearer ${this.test.token.token}`)
@@ -77,7 +78,7 @@ describe('Integration tests for todos', () => {
     })
     it('Should be allowed edit a existing todo', async function() {
       const existingTodo = await todo.getTodo({title: 'yup'})
-      const fields = { title: "editedyaez", done: true }
+      const fields = { title: "editedyaez", done: true, urgent: true }
       // console.log(existingTodo._id);
       // console.log(this.test.list._id);
       request(app)
@@ -93,7 +94,7 @@ describe('Integration tests for todos', () => {
      })
      it('Should fail at deleting a todo(wrong user)', async function() {
       const existingTodo = await todo.getTodo({title: 'yup'})
-      const fields = { title: "edited todo from httptest", done: true }
+      const fields = { title: "edited todo from httptest", done: true, urgent: false }
       request(app)
       .delete(`/todo/${existingTodo._id}?listId=${existingTodo.listId}`)
       .set('Authorization', `Bearer ${this.test.token2.token}`)

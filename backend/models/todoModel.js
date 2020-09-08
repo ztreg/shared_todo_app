@@ -2,18 +2,11 @@ const {Todo, User, TodoList} = require('../database/mongodb');
 module.exports = {
     insertTodo: async (todo) => {
         try {
-           return await Todo.create({title: todo.title, userid: todo.userid, listId: todo.listId })
+           return await Todo.create({title: todo.title, userid: todo.userid, listId: todo.listId, urgent: todo.urgent })
         } catch(error) {
             return error
         }
     },
-    // doneTodo: async (done, todoId) => {
-    //     try {
-    //         return await Todo.findByIdAndUpdate(todoId, {"done": done}, {useFindAndModify: false, versionKey: false})
-    //     } catch(error) {
-    //         return error
-    //     }
-    // },
     updateTodo: async (todoFilter) => {
         try {
             console.log(todoFilter);

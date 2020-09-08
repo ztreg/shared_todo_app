@@ -25,11 +25,6 @@ module.exports = {
     },
     updateUser: async (req, res) => {
         let userToEdit = req.params.userId;
-        //let userToEdit = await userModel.getUser({_id: req.params.userId})
-        // console.log('personen som ska editas');
-        // console.log(userToEdit);
-        // console.log('personen som gör requestet');
-        // console.log(req.user);
         if(userToEdit) {
             if(!req.user.isme(userToEdit) ) {
                 console.log('incorrect user is trying to edit this user')

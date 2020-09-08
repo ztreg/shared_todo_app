@@ -39,7 +39,7 @@ class TodoRequests {
     })
   }
 
-  static async addTodo (title, listId) {
+  static async addTodo (title, listId, urgent) {
     console.log('add todo with title ' + title  + 'and listId ' + listId)
 
     return await fetch(`http://localhost:8081/todo/${listId}`, {
@@ -48,7 +48,7 @@ class TodoRequests {
         Authorization: `Bearer ${process.env.TOKEN}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ title: title })
+      body: JSON.stringify({ title: title, urgent: urgent })
     })
   }
 
