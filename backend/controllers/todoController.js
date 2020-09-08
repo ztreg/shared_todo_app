@@ -14,7 +14,6 @@ module.exports = {
             listId: req.params.listId,
             urgent: req.body.urgent
         }
-        console.log(todo);
         let added = await todoModel.insertTodo(todo);
         let status = added ? 201 : 500;
         res.status(status).json({added});

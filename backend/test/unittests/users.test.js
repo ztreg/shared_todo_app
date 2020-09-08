@@ -8,44 +8,51 @@ const todomodel = require('../../models/todoModel')
 const todoListModel = require('../../models/todoListModel')
 const { expect } = require('chai')
 const { use } = require('../../app')
+const {getTestUsers} = require('../testdata')
 
 describe('Unit Tests for user', () => {
     before(async function () {
         await userModel.clearAllUsers()
         await todomodel.clearAllTodos()
         await todoListModel.clearAllTodoLists()
+        
     })
     
     it('should add a user', async function () {
-        //Arrange
-        const amanda = {
-            username: "Amanda",
-            password: "Amanda",
-            role: "member"
-        }
-        //Act, add new users
-        const amandaResult = await userModel.addUser(amanda)
+        //Arrange -> fetch mochdata
+        const users = await getTestUsers()
+
+        //Act
+        const amandaResult = await userModel.addUser(users[0])
+
         //Assert
         amandaResult.should.be.deep.an('object')
-        expect(amandaResult.username).to.be.equal(amanda.username)
+        expect(amandaResult.username).to.be.equal(users[0].username)
     })
     it('shold edit a user', async function() {
-        const member = await userModel.getUser({username: 'Amanda'})
-       const userToUpdate = {
-          userId: member._id.toString(),
-          username: 'Amanda2',
-          password: 'ey123'
-       } 
-       const result = await userModel.updateUser(userToUpdate)
-       const updatedNember = await userModel.getUser({_id: member._id})
-       expect(updatedNember.username).to.be.deep.equal(userToUpdate.username)
-       expect(updatedNember).to.be.deep.an('object')
+        const users = await getTestUsers()
+        const member = await userModel.addUser(users[1])
+        const userToUpdate = {
+            userId: member._id.toString(),
+            username: 'jonas2',
+            password: 'ey123'
+        } 
+        const result = await userModel.updateUser(userToUpdate)
+        const updatedNember = await userModel.getUser({_id: member._id})
+        expect(updatedNember.username).to.be.deep.equal(userToUpdate.username)
+        expect(updatedNember).to.be.deep.an('object')
     })
     it('shold delete a user', async function() {
-        const member = await userModel.getUser({username: 'Amanda2'})
+        //Arrange
+        const users = await getTestUsers()
+        const member = await userModel.addUser(users[2])
+
+        //Act
         const allusers = await userModel.getUsers({})
         const result = await userModel.deleteUser(member._id)
         const allusers2 = await userModel.getUsers({})
+
+        //Assert
         expect(allusers.length).to.be.greaterThan(allusers2.length)
         expect(result).to.be.deep.an('object')
     })

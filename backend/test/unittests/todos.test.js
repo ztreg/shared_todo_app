@@ -6,6 +6,7 @@ const todomodel = require('../../models/todoModel')
 const usermodel = require('../../models/userModel')
 const todoListModel = require('../../models/todoListModel')
 const {disconnect} = require('../../database/mongodb')
+const {getTestUsers} = require('../testdata')
 
 describe('Unit Tests for todos', function ()  {
     // before mockdata här jonas!!!!!!
@@ -22,7 +23,10 @@ describe('Unit Tests for todos', function ()  {
       await usermodel.clearAllUsers()
       await todomodel.clearAllTodos()
       await todoListModel.clearAllTodoLists()
-      user = await usermodel.addUser({username: 'membername', password: '123', role: 'member'})
+
+      const users = await getTestUsers()
+      
+      user = await usermodel.addUser(users[0])
       todolist2add = {
         title : 'Users first todolist! woh',
         creator : user.username,
@@ -37,10 +41,7 @@ describe('Unit Tests for todos', function ()  {
          urgent: true
       }
     })
-
-    beforeEach(async function () {
-
-    })
+    beforeEach(async function () {})
 
     it('add todo for a user in a list', async () => {
         result = await todomodel.insertTodo(todo)

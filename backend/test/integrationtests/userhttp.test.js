@@ -11,7 +11,7 @@ const authenticationModel = require('../../models/authenticationModel')
 const userModel = require('../../models/userModel')
 const todomodel = require('../../models/todoModel')
 const todoListModel = require('../../models/todoListModel')
-
+const {getTestUsers} = require('../testdata')
 
 describe('Integration tests for Users', function () {
     let currentTestuserid
@@ -19,11 +19,12 @@ describe('Integration tests for Users', function () {
     let currentTestmember1
     let currentTestmember2
     before(async function(){
+        const users = await getTestUsers()
         async function hashPassword(password) {
 			return bcrypt.hashSync(password, 10)
         }
-        const newUser = await userModel.addUser({username: 'httpuser23', password: '123', role: 'member'})
-        const newUser2 = await userModel.addUser({username: 'httpuser234', password: '123', role: 'member'})
+        const newUser = await userModel.addUser(users[0])
+        const newUser2 = await userModel.addUser(users[1])
         currentTestuserid = newUser._id.toString()
         currentTestuserid2 = newUser2._id.toString()
         currentTestmember1 = await authenticationModel.login({username: newUser.username, password: '123'})
