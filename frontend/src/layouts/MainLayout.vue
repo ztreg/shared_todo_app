@@ -16,6 +16,9 @@
         </q-toolbar-title>
         
         <div> Vilken bra webbtjänst jag har gjort till mig själv</div>
+        <q-btn class="q-ml-lg q-mr-lg" :to="'/profile'">  
+          <q-avatar icon="person" color="blue-5" class="icon"> </q-avatar>
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -30,7 +33,7 @@
           header
           class="text-grey-8"
         >
-          Essential Links
+          Different routes
         </q-item-label>
 
         <q-item v-for="link in linksData"
@@ -68,16 +71,22 @@ export default {
           to: '/'
         },
         {
-          title: 'Archive',
-          caption: 'Finished Todos',
-          icon: 'archive',
-          to: '/archive'
-        },
-        {
           title: 'Todolist',
           caption: 'Todolist',
           icon: 'list',
           to: '/todolist'
+        },
+        {
+          title: 'Profile',
+          caption: 'Profile & profile settings',
+          icon: 'person',
+          to: '/profile'
+        },
+        {
+          title: 'Archive',
+          caption: 'Finished Todos',
+          icon: 'archive',
+          to: '/archive'
         }
       ]
     }

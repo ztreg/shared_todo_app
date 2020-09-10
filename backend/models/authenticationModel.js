@@ -22,7 +22,7 @@ module.exports = {
             if(checkedPassword) {
                 // console.log('login sucessed, signing token')
                 let token = createToken({userId: user._id, role: user.role, username: user.username})
-                return loginSucess = {token: token, username: user.username, role: user.role}
+                return loginSucess = {token: token, username: user.username, role: user.role, id: user._id.toString()}
             } else {
                 return {msg: 'wrong password'}
             }

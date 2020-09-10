@@ -44,6 +44,12 @@ const routes = [
         meta: {
           middleware: [checkMember]
         }
+      },
+      { 
+        path: '/profile', component: () => import('pages/ProfilePage.vue'),
+        meta: {
+          middleware: [checkMember]
+        }
       }
     ]
   },

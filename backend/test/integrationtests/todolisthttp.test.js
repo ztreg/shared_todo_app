@@ -17,7 +17,7 @@ describe('Integration tests for todolist', () => {
 	beforeEach(async function () {
     // Clear all data id DB
     await todo.clearAllTodos()
-    await todolist.clearAllTodoLists()
+    await todolist.clearAllTodoLists({})
     await user.clearAllUsers()
 
     // Get data from file or function
@@ -171,6 +171,6 @@ describe('Integration tests for todolist', () => {
   after(async() => {
     await user.clearAllUsers()
     await todo.clearAllTodos()
-    await todolist.clearAllTodoLists()
+    await todolist.clearAllTodoLists({})
   })
 })

@@ -32,7 +32,7 @@ describe('Integration tests for Users', function () {
     })
     beforeEach(async function() {
         await userModel.clearAllUsers()
-        await todoListModel.clearAllTodoLists()
+        await todoListModel.clearAllTodoLists({})
         await todomodel.clearAllTodos()
     })
 
@@ -102,7 +102,7 @@ describe('Integration tests for Users', function () {
       })
       after(async ()=>{
         await userModel.clearAllUsers()
-        await todoListModel.clearAllTodoLists()
+        await todoListModel.clearAllTodoLists({})
         await todomodel.clearAllTodos()
       })
 })

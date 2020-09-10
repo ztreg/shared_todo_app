@@ -12,7 +12,7 @@ const {disconnect} = require('../../database/mongodb')
 
 describe('Unit Tests for todolist', () => {
     before(async function(){
-        await todolistmodel.clearAllTodoLists()
+        await todolistmodel.clearAllTodoLists({})
         await usermodel.clearAllUsers()
         await todomodel.clearAllTodos()
     })
@@ -66,7 +66,7 @@ describe('Unit Tests for todolist', () => {
         expect(result.deletedCount).to.be.equal(1)
     })
     after(async () => {
-        await todolistmodel.clearAllTodoLists()
+        await todolistmodel.clearAllTodoLists({})
         await usermodel.clearAllUsers()
         await todomodel.clearAllTodos()
     })

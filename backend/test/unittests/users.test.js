@@ -14,7 +14,7 @@ describe('Unit Tests for user', () => {
     before(async function () {
         await userModel.clearAllUsers()
         await todomodel.clearAllTodos()
-        await todoListModel.clearAllTodoLists()
+        await todoListModel.clearAllTodoLists({})
         
     })
     
@@ -81,7 +81,7 @@ describe('Unit Test for -> Searching for users', () => {
     after(async () => {
         await userModel.clearAllUsers()
         await todomodel.clearAllTodos()
-        await todoListModel.clearAllTodoLists()
+        await todoListModel.clearAllTodoLists({})
         disconnect()
     })
 })

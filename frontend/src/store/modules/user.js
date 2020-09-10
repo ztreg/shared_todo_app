@@ -5,7 +5,8 @@ const state = {
         loggedIn: false,
         role: 'guest',
         isAdmin: false,
-        username: 'Not a member'
+        username: 'Not a member',
+        userid: ''
     }
 }
 
@@ -22,7 +23,7 @@ const actions = {
         }
         try {
             const res = await axios.get('http://localhost:8081/login/authentication/checkToken', config)
-            console.log(res)
+            //console.log(res)
             commit('setUser', res.data) 
         } catch (error) {
             console.log(error)
@@ -33,10 +34,12 @@ const actions = {
 
 const mutations = {
     setUser: (state, user) => {
+        console.log(user);
         state.user.loggedIn = true
         state.user.role = user.role
         state.user.isAdmin = user.role === 'admin',
         state.user.username = user.username
+        state.user.userid = user.userid
     }
     /*
     logoutUser: (state, user) => {

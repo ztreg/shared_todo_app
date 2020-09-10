@@ -22,11 +22,12 @@ describe('Unit Tests for todos', function ()  {
     before(async function() {
       await usermodel.clearAllUsers()
       await todomodel.clearAllTodos()
-      await todoListModel.clearAllTodoLists()
+      await todoListModel.clearAllTodoLists({})
 
       const users = await getTestUsers()
       
       user = await usermodel.addUser(users[0])
+      console.log(user);
       todolist2add = {
         title : 'Users first todolist! woh',
         creator : user.username,
@@ -52,15 +53,15 @@ describe('Unit Tests for todos', function ()  {
     })
     it('should edit a todo', async function() {
         //Get a todo to update
-        const todoList = await todoListModel.getTodoList({creator: 'membername'})
+        const todoList = await todoListModel.getTodoList({_id: todolist._id})
         todotoedit = {
             title: 'testTodoUpdated',
             done: true,
             todoId: result._id,
             listId: todoList._id
         }
-        await todomodel.updateTodo(todotoedit)
-        const updatedTodo = await todomodel.getTodo({title: 'testTodoUpdated'})
+        const updatedTodoRes = await todomodel.updateTodo(todotoedit)
+        const updatedTodo = await todomodel.getTodo({_id: result._id})
         editedtodo = updatedTodo
         expect(updatedTodo.title).to.be.deep.equal(todotoedit.title)
     })
@@ -79,6 +80,6 @@ describe('Unit Tests for todos', function ()  {
     after(async function(){
       await usermodel.clearAllUsers()
       await todomodel.clearAllTodos()
-      await todoListModel.clearAllTodoLists()
+      await todoListModel.clearAllTodoLists({})
     })
 })

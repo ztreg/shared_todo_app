@@ -59,9 +59,9 @@ module.exports = {
             return error
         }
     },
-    clearAllTodoLists: async () => {
+    clearAllTodoLists: async (filter) => {
         try {
-            return await TodoList.deleteMany({})
+            return await TodoList.deleteMany(filter)
         } catch (error) {
             console.log(error)
             return error
