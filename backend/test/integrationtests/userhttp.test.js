@@ -20,9 +20,6 @@ describe('Integration tests for Users', function () {
     let currentTestmember2
     before(async function(){
         const users = await getTestUsers()
-        async function hashPassword(password) {
-			return bcrypt.hashSync(password, 10)
-        }
         const newUser = await userModel.addUser(users[0])
         const newUser2 = await userModel.addUser(users[1])
         currentTestuserid = newUser._id.toString()

@@ -12,6 +12,7 @@ const user = require('../../models/userModel')
 const todo = require('../../models/todoModel')
 const todolist = require('../../models/todoListModel')
 const todoModel = require('../../models/todoModel')
+const {getTestUsers} = require('../testdata')
 
 describe('Integration tests for todos', () => {
   before(async function() {
@@ -23,10 +24,8 @@ describe('Integration tests for todos', () => {
         // console.log(listTwo)
         await user.clearAllUsers()
         await todo.clearAllTodos()
-        async function hashPassword(password) {
-          return bcrypt.hashSync(password, 10)
-        }
-        //listTwo = await todolist.getTodoList({creator: userTwo.username})
+        const users = await getTestUsers()
+
         let userOne = await user.addUser({username: 'jonastodohttpnono', password: '12345', role: 'member'})
         let userTwo = await user.addUser({username: 'jonastodohttp', password: '1234', role: 'member'})
         let userAdmin = await user.addUser({username: 'jonasadmin', password: '123', role: 'admin'})

@@ -43,7 +43,6 @@ describe('Unit Tests for todolist', () => {
         expect(aOwner.username).to.be.equal(member.username)
         expect(newTodoList.userIds).to.be.an('array')
         expect(newTodoList.userIds[0]).to.be.equal(aOwner._id.toString())
-        // (newTodoList.doc).should.be.eql(firstTodoList)
     })
     it('Should edit a list', async function() {
 

@@ -12,6 +12,7 @@ const user = require('../../models/userModel')
 const todo = require('../../models/todoModel')
 const todolist = require('../../models/todoListModel')
 const { insertTodo } = require('../../models/todoModel')
+const {getTestUsers} = require('../testdata')
 
 describe('Integration tests for todolist', () => {
 	beforeEach(async function () {
@@ -19,31 +20,17 @@ describe('Integration tests for todolist', () => {
     await todo.clearAllTodos()
     await todolist.clearAllTodoLists({})
     await user.clearAllUsers()
-
+    
     // Get data from file or function
     //Arrange 3 users
-    let newUser =	{
-      username: "jonas1",
-      password: "123",
-      role: "member"
-    }
-    await user.addUser(newUser)
-    let newUser2 = {
-      username: "jonas2",
-      password: "1234",
-      role: "member"
-    }
-    await user.addUser(newUser2)
-    let userAdmin = {
-      username: "jonasadmin",
-      password: "12345",
-      role: "admin"
-    }
-    await user.addUser(userAdmin)
+    const users = await getTestUsers()
+    await user.addUser(users[3])
+    await user.addUser(users[4])
+    await user.addUser(users[5])
+
     const userone = await user.getUser({username: 'jonas1'})
     let useroneId = userone._id.toString()
     const usertwo = await user.getUser({username: 'jonas2'})
-    // console.log(usertwo);
     const useradmin = await user.getUser({username: 'jonasadmin'})
     let usertwoId = usertwo._id.toString()
     
@@ -91,6 +78,7 @@ describe('Integration tests for todolist', () => {
     this.currentTest.todoListId = listone._id.toString()
     this.currentTest.user2ID = usertwoId.toString()
 
+    //List to have for test
     let todoListToAdd = {
       title : 'todolist from htttp',
       creator : userone.username
@@ -123,9 +111,6 @@ describe('Integration tests for todolist', () => {
 
   it('Should fail to edit a list', async function()  {
     // Edit anothers list
-    console.log('wat');
-    // console.log(this.test.token.token);
-    // console.log(this.test.todoListId);
    request(app)
    .patch(`/todolist/${this.test.todoListId}`)
    .set('Authorization', `Bearer ${this.test.token.token}`)

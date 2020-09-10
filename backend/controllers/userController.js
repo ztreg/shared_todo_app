@@ -55,23 +55,17 @@ module.exports = {
                 return res.status(401).json({msg: 'incorrect user is trying to delete this user'})
                
             }
-
-
             let listcount;
             //Delete all lists and todos with this user
             const todoLists = await todoListModel.getTodoLists(userId)
             for(let i = 0; i < todoLists.length; i++ ) {
-                console.log('incorrect user is trying to get the lists')
                 listcount += await todoListModel.deleteTodoList(todoLists[i]._id)
             }
 
             let deleteResult2 = await todoModel.clearAllTodos({userid: userId})
             let response = await userModel.deleteUser(userId)
-
             let status = response ? 201 : 500;
-            console.log(deleteResult2);
-            console.log(response);
-            console.log(listcount);
+
             return res.status(status).json({response: response});
         }
         else {
