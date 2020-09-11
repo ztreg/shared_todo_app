@@ -69,6 +69,7 @@ module.exports = {
 
         // Checks if we should add a user
         if(req.query.userToAdd) list.userId = req.query.userToAdd
+        console.log(list);
 
         let updatedId = await todoListModel.updateTodoList(list)
         let status = updatedId ? 201 : 500;

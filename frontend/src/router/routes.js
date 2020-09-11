@@ -50,6 +50,9 @@ const routes = [
         meta: {
           middleware: [checkMember]
         }
+      },
+      { 
+        path: '/policy', component: () => import('pages/PolicyPage.vue'),
       }
     ]
   },

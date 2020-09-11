@@ -49,41 +49,74 @@ module.exports = {
     },
     deleteUser: async (req, res) => {
         let userId = req.params.userId
-        if(userId) {
             if(!req.user.isme(userId)) {
                 console.log('incorrect user is trying to delete this user')
                 return res.status(401).json({msg: 'incorrect user is trying to delete this user'})
-               
             }
             let listcount;
             //Delete all lists and todos with this user
-            const todoLists = await todoListModel.getTodoLists(userId)
-            for(let i = 0; i < todoLists.length; i++ ) {
-                listcount += await todoListModel.deleteTodoList(todoLists[i]._id)
+            const ownedTodoLists = await todoListModel.getTodoLists(userId)
+
+            for(let i = 0; i < ownedTodoLists.length; i++ ) {
+                    if(ownedTodoLists[i].userIds.length > 1) {
+                         // There are other users in this list
+
+                        for(let x = 0; x < ownedTodoLists[i].userIds.length; x++) {
+                            if(ownedTodoLists[i].userIds[x] === userId){
+                                // Remove userID from userlistarray
+                                ownedTodoLists[i].userIds.splice(x, 1)
+                                ownedTodoLists[i].listId = ownedTodoLists[i]._id
+                                listcount += await todoListModel.updateTodoList(ownedTodoLists[i])
+                            }
+                        }
+                    } else {
+                        // The user is the only owner
+
+                        listcount += await todoListModel.deleteTodoList(ownedTodoLists[i]._id)
+                        console.log('deleted a solo list');
+                    }
             }
 
             let deleteResult2 = await todoModel.clearAllTodos({userid: userId})
             let response = await userModel.deleteUser(userId)
             let status = response ? 201 : 500;
 
-            return res.status(status).json({response: response});
-        }
-        else {
-            return res.status(500).json({msg: 'no userID given'})
-        }
-        
+            return res.status(status).json({response: response});   
     },
     getUsers: async (req, res) => {
         if(req.query.searchUserText) {
-            res.json(await userModel.getUsers(req.query.searchUserText))  
+            return res.json(await userModel.getUsers(req.query.searchUserText))  
         }
         res.json(await userModel.getUsers())   
     },
     getUser: async (req, res) => {
         res.json(await userModel.getUser({Userinfo: req.params.userId}))  
     },
+    getUserAll: async(req, res) => {
+        
+        if(!req.user.isme(req.params.userId)) {
+            console.log('incorrect user is trying to delete this user')
+            return res.status(401).json({msg: 'incorrect user is trying to delete this user'})
+        }
+        let todos = await userModel.getUserTodos(req.params.userId)
+        let lists = await todoListModel.getTodoLists(req.params.userId)
+        let response = {
+            todos, lists
+        }
+        if(todos.length > 0) {
+            res.status(200).json(response) 
+        } else {
+            res.status(404).json("userid not found") 
+        }
+         
+    },
     getUserTodos: async(req, res) => {
-        let response = await userModel.getUserPosts(req.params.userId)
+        
+        if(!req.user.isme(req.params.userId)) {
+            console.log('incorrect user is trying to delete this user')
+            return res.status(401).json({msg: 'incorrect user is trying to delete this user'})
+        }
+        let response = await userModel.getUserTodos(req.params.userId)
         if(response.length > 0) {
             res.status(200).json(response) 
         } else {

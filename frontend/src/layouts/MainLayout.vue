@@ -52,7 +52,15 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+      <q-footer class="bg-grey-9">
+        <q-toolbar class="glossy">
+          <q-toolbar-title></q-toolbar-title>
+           <q-toolbar-title><q-btn :to="'/todolist'" class="text-white">Todolists</q-btn></q-toolbar-title>
+          <q-toolbar-title><q-btn :to="'/policy'" class="text-white">Privacy Policy</q-btn></q-toolbar-title>
+        </q-toolbar>
+      </q-footer>
   </q-layout>
+
 </template>
 
 <script>
@@ -87,6 +95,12 @@ export default {
           caption: 'Finished Todos',
           icon: 'archive',
           to: '/archive'
+        },
+        {
+          title: 'Privacy Policy',
+          caption: 'Privacy Policy',
+          icon: 'policy',
+          to: '/policy'
         }
       ]
     }

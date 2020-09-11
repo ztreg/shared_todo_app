@@ -28,8 +28,6 @@ module.exports = {
         
     },
     getTodoList: async (listfilter) => {
-        // console.log('ey listid')
-        // console.log(listfilter)
         try {
             return await TodoList.findOne(listfilter)
         } catch (error) {
@@ -39,11 +37,13 @@ module.exports = {
     updateTodoList: async (list) => {
         try {
             if(list.userId) {
+                // Add user to list
                 return await TodoList.updateOne(
                     { _id: list.listId }, 
                     { $push: { userIds: list.userId } },
                 );
             } else {
+                // Update fields in list
                 return await TodoList.updateOne({_id: list.listId},
                     { $set: list }, 
                     {useFindAndModify: false, versionKey: false});

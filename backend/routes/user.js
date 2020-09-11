@@ -6,6 +6,8 @@ userRouter.get('/:userId', authorization, userController.getUser);
 
 userRouter.get('/', userController.getUsers);
 
+userRouter.get('/gdpr/:userId', authorization, userController.getUserAll);
+
 userRouter.post('/', userController.addUser);
 
 userRouter.delete('/:userId', authorization, userController.deleteUser);
