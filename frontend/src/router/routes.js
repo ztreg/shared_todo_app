@@ -53,6 +53,9 @@ const routes = [
       },
       { 
         path: '/policy', component: () => import('pages/PolicyPage.vue'),
+      },
+      { 
+        path: '/cookiepolicy', component: () => import('pages/Cookiepolicy.vue'),
       }
     ]
   },
