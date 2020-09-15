@@ -2,12 +2,11 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <!-- Cookie accept here -->
-      <div class="q-pa-md q-gutter-sm" v-if="!nocookie">
+      <div class="q-pa-md q-gutter-sm" v-if="allowCookies === false && clicked === false">
       <q-banner class="bg-grey-8">
         <template v-slot:avatar>
-          <q-icon name="info" color="white" />
-          <q-btn color="blue" label="OK" style="font-size: 4.4em;" @click="cookieAccept(true)"/>
-          <q-btn color="black" :to="'/cookiepolicy'" label="Read our cookie policy" />
+          <q-btn color="green" label="I agree" style="font-size: 2em;" @click="cookieAccept(true)"/>
+          <q-btn color="black" :to="'/cookiepolicy'" icon="info" label="Read our cookie policy" />
         </template>
           <template v-slot:action>
           <q-btn color="grey" label="Turn off cookies" @click="cookieAccept(false)" />
@@ -35,10 +34,7 @@
       content-class="bg-grey-1"
     >
       <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
+        <q-item-label header class="text-grey-8">
           Menu
         </q-item-label>
 
@@ -54,7 +50,6 @@
         </q-item>
       </q-list>
     </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -63,6 +58,7 @@
           <q-toolbar-title></q-toolbar-title>
            <q-toolbar-title><q-btn :to="'/todolist'" class="text-white">Todolists</q-btn></q-toolbar-title>
           <q-toolbar-title><q-btn :to="'/policy'" class="text-white">Privacy Policy</q-btn></q-toolbar-title>
+          <q-toolbar-title><q-btn :to="'/cookiepolicy'" class="text-white">Cookie Policy</q-btn></q-toolbar-title>
         </q-toolbar>
       </q-footer>
   </q-layout>
@@ -77,7 +73,8 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
-      nocookie: false,
+      allowCookies: false,
+      clicked: false,
       linksData: [
         {
           title: 'Login',
@@ -108,9 +105,24 @@ export default {
           caption: 'Privacy Policy',
           icon: 'policy',
           to: '/policy'
+        },
+        {
+          title: 'Cookie Policy',
+          caption: 'Cookie Policy',
+          icon: 'circle',
+          to: '/cookiepolicy'
         }
       ]
     }
+  },
+  mounted () {
+    console.log(this.allowCookies);
+    if(localStorage.getItem('allowCokokie') === 'true') {
+      this.allowCookies = localStorage.getItem('allowCokokie')
+    } else {
+      this.allowCookies = false
+    }
+    
   },
   methods: {
     closeburger () {
@@ -118,13 +130,18 @@ export default {
       console.log(this.leftDrawerOpen)
     },
     cookieAccept (val) {
-      this.nocookie = val
+      console.log(val);
+      this.allowCookies = val
+      this.clicked = true
       if(val === false) {
+        localStorage.setItem('allowCokokie', false)
         localStorage.removeItem('token')
         localStorage.removeItem('showUsers')
         localStorage.removeItem('role')
         localStorage.removeItem('showUsernames')
         localStorage.removeItem('username')
+      } else {
+        localStorage.setItem('allowCokokie', true)
       }
     }
   },

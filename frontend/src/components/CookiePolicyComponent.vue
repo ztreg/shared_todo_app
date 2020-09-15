@@ -29,8 +29,7 @@
            Why is that data saved?
         </div>
         <div class="text-body1 q-ma-sm">
-          - We save that token to confirm your account information to make sure
-you are who you say you are and keep you signed in on the service until the token expires.
+          - We save that token to confirm your account information to make sure you are who you say you are and keep you signed in on the service until the token expires.
         </div>
     </div> 
     <div class="q-ma-md">
@@ -39,6 +38,7 @@ you are who you say you are and keep you signed in on the service until the toke
         </div>
         <div class="text-body1 q-ma-sm">
              - Clck the "Turn off cookies button when the page loads"
+             <q-btn color="grey" label="Turn off cookies" @click="cookieAccept(false)" />
         </div>
     </div> 
   </q-page>
@@ -48,7 +48,25 @@ you are who you say you are and keep you signed in on the service until the toke
 export default {
     name: 'CookiePolicyComponent',
     data () {
-        return {}
+        return {
+            allowCookies: localStorage.getItem('allowCokokie')
+        }
+    },
+    methods: {
+    cookieAccept (val) {
+      this.allowCookies = val
+      if(val === false) {
+        localStorage.setItem('allowCokokie', false)
+        localStorage.removeItem('token')
+        localStorage.removeItem('showUsers')
+        localStorage.removeItem('role')
+        localStorage.removeItem('showUsernames')
+        localStorage.removeItem('username')
+        this.$router.go('/')
+      } else {
+        localStorage.setItem('allowCokokie', true)
+      }
+    }
     }
 }
 </script>

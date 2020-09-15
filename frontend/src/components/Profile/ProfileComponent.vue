@@ -2,7 +2,7 @@
   <q-page>
     <div class="text-h4 text-center">All data on you</div>
     <q-btn class="float-right" label="Delete account" color="red" @click="deleteProfile()" ></q-btn>
-    
+    <p class="text-body1" v-if="allowedCookies"> You have allowed cookies on this site</p>
 
     <div class="row">
     <ProfileAllTodos></ProfileAllTodos>
@@ -25,11 +25,13 @@ export default {
   data () {
     return {
       token: '',
-      name: ''
+      name: '',
+      allowedCookies: false
     }
   },
   mounted () {
     this.token = localStorage.getItem('token')
+    this.allowedCookies = localStorage.getItem('allowCokokie')
   },
   computed: {
     ...mapGetters(['auth'])

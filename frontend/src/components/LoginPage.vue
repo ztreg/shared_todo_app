@@ -40,13 +40,17 @@ export default {
       token: '',
       currentUser: '',
       status: 'Log in to start todoing',
-      role: ''
+      role: '',
+      allowCookies: false
     }
   },
   mounted () {
     if (localStorage.token) {
       this.token = localStorage.token
     }
+    if(localStorage.getItem('allowCokokie') === 'false') {
+      this.allowCookies = localStorage.getItem('allowCokokie')
+    } 
   },
   computed: {
     ...mapGetters(['auth'])

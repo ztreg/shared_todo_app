@@ -23,7 +23,6 @@ const actions = {
         }
         try {
             const res = await axios.get('http://localhost:8081/login/authentication/checkToken', config)
-            //console.log(res)
             commit('setUser', res.data) 
         } catch (error) {
             console.log(error)
@@ -37,7 +36,7 @@ const mutations = {
         console.log(user);
         state.user.loggedIn = true
         state.user.role = user.role
-        state.user.isAdmin = user.role === 'admin',
+        state.user.isAdmin = user.role === 'admin'
         state.user.username = user.username
         state.user.userid = user.userid
     }

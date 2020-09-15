@@ -43,8 +43,8 @@ module.exports = {
         let todoToDelete = await todoModel.getTodo({_id: req.params.todoId})
         if(todoToDelete) {
             if(!req.user.owns(todoToDelete) && !req.user.isListCollaborator(listOfTodo.userIds) && !req.user.isAdmin()) {
-                console.log('incorrect user is trying to edit this todo')
-                return res.status(401).json({msg: 'incorrect user is trying to edit this todo'})
+                console.log('incorrect user is trying to delete this todo')
+                return res.status(401).json({msg: 'incorrect user is trying to delete this todo'})
             }
         }
         let count = await todoModel.deleteTodo(req.params.todoId)

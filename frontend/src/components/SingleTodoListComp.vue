@@ -24,7 +24,6 @@
         <q-item-section>Updated At</q-item-section>
         <q-item-section>Delete Todo</q-item-section>
         <q-item-section>Todo Title</q-item-section>
-        <q-item-section>Todo Status</q-item-section>
         <q-item-section>Todo quickDone</q-item-section>
         <q-item-section>Todo Edit</q-item-section>
       </q-item>
@@ -36,12 +35,11 @@
          <q-item-section>{{ todo.updatedAt }}</q-item-section>
          <q-avatar clickable v-ripple color="red" text-color="white" icon="delete" class="" @click="deleteTodo(todo._id)"/>
          <q-item-section>{{todo.title}}</q-item-section>
-         <q-item-section>{{todo.done}}</q-item-section>
          <q-item-section>
-            <div class="q-gutter-sm">
-                <q-checkbox v-model="todo.done" v-on:input="editFullTodo(todo.title, todo.done, todo._id)"/>
-            </div>
-          </q-item-section>
+          <div class="q-gutter-sm">
+            <q-checkbox v-model="todo.done" v-on:input="editFullTodo(todo.title, todo.done, todo._id)"/>
+          </div>
+        </q-item-section>
         <q-btn-dropdown class="glossy" color="green" icon="edit" label="Edit">
           <div class="row no-wrap q-pa-md">
             <q-input v-model="todo.title" label="new title *" autofocus />
