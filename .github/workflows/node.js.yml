@@ -32,7 +32,7 @@ jobs:
     - run: npm test
       env:
           HOST: localhost
-          DATABASE: todo
+          DATABASE: todoTest
           PAGINATION: 2
           SECRET: 'ey boss'
           ENVIRONMENT: development
