@@ -64,6 +64,9 @@ Environments ->
     git push heroku master
     git push heroku master:origin
 
+    git remote rm heroku
+    heroku git:remote -a newname
+    
     git remote remove heroku
     git remote add staging "heroku git"
 

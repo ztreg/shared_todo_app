@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     async deleteProfile () {
-      const result = await fetch(`http://localhost:8081/users/${this.auth.userid}`, {
+      const result = await fetch(`http://localhost:8081/api/users/${this.auth.userid}`, {
        method: 'DELETE',
        headers: {
           Authorization: `Bearer ${this.token}`,

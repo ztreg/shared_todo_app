@@ -22,7 +22,7 @@ export default {
     },
     methods: {
       async fectchUsersSearch (searchUserText) {
-        await fetch(`http://localhost:8081/users?searchUserText=${searchUserText}`, {
+        await fetch(`http://localhost:8081/api/users?searchUserText=${searchUserText}`, {
           headers: {
           Authorization: `Bearer ${process.env.TOKEN}`,
           'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ export default {
         })
       },
       async inviteUser (userid) {
-        const response = await fetch(`http://localhost:8081/todolist/${this.$route.params.id}?userToAdd=${userid}`, {
+        const response = await fetch(`http://localhost:8081/api/todolist/${this.$route.params.id}?userToAdd=${userid}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${process.env.TOKEN}`,
