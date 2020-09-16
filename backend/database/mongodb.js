@@ -19,6 +19,7 @@ async function testConnect () {
             reconnectInterval: 1000,
             useUnifiedTopology: true
         }
+        console.log('connecting to ' + uri)
         await mongoose.connect(uri, options);
 
         // async function disconnect() {
