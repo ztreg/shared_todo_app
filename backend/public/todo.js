@@ -4,7 +4,7 @@ class TodoRequests {
     if (page <= 0) page = 0
     console.log('lllllllll')
     console.log(`${sortFrom} | ${direction} | ${page} | ${listId}`)
-    return await fetch(`http://localhost:8081/api/todo?sortFrom=${sortFrom}&direction=${direction}&page=${page}&listId=${listId}`,
+    return await fetch(`http://localhost:8081/todo?sortFrom=${sortFrom}&direction=${direction}&page=${page}&listId=${listId}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.TOKEN}`,
@@ -29,7 +29,7 @@ class TodoRequests {
 
   static async editFullTodo (title, done, id, listId) {
     console.log('making full edit request for id ' + id)
-    return await fetch(`http://localhost:8081/api/todo/${id}?listId=${listId}`, {
+    return await fetch(`http://localhost:8081/todo/${id}?listId=${listId}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${process.env.TOKEN}`,
@@ -42,7 +42,7 @@ class TodoRequests {
   static async addTodo (title, listId, urgent) {
     console.log('add todo with title ' + title  + 'and listId ' + listId)
 
-    return await fetch(`http://localhost:8081/api/todo/${listId}`, {
+    return await fetch(`http://localhost:8081/todo/${listId}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.TOKEN}`,
@@ -53,7 +53,7 @@ class TodoRequests {
   }
 
   static async deleteTodo (id, listId) {
-    return await fetch(`http://localhost:8081/api/todo/${id}?listId=${listId}`, {
+    return await fetch(`http://localhost:8081/todo/${id}?listId=${listId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${process.env.TOKEN}`,
@@ -63,7 +63,7 @@ class TodoRequests {
   }
 
   static async fetchListName(listId) {
-    return await fetch(`http://localhost:8081/api/todolist?listId=${listId}`, {
+    return await fetch(`http://localhost:8081/todolist?listId=${listId}`, {
       headers: {
         Authorization: `Bearer ${process.env.TOKEN}`,
         'Content-Type': 'application/json'

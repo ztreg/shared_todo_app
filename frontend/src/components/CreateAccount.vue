@@ -50,7 +50,7 @@ export default {
        this.checkMarkCherker = 'To sign up you must agree to the terms above'
       } else {
         this.checkMarkCherker = ''
-          await fetch('http://localhost:8081/api/users', {
+          await fetch('/api/users', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
