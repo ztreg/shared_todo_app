@@ -16,9 +16,6 @@ async function testConnect () {
         console.log('connecting to ' + uri)
         const options = {
             useNewUrlParser: true,
-            autoReconnect: true,
-            reconnectTries: Number.MAX_VALUE,
-            reconnectInterval: 1000,
             useUnifiedTopology: true
         }
         
