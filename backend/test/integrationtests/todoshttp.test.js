@@ -54,7 +54,7 @@ describe('Integration tests for todos', () => {
      it('Should add a todo ', async function() {
       const fields = { title: "todo from httptest", done: false, urgent: false }
        request(app)
-       .post(`/todo/${this.test.list._id}`)
+       .post(`/api/todo/${this.test.list._id}`)
        .set('Authorization', `Bearer ${this.test.token.token}`)
        .send(fields)
        .end((err, res) => {
@@ -66,7 +66,7 @@ describe('Integration tests for todos', () => {
      it('should search for todos with a text', async function() {	 
       const existingTodo = await todo.getTodo({title: 'yup'})
       request(app)
-      .get(`/todo/search/${existingTodo.listId}?searchText=e`)
+      .get(`/api/todo/search/${existingTodo.listId}?searchText=e`)
       .set('Authorization', `Bearer ${this.test.admin.token}`)
         .end((err, res) => {
         expect(res).to.have.status(200)
@@ -81,7 +81,7 @@ describe('Integration tests for todos', () => {
       // console.log(existingTodo._id);
       // console.log(this.test.list._id);
       request(app)
-      .patch(`/todo/${existingTodo._id}?listId=${existingTodo.listId}`)
+      .patch(`/api/todo/${existingTodo._id}?listId=${existingTodo.listId}`)
       .set('Authorization', `Bearer ${this.test.token.token}`)
       .set("Content-Type", "application/json")
       .send(fields)
@@ -95,7 +95,7 @@ describe('Integration tests for todos', () => {
       const existingTodo = await todo.getTodo({title: 'yup'})
       const fields = { title: "edited todo from httptest", done: true, urgent: false }
       request(app)
-      .delete(`/todo/${existingTodo._id}?listId=${existingTodo.listId}`)
+      .delete(`/api/todo/${existingTodo._id}?listId=${existingTodo.listId}`)
       .set('Authorization', `Bearer ${this.test.token2.token}`)
       .send(fields)
       .end((err, res) => {

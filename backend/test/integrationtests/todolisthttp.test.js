@@ -89,7 +89,7 @@ describe('Integration tests for todolist', () => {
   it('Should get A specific list', async function() {
   const listToGet = await todolist.getTodoList({title: 'Users first todolist! woh'})
     request(app)
-    .get(`/todolist?todoListId=${listToGet._id}`)
+    .get(`/api/todolist?todoListId=${listToGet._id}`)
     .set('Authorization', `Bearer ${this.test.admin.token}`)
     .end((err, res) => {
       res.should.have.status(200)
@@ -99,7 +99,7 @@ describe('Integration tests for todolist', () => {
   })
   it('Should add a list', async function() {
     request(app)
-    .post(`/todolist`)
+    .post(`/api/todolist`)
     .set('Authorization', `Bearer ${this.test.token2.token}`)
     .send(this.test.todoListToAdd)
     .end((err, res) => {
@@ -112,7 +112,7 @@ describe('Integration tests for todolist', () => {
   it('Should fail to edit a list', async function()  {
     // Edit anothers list
    request(app)
-   .patch(`/todolist/${this.test.todoListId}`)
+   .patch(`/api/todolist/${this.test.todoListId}`)
    .set('Authorization', `Bearer ${this.test.token.token}`)
    .send({title: "updated list"})
    .end((err, res) => {
@@ -124,7 +124,7 @@ describe('Integration tests for todolist', () => {
   it('Should success to edit your own list', async function () {
        // Edit your own list
    request(app)
-   .patch(`/todolist/${this.test.todoListId}`)
+   .patch(`/api/todolist/${this.test.todoListId}`)
    .set('Authorization', `Bearer ${this.test.token2.token}`)
    .send({title: "updated list"})
    .end((err, res) => {
@@ -135,7 +135,7 @@ describe('Integration tests for todolist', () => {
   it('Should fail to delete a list ', async function() {
     //Delete anothers list
     request(app)
-    .delete(`/todolist/${this.test.todoListId}`)
+    .delete(`/api/todolist/${this.test.todoListId}`)
     .set('Authorization', `Bearer ${this.test.token.token}`)
     .end((err, res) => {
       res.should.have.status(401)
@@ -146,7 +146,7 @@ describe('Integration tests for todolist', () => {
   it('and succeed as the correct user', async function() {
     //Delete your own list
     request(app)
-    .delete(`/todolist/${this.test.todoListId}`)
+    .delete(`/api/todolist/${this.test.todoListId}`)
     .set('Authorization', `Bearer ${this.test.token2.token}`)
     .end((err, res) => {
       res.should.have.status(201)

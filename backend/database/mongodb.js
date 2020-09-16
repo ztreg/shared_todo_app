@@ -60,8 +60,6 @@ async function testConnect () {
 
 // 
 testConnect();
-// console.log('connecting to ' + uri)
-
 
 
 if(!mongoose.connection) {
