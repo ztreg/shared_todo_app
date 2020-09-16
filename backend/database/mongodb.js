@@ -11,7 +11,7 @@ async function testConnect () {
     if(process.env.ENVIRONMENT === 'test'){
         console.log('now we go test');
         
-        uri = await mondoTest.getConnectionString();
+        uri = await mondoTest.getUri();
         const options = {
             useNewUrlParser: true,
             autoReconnect: true,
@@ -40,7 +40,7 @@ async function testConnect () {
 
 // 
 testConnect();
-console.log('connecting to ' + uri)
+// console.log('connecting to ' + uri)
 
 
 
