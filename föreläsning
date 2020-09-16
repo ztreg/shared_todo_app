@@ -46,3 +46,22 @@ Environments ->
 	Spana in actions tabben efter pushen, 
 
 	gitflow -> skapa develop branch -> pusha till den branchen
+
+    Heroku deployas ............................................................
+
+    heroku login
+    heroku create --region eu
+
+    heroku environment -> Settings -> Config Vars
+
+    heroku run npm test
+    heroku run bash
+  
+    heroku logs
+
+    git push heroku master
+
+    git remote remove heroku
+    git remote add staging "heroku git"
+    heroku create --region eu
+
