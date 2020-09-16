@@ -21,7 +21,7 @@ async function testConnect () {
         }
         await mongoose.connect(uri, options);
 
-        function disconnect() {
+        async function disconnect() {
             // Ending connection to db
             console.log('disconnecting')
             await mondoTest.stop()
@@ -50,10 +50,11 @@ if(!mongoose.connection) {
     console.log('making a connection')
 }
 
-function disconnect() {
+async function disconnect() {
     // Ending connection to db
     console.log('disconnecting')
     mongoose.connection.close()
+    await testConnect.disconnect()
 }
 
 var UserSchema = new mongoose.Schema({
