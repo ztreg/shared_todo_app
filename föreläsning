@@ -62,6 +62,7 @@ Environments ->
     heroku logs
 
     git push heroku master
+    git push heroku master:origin
 
     git remote remove heroku
     git remote add staging "heroku git"
