@@ -34,6 +34,9 @@ async function testConnect () {
     } else if(process.env.ENVIRONMENT === 'development') {
         uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
         mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+    } else if((process.env.ENVIRONMENT === 'staging') {
+        uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
+        mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     }
 }
 
