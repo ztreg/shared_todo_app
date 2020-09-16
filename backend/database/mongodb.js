@@ -21,8 +21,13 @@ async function testConnect () {
         }
         await mongoose.connect(uri, options);
 
-        await mondoTest.stop()
-        await mongoose.connection.close()
+        function disconnect() {
+            // Ending connection to db
+            console.log('disconnecting')
+            await mondoTest.stop()
+            await mongoose.connection.close()
+        }
+        
       
 
         //uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
