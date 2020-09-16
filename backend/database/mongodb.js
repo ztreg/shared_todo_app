@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server')
-
+const mondoTest = new MongoMemoryServer();
 
 
 // const url2 = "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false"
@@ -10,7 +10,7 @@ console.log(process.env.ENVIRONMENT);
 async function testConnect () {
     if(process.env.ENVIRONMENT === 'test'){
         console.log('now we go test');
-        const mondoTest = new MongoMemoryServer();
+        
         uri = await mondoTest.getConnectionString();
         const options = {
             useNewUrlParser: true,
@@ -53,8 +53,8 @@ if(!mongoose.connection) {
 async function disconnect() {
     // Ending connection to db
     console.log('disconnecting')
-    mongoose.connection.close()
-    await testConnect.disconnect()
+    await mongoose.connection.close()
+    await mondoTest.stop()
 }
 
 var UserSchema = new mongoose.Schema({
