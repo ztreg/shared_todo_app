@@ -22,7 +22,7 @@ const actions = {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         }
         try {
-            const res = await axios.get(`${process.env.URLTOFETCH}/api/login/authentication/checkToken`, config)
+            const res = await axios.get(`/api/login/authentication/checkToken`, config)
             commit('setUser', res.data) 
         } catch (error) {
             console.log(error)

@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     async login (username, password) {
-      await fetch('http://localhost:8081/api/login/authentication', {
+      await fetch('/api/login/authentication', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -158,7 +158,7 @@ export default {
     async fetchTodosSearch (text) {
       console.log(text)
       const listId = this.$route.params.id
-      await fetch(`http://localhost:8081/todo/api/search/${listId}?searchText=${text}`, {
+      await fetch(`/api/search/${listId}?searchText=${text}`, {
         headers: {
           Authorization: `Bearer ${this.token}`,
           'Content-Type': 'application/json'
