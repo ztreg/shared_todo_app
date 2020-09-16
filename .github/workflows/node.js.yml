@@ -30,3 +30,9 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+      env:
+          HOST: localhost
+          DATABASE: todo
+          PAGINATION: 2
+          SECRET: 'ey boss'
+          ENVIRONMENT: development
