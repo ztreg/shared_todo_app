@@ -3,6 +3,16 @@ const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server')
 const mondoTest = new MongoMemoryServer();
 
+// mongodb+srv://ztreg:<password>@cluster0.hoyzn.mongodb.net/<dbname>?retryWrites=true&w=majority
+
+// const MongoClient = require('mongodb').MongoClient;
+// const uri = "mongodb+srv://ztreg:<password>@cluster0.hoyzn.mongodb.net/<dbname>?retryWrites=true&w=majority";
+// const client = new MongoClient(uri, { useNewUrlParser: true });
+// client.connect(err => {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });
 
 // const url2 = "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false"
 let uri;
@@ -27,19 +37,21 @@ async function testConnect () {
         //     await mondoTest.stop()
         //     await mongoose.connection.close()
         // }
-        
-      
+       // cluster0-shard-00-02.hoyzn.mongodb.net:27017
 
         //uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
+        
     } else if(process.env.ENVIRONMENT === 'development') {
-        uri = await mondoTest.getUri();
+         uri = `mongodb+srv://ztreg:${process.env.PASSWORD}@${process.env.CLUSTER}/${process.env.DBNAME}?retryWrites=true&w=majority`;
+        //uri = "mongodb+srv://ztreg:ztreg123@cluster0-shard-00-02.hoyzn.mongodb.net:27017/todo"
+        // uri = await mondoTest.getUri();
         console.log('HERROWOOOOOOOW');
         console.log('connecting to ' + uri)
         const options = {
             useNewUrlParser: true,
             useUnifiedTopology: true
         }
-        
+        console.log('hmmmm');
         await mongoose.connect(uri, options);
         // uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
         // mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
