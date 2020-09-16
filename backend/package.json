@@ -10,6 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/ztreg/nackademin-todo-app.git"
   },
+  "config": {
+    "mongodbMemoryServer": {
+      "version": "4.4.1"
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -33,10 +38,5 @@
     "mongoose": "^5.10.0",
     "nodemon": "^2.0.4",
     "path": "^0.12.7"
-  },
-  "config": {
-    "mongodbMemoryServer": {
-      "version": "4.4.1"
-    }
   }
 }

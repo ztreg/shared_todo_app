@@ -38,7 +38,7 @@ async function testConnect () {
 }
 
 // 
-await testConnect();
+testConnect();
 console.log('connecting to ' + uri)
 
 
