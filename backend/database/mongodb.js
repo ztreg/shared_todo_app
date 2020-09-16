@@ -7,6 +7,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server')
 // const url2 = "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false"
 let uri;
 if(process.env.ENVIRONMENT === 'test'){
+    console.log('now we go test');
     const mondoTest = new MongoMemoryServer();
     uri = mondoTest.getConnectionString();
     const options = {
@@ -19,13 +20,14 @@ if(process.env.ENVIRONMENT === 'test'){
     //uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
 } else if(process.env.ENVIRONMENT === 'development') {
     uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
+    mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 }
 
 // 
 
 console.log('connecting to ' + uri)
 
-mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+
 
 if(!mongoose.connection) {
     console.log("error connecting bro")
