@@ -12,6 +12,8 @@ async function testConnect () {
         console.log('now we go test');
         
         uri = await mondoTest.getUri();
+        console.log('HERROWOOOOOOOW');
+        console.log('connecting to ' + uri)
         const options = {
             useNewUrlParser: true,
             autoReconnect: true,
@@ -19,7 +21,7 @@ async function testConnect () {
             reconnectInterval: 1000,
             useUnifiedTopology: true
         }
-        console.log('connecting to ' + uri)
+        
         await mongoose.connect(uri, options);
 
         // async function disconnect() {
