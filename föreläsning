@@ -56,7 +56,7 @@ Environments ->
 
     heroku run npm test
     heroku run npm test --app fierce-crag-17468
-    
+
     heroku run bash
   
     heroku logs
@@ -65,5 +65,5 @@ Environments ->
 
     git remote remove heroku
     git remote add staging "heroku git"
-    heroku create --region eu
+
 
