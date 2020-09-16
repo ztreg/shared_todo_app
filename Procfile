@@ -1,1 +1,1 @@
-cd backend && npm ci
+web: sh -c 'cd ./backend/ && npm ci'
