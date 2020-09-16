@@ -21,12 +21,12 @@ async function testConnect () {
         }
         await mongoose.connect(uri, options);
 
-        async function disconnect() {
-            // Ending connection to db
-            console.log('disconnecting')
-            await mondoTest.stop()
-            await mongoose.connection.close()
-        }
+        // async function disconnect() {
+        //     // Ending connection to db
+        //     console.log('disconnecting')
+        //     await mondoTest.stop()
+        //     await mongoose.connection.close()
+        // }
         
       
 
@@ -38,7 +38,7 @@ async function testConnect () {
 }
 
 // 
-testConnect();
+await testConnect();
 console.log('connecting to ' + uri)
 
 
