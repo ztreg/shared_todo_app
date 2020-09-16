@@ -1,0 +1,48 @@
+Heroku Anteckningar.
+
+Environments -> 
+	Different Machines -> 
+	Different Conifgs -> 
+	Different Dependenencies ->
+	Different Operating Systems.¨
+
+	--Miljöer--
+	Development.
+	-----Local Development Environment
+		Your maching and tool.
+		Light weight database.
+		No Client data
+	Testing.
+	-----Testing environment
+		Some other machine(can be viritual)
+		Light weight database.
+		No client data, only test data.
+	Staging.
+	-----Staging environemt
+		pre-production.
+		Full scale database.
+		Can use client data for testing.
+		Usually larget datasets.
+	Production.
+	-----Production Environment.
+		Full scale database.
+		Used by clients.
+
+	dotenv för miljöer.
+
+
+	Deployment
+	git clone -> cd repo -> npm ci -> test -> npm start
+
+	För att fixa install osv
+	String på ENV variabler, Borde lägga till env.testfil eller inte ignora env filen.
+	Quasar cli behövs fixa för ena.
+
+	Sätta upp en test miljö.
+	Shall be automated
+	Github actions. run jobs on repository events.
+
+	github repo actions, template nodejs -> set up workflow -> nodeversion 12 -> npm run build raden ta bort -> commit -> git pull master
+	Spana in actions tabben efter pushen, 
+
+	gitflow -> skapa develop branch -> pusha till den branchen
