@@ -6,6 +6,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server')
 
 // const url2 = "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false"
 let uri;
+console.log(process.env.ENVIRONMENT);
 if(process.env.ENVIRONMENT === 'test'){
     console.log('now we go test');
     const mondoTest = new MongoMemoryServer();

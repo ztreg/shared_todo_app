@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "cross-env ENVIRONMENT=test&&mocha --recursive"
+  "scripts": { 
+    "test": "npx cross-env ENVIRONMENT=test mocha --recursive"
   },
   "repository": {
     "type": "git",
