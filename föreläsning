@@ -51,13 +51,15 @@ Environments ->
 
     heroku login
     heroku create --region eu
-    
+
     heroku environment -> Settings -> Config Vars
 
     heroku run npm test
     heroku run bash
-    git push heroku master
+  
     heroku logs
+
+    git push heroku master
 
     git remote remove heroku
     git remote add staging "heroku git"
