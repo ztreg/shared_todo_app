@@ -19,14 +19,10 @@ async function testConnect () {
             reconnectInterval: 1000
         }
         await mongoose.connect(uri, options);
-        await disconnect()
 
-        async function disconnect() {
-            // Ending connection to db
-            console.log('disconnecting')
-            await mondoTest.stop()
-            await mongoose.connection.close()
-        }
+        await mondoTest.stop()
+        await mongoose.connection.close()
+      
 
         //uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
     } else if(process.env.ENVIRONMENT === 'development') {
