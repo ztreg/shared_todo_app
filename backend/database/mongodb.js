@@ -120,4 +120,4 @@ const TodoList = mongoose.model("TodoList", ListSchema)
 const Todo = mongoose.model("Todo", TodoSchema)
 const User = mongoose.model("User", UserSchema)
 
-module.exports = {Todo, User, TodoList, disconnect}
+module.exports = {Todo, User, TodoList, disconnect, testConnect}

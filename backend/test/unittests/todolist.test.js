@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs')
 const todomodel = require('../../models/todoModel')
 const usermodel = require('../../models/userModel')
 const todolistmodel = require('../../models/todoListModel')
-const {disconnect} = require('../../database/mongodb')
+const {disconnect, testConnect} = require('../../database/mongodb')
 
 
 describe('Unit Tests for todolist', () => {
