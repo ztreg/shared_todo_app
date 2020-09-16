@@ -55,6 +55,8 @@ Environments ->
     heroku environment -> Settings -> Config Vars
 
     heroku run npm test
+    heroku run npm test --app fierce-crag-17468
+    
     heroku run bash
   
     heroku logs
