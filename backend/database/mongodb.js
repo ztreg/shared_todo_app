@@ -32,8 +32,17 @@ async function testConnect () {
 
         //uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
     } else if(process.env.ENVIRONMENT === 'development') {
-        uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
-        mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+        uri = await mondoTest.getUri();
+        console.log('HERROWOOOOOOOW');
+        console.log('connecting to ' + uri)
+        const options = {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+        
+        await mongoose.connect(uri, options);
+        // uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
+        // mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     }
 }
 
