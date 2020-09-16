@@ -1,9 +1,22 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server')
+
+
+
 // const url2 = "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false"
 let uri;
 if(process.env.ENVIRONMENT === 'test'){
-    uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
+    const mondoTest = new MongoMemoryServer();
+    uri = mondoTest.getConnectionString();
+    const options = {
+        useNewUrlParser: true,
+        autoReconnect: true,
+        reconnectTries: Number.MAX_VALUE,
+        reconnectInterval: 1000
+    }
+    mongoose.connect(uri, options );
+    //uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
 } else if(process.env.ENVIRONMENT === 'development') {
     uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
 }
