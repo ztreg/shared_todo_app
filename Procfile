@@ -1,1 +1,1 @@
-web: cd ./backend && npm ci
+web: cd ./backend && npm start.js
