@@ -17,6 +17,7 @@ const port = process.env.PORT || 8081;
 /**
  * Middleware
  */
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(express.static('./public'))
