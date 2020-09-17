@@ -2,8 +2,8 @@ import moment from 'moment'
 class TodoRequests {
   static async fetchTodos (sortFrom = 'createdAt', direction = 'asc', page = 0, listId) {
     if (page <= 0) page = 0
-    // console.log('lllllllll')
-    // console.log(`${sortFrom} | ${direction} | ${page} | ${listId}`)
+    console.log('lllllllll')
+    console.log(`${sortFrom} | ${direction} | ${page} | ${listId}`)
     return await fetch(`/api/todo?sortFrom=${sortFrom}&direction=${direction}&page=${page}&listId=${listId}`,
       {
         headers: {
