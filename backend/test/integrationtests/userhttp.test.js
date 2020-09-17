@@ -74,7 +74,7 @@ describe('Integration tests for Users', function () {
         .get(`/api/users/${currentTestuserid}`)
         .set('Authorization', `Bearer ${currentTestmember1.token}`)
         .end((err, res) => {
-            console.log(res.body)
+            // console.log(res.body)
             expect(res).to.be.deep.an('object')
         })
     })
