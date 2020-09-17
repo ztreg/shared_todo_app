@@ -33,10 +33,10 @@ async function testConnect () {
             // }
             // await mongoose.connect(uri, options);
         break;
-        case 'staging':   
+        case 'release':   
             uri = `mongodb+srv://ztreg:${process.env.PASSWORD}@${process.env.CLUSTER}/${process.env.DBNAME}?retryWrites=true&w=majority`;
 
-            console.log('staging');
+            console.log('release');
             await mongoose.connect(uri, options);
         break;
         case 'production':   

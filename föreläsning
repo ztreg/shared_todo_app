@@ -69,5 +69,3 @@ Environments ->
     
     git remote remove heroku
     git remote add staging "heroku git"
-
-
