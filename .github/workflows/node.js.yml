@@ -35,7 +35,6 @@ jobs:
           DATABASE: todoTest
           PAGINATION: 2
           SECRET: 'ey boss'
-          ENVIRONMENT: development
 
   deploy_stage:
     needs: test
