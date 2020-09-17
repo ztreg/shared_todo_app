@@ -12,7 +12,7 @@ async function testConnect () {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }
-    switch(ENVIRONMENT) {
+    switch(process.env.ENVIRONMENT) {
         case 'TEST':    
             console.log('now we go test');
             uri = await mondoTest.getUri();
