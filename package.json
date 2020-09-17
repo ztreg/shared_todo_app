@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cd backend && npx cross-env ENVIRONMENT=test npx mocha --recursive",
+    "test": "npx cross-env ENVIRONMENT=test npx mocha backend/test --recursive",
     "start": "node start.js"
   },
   "repository": {
