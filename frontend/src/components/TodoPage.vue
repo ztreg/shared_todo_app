@@ -159,7 +159,7 @@ export default {
       /**
        * Hämta -> flitrera datum -> fyll this.todos
        */
-      await fetch('http://localhost:8081/todo/' + text, {
+      await fetch('http://localhost:8081/api/todo/' + text, {
         headers: {
           Authorization: `Bearer ${process.env.TOKEN}`,
           'Content-Type': 'application/json'

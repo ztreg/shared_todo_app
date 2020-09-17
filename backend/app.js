@@ -17,6 +17,7 @@ const port = process.env.PORT || 8081;
 /**
  * Middleware
  */
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(express.static('./public'))
@@ -25,11 +26,11 @@ app.use(cors())
 /**
  * Route link
  */
- 
-app.use('/todo', todoRoute)
-app.use('/users', userRoute)
-app.use('/login', loginRoute)
-app.use('/todolist', todoListRoute)
+
+app.use('/api/todo', todoRoute)
+app.use('/api/users', userRoute)
+app.use('/api/login', loginRoute)
+app.use('/api/todolist', todoListRoute)
 
 
 module.exports = app

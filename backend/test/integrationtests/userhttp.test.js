@@ -36,7 +36,7 @@ describe('Integration tests for Users', function () {
     it('Should add a user', async function() {
         const fields = { username: "httpuser13333", password: "123" }
         request(app)
-        .post('/users')
+        .post('/api/users')
         .send(fields)
         .end((err, res) => {
             expect(res).to.be.deep.an('object')
@@ -48,7 +48,7 @@ describe('Integration tests for Users', function () {
     it('Should edit a user (myself)', async function() {
         const fields = { username : "httpuser23edited" }
         request(app)
-        .patch(`/users/${currentTestuserid}`)
+        .patch(`/api/users/${currentTestuserid}`)
         .send(fields)
         .set('Authorization', `Bearer ${currentTestmember1.token}`)
         .end((err, res) => {
@@ -60,7 +60,7 @@ describe('Integration tests for Users', function () {
      it('Should fail edit another user', async function() {
          const fields = { username : "httpuser23edited" }
          request(app)
-         .patch(`/users/${currentTestuserid}`)
+         .patch(`/api/users/${currentTestuserid}`)
          .send(fields)
          .set('Authorization', `Bearer ${currentTestmember2.token}`)
          .end((err, res) => {
@@ -71,7 +71,7 @@ describe('Integration tests for Users', function () {
      })
     it('Should get a user (myself)', async function() {
         request(app)
-        .get(`/users/${currentTestuserid}`)
+        .get(`/api/users/${currentTestuserid}`)
         .set('Authorization', `Bearer ${currentTestmember1.token}`)
         .end((err, res) => {
             console.log(res.body)
@@ -80,7 +80,7 @@ describe('Integration tests for Users', function () {
     })
     it('Should delete a user (myself)', async function() {
         request(app)
-        .delete(`/users/${currentTestuserid}`)
+        .delete(`/api/users/${currentTestuserid}`)
         .set('Authorization', `Bearer ${currentTestmember1.token}`)
         .end((err, res) => {
             expect(res).to.be.json
@@ -90,7 +90,7 @@ describe('Integration tests for Users', function () {
     })
       it('Should fail to delete another user', async function() {
           request(app)
-          .delete(`/users/${currentTestuserid}`)
+          .delete(`/api/users/${currentTestuserid}`)
           .set('Authorization', `Bearer ${currentTestmember2.token}`)
           .end((err, res) => {
               expect(res).to.be.json

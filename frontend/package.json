@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.0.1",
   "description": "Quasar speaking with express",
-  "productName": "Quasar App",
+  "productName": "Todolist App",
   "author": "Jonas Gertz <Geertzo@live.se>",
   "private": true,
   "scripts": {

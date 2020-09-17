@@ -29,7 +29,7 @@ export default {
     },
     methods: {
         async fetchAllTodos() {
-            fetch(`http://localhost:8081/users/gdpr/${this.auth.userid}`,
+            fetch(`http://localhost:8081/api/users/gdpr/${this.auth.userid}`,
             {
                 headers: {
                 Authorization: `Bearer ${this.token}`,
