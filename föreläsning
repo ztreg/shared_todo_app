@@ -69,3 +69,5 @@ Environments ->
     
     git remote remove heroku
     git remote add staging "heroku git"
+
+	git commit -m "någon jävla random.. text, vad som helst." --allow-empty
