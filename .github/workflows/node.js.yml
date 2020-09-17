@@ -32,7 +32,7 @@ jobs:
     - run: npm test
       env:
           HOST: localhost
-          DATABASE: todoTest
+          DATABASE: todo-staging
           PAGINATION: 2
           SECRET: 'ey boss'
           ENVIRONMENT: release
