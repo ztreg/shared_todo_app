@@ -27,7 +27,7 @@ describe('Unit Tests for todos', function ()  {
       const users = await getTestUsers()
       
       user = await usermodel.addUser(users[0])
-      console.log(user);
+      // console.log(user);
       todolist2add = {
         title : 'Users first todolist! woh',
         creator : user.username,
