@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ develop, release, master ]
+    branches: [ develop, release , master ]
   pull_request:
     branches: [ develop, release, master ]
 
@@ -32,10 +32,9 @@ jobs:
     - run: npm test
       env:
           HOST: localhost
-          DATABASE: todo-staging
+          DATABASE: todoTest
           PAGINATION: 2
           SECRET: 'ey boss'
-          ENVIRONMENT: release
 
   deploy_stage:
     needs: test
@@ -59,4 +58,4 @@ jobs:
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
         heroku_app_name: ${{secrets.HEROKU_TODO_PROD}}
-        heroku_email: ${{secrets.HEROKU_EMAIL}}
+        heroku_email: ${{secrets.HEROKU_EMAIL}}  
