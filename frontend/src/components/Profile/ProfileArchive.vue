@@ -49,7 +49,7 @@ export default {
     },
     methods: {
         async fetchFinished () {
-        await fetch('http://localhost:8081/api/todo/?finished=true', {
+        await fetch('/api/todo/?finished=true', {
             headers: {
             Authorization: `Bearer ${this.token}`,
             'Content-Type': 'application/json'
