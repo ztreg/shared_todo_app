@@ -55,22 +55,13 @@ Environments ->
     heroku environment -> Settings -> Config Vars
 
     heroku run npm test
-<<<<<<< HEAD
-=======
     heroku run npm test --app fierce-crag-17468
 
->>>>>>> master
     heroku run bash
   
     heroku logs
 
     git push heroku master
-<<<<<<< HEAD
-
-    git remote remove heroku
-    git remote add staging "heroku git"
-    heroku create --region eu
-=======
     git push heroku master:origin
 
     git remote rm heroku
@@ -79,5 +70,4 @@ Environments ->
     git remote remove heroku
     git remote add staging "heroku git"
 
->>>>>>> master
 

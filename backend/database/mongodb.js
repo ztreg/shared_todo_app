@@ -36,15 +36,6 @@ async function testConnect () {
         case 'staging':   
             uri = `mongodb+srv://ztreg:${process.env.PASSWORD}@${process.env.CLUSTER}/${process.env.DBNAME}?retryWrites=true&w=majority`;
 
-<<<<<<< HEAD
-        //uri = `mongodb://${process.env.HOST}/${process.env.DATBASECOPY}`; //testdb
-    } else if(process.env.ENVIRONMENT === 'development') {
-        uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
-        mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-    } else if((process.env.ENVIRONMENT === 'staging') {
-        uri = `mongodb://${process.env.HOST}/${process.env.DATABASE}`; //standard
-        mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-=======
             console.log('staging');
             await mongoose.connect(uri, options);
         break;
@@ -55,7 +46,6 @@ async function testConnect () {
 
             await mongoose.connect(uri, options);
         break;
->>>>>>> master
     }
 }
 
