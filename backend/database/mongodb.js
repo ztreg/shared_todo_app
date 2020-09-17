@@ -13,7 +13,7 @@ async function testConnect () {
         useUnifiedTopology: true
     }
     switch(process.env.ENVIRONMENT) {
-        case 'TEST':    
+        case 'test':    
             console.log('now we go test');
             uri = await mondoTest.getUri();
             await mongoose.connect(uri, options);
