@@ -8,25 +8,20 @@ let uri;
 console.log(process.env.ENVIRONMENT);
 
 async function testConnect () {
+    const options = {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }
     switch(ENVIRONMENT) {
         case 'TEST':    
             console.log('now we go test');
             uri = await mondoTest.getUri();
-            const options = {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            }
-            
             await mongoose.connect(uri, options);
         break;
         
         case 'development':   
-                console.log('development');
-                uri = await mondoTest.getUri();
-                const options = {
-                    useNewUrlParser: true,
-                    useUnifiedTopology: true
-            }
+            console.log('development');
+            uri = await mondoTest.getUri();
         
             await mongoose.connect(uri, options);
             // uri = `mongodb+srv://ztreg:${process.env.PASSWORD}@${process.env.CLUSTER}/${process.env.DBNAME}?retryWrites=true&w=majority`;
@@ -42,20 +37,13 @@ async function testConnect () {
             uri = `mongodb+srv://ztreg:${process.env.PASSWORD}@${process.env.CLUSTER}/${process.env.DBNAME}?retryWrites=true&w=majority`;
 
             console.log('staging');
-            const options = {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            }
             await mongoose.connect(uri, options);
         break;
         case 'production':   
             uri = `mongodb+srv://ztreg:${process.env.PASSWORD}@${process.env.CLUSTER}/${process.env.DBNAME}?retryWrites=true&w=majority`;
 
             console.log('production');
-            const options = {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            }
+
             await mongoose.connect(uri, options);
         break;
     }
