@@ -35,4 +35,4 @@ jobs:
           DATABASE: todoTest
           PAGINATION: 2
           SECRET: 'ey boss'
-          ENVIRONMENT: development
+          ENVIRONMENT: release
