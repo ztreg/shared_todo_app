@@ -37,7 +37,7 @@ module.exports = {
             }
     
             if(req.body.username) userToUpdate.username = req.body.username
-            if(req.body.password) userToUpdate.password = hashPW(req.body.password)
+            if(req.body.password) userToUpdate.password = req.body.password
 
             // console.log(userToUpdate)
 
