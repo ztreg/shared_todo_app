@@ -29,7 +29,7 @@ export default {
     },
     methods: {
         async fetchAllTodos() {
-            fetch(`/api/users/gdpr/${this.auth.userid}`,
+            const result = await fetch(`/api/users/gdpr/${this.auth.userid}`,
             {
                 headers: {
                 Authorization: `Bearer ${this.token}`,
@@ -38,11 +38,13 @@ export default {
             })
             .then(response => response.json())
             .then((response) => {
+                console.log(response.lists);
                 this.allLists = response.lists
             })
             .catch((error) => {
                 console.error('There was a error fetching:' + error)
             })
+            
         }
         
     }
