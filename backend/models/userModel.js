@@ -24,6 +24,9 @@ module.exports = {
     },
     updateUser: async (userToUpdate) => {
         try {
+            if(userToUpdate.password) {
+                userToUpdate.password = await hashPW(userToUpdate.password)
+            }
             return await User.updateOne({_id: userToUpdate.userId},
                 { $set: userToUpdate}, 
                 {useFindAndModify: false, versionKey: false});
