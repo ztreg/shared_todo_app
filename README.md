@@ -2,7 +2,9 @@
 # npm start
 or
 # npm test
-Packages: express, dotenv, mongoose, mongodb-memory, mocha, nodemon, chai, vue, quasar
+Packages: express, dotenv, mongoose, mongodb-memory, nodemon, 
+Tests: mocha & chai(chat-http)
+Frontend: vue, quasar
 
 Released on Heroku with staging and production environments with githubs CI/CD.
 
