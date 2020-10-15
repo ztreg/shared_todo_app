@@ -1,0 +1,16 @@
+
+
+* What is a cookie?
+
+
+* What data is stored inside cookies?
+
+The data is saved inside session storage in four different session items:
+id, token, username and role.
+
+
+
+* Why is that data saved?
+
+We save that token to confirm your account information to make sure
+you are who you say you are and keep you signed in on the service until the token expires.
